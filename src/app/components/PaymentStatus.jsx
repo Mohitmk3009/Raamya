@@ -209,7 +209,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Lottie from 'lottie-react';
 import successAnimation from '../../../public/lottie/Success.json'; // Adjust path if needed
-import errorAnimation from '../../../public/lottie/error.json'; // Adjust path if needed
+import errorAnimation from '../../../public/lottie/Error.json'; // Adjust path if needed
 // import Image from 'next/image';
 
 // --- SUB-COMPONENTS ---
