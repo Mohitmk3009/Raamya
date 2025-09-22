@@ -155,7 +155,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const NewArrivals = () => {
   const [newArrivalProducts, setNewArrivalProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -169,7 +169,7 @@ const NewArrivals = () => {
   // Function to fetch products from the backend
   const fetchNewArrivals = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/products'); // Replace with your actual API endpoint
+      const response = await fetch(`${API_BASE_URL}/products`); // Replace with your actual API endpoint
       if (!response.ok) {
         throw new Error('Failed to fetch products.');
       }

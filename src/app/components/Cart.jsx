@@ -275,7 +275,7 @@ export default function ShoppingCart() {
     const handleQuantityChange = async (item, newQty) => {
         const token = localStorage.getItem('authToken');
         try {
-            const response = await fetch('http://localhost:5001/api/cart', {
+            const response = await fetch(`${API_BASE_URL}/cart`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
                 body: JSON.stringify({ productId: item.product, size: item.size, qty: newQty })
@@ -291,7 +291,7 @@ export default function ShoppingCart() {
     const handleRemoveProduct = async (item) => {
         const token = localStorage.getItem('authToken');
         try {
-            const response = await fetch(`http://localhost:5001/api/cart/${item.product}/${item.size}`, {
+            const response = await fetch(`${API_BASE_URL}/cart/${item.product}/${item.size}`, {
                 method: 'DELETE',
                 headers: { 'Authorization': `Bearer ${token}` }
             });

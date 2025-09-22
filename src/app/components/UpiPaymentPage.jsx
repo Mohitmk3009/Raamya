@@ -35,7 +35,7 @@ export default function UpiPaymentPage() {
         setStatusMessage('Verifying payment, please wait...');
         const token = localStorage.getItem('authToken');
         try {
-            const response = await fetch(`http://localhost:5001/api/orders/${orderId}`, {
+            const response = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             const data = await response.json();

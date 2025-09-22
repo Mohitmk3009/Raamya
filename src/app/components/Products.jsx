@@ -266,7 +266,7 @@
 import Image from 'next/image';
 import React, { useState, useMemo, useEffect } from 'react';
 import Link from 'next/link';
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // --- ICONS ---
 const SearchIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -395,7 +395,7 @@ export default function ProductsPage() {
             params.append('pageNumber', page);
 
             try {
-                const response = await fetch(`http://localhost:5001/api/products?${params.toString()}`);
+                const response = await fetch(`${API_BASE_URL}/products?${params.toString()}`);
                 const data = await response.json();
                 setProducts(data.products);
                 setPage(data.page);

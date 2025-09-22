@@ -386,7 +386,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // --- ICONS ---
 const ChevronRightIcon = (props) => ( <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="9 18 15 12 9 6"></polyline></svg> );
 const ChevronLeftIcon = (props) => ( <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="15 18 9 12 15 6"></polyline></svg> );
@@ -413,7 +413,7 @@ const AccountDetails = ({ user }) => {
         setProfileMessage({ text: 'Saving...', type: 'info' });
         const token = localStorage.getItem('authToken');
         try {
-            const res = await fetch('http://localhost:5001/api/users/me', {
+            const res = await fetch(`${API_BASE_URL}/users/me`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify(profileData),
@@ -435,7 +435,7 @@ const AccountDetails = ({ user }) => {
         }
         const token = localStorage.getItem('authToken');
         try {
-            const res = await fetch('http://localhost:5001/api/users/me/password', {
+            const res = await fetch(`${API_BASE_URL}/users/me/password`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ oldPassword: passwordData.oldPassword, newPassword: passwordData.newPassword }),
@@ -582,8 +582,8 @@ export default function MyAccountPage() {
             if (!token) { router.push('/login'); return; }
             try {
                 const [userRes, ordersRes] = await Promise.all([
-                    fetch('http://localhost:5001/api/users/me', { headers: { 'Authorization': `Bearer ${token}` } }),
-                    fetch('http://localhost:5001/api/orders/myorders', { headers: { 'Authorization': `Bearer ${token}` } })
+                    fetch(`${API_BASE_URL}/users/me`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch(`${API_BASE_URL}/orders/myorders`, { headers: { 'Authorization': `Bearer ${token}` } })
                 ]);
                 if (!userRes.ok || !ordersRes.ok) throw new Error('Failed to fetch account data.');
                 const userData = await userRes.json();
@@ -604,7 +604,7 @@ export default function MyAccountPage() {
     const handleSaveAddress = async (formData) => {
         const token = localStorage.getItem('authToken');
         try {
-            const res = await fetch('http://localhost:5001/api/users/me/addresses', {
+            const res = await fetch(`${API_BASE_URL}/users/me/addresses`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
                 body: JSON.stringify(formData)

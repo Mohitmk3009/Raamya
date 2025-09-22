@@ -183,7 +183,7 @@
 'use client';
 import { React, useState } from 'react';
 import { useRouter } from 'next/navigation';
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // --- (Your SVG Icons: EyeIcon, EyeOffIcon, GoogleIcon) ---
 const EyeIcon = ({ ...props }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
@@ -222,7 +222,7 @@ const SignInForm = ({ setAuthMode }) => {
     setError('');
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5001/api/auth/login', {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -230,7 +230,7 @@ const SignInForm = ({ setAuthMode }) => {
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Failed to login');
       localStorage.setItem('authToken', data.token);
-      window.location.href = '/homepage';
+      window.location.href = '/';
     } catch (err) {
       setError(err.message);
     } finally {
@@ -274,11 +274,11 @@ const SignInForm = ({ setAuthMode }) => {
             {passwordVisible ? <EyeOffIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
           </button>
         </div>
-        <div className="flex items-center justify-end text-sm">
+        {/* <div className="flex items-center justify-end text-sm">
           <span onClick={() => setAuthMode('forgot')} className="font-medium text-yellow-400 hover:text-yellow-300 cursor-pointer">
             Forgot Password?
           </span>
-        </div>
+        </div> */}
         <div>
           <button
             type="submit"
@@ -314,7 +314,7 @@ const SignUpForm = ({ setAuthMode }) => {
     }
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5001/api/auth/register', {
+      const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: formData.name, email: formData.email, password: formData.password }),
@@ -408,7 +408,7 @@ const SignUpForm = ({ setAuthMode }) => {
         </div>
         <div className="space-y-3">
           <a
-            href="http://localhost:5001/api/auth/google"
+            href={`${API_BASE_URL}/api/auth/google`}
             className="w-full flex items-center justify-center bg-white text-black font-medium py-2 px-4 rounded-md hover:bg-gray-200"
           >
             <GoogleIcon /> Sign up with Gmail
@@ -433,7 +433,7 @@ const ForgotPasswordForm = ({ setAuthMode }) => {
     setMessage({ text: '', type: '' });
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:5001/api/auth/forgotpassword', {
+      const response = await fetch(`${API_BASE_URL}/auth/forgotpassword`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email }),

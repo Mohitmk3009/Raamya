@@ -126,7 +126,7 @@ export default function ProductPage() {
             if (!productId) return;
             setLoading(true);
             try {
-                const productRes = await fetch(`http://localhost:5001/api/products/${productId}`);
+                const productRes = await fetch(`${API_BASE_URL}/products/${productId}`);
                 if (!productRes.ok) throw new Error('Product not found.');
                 const productData = await productRes.json();
                 setProduct(productData);
@@ -136,7 +136,7 @@ export default function ProductPage() {
                 }
                 const token = localStorage.getItem('authToken');
                 if (token) {
-                    const cartRes = await fetch('http://localhost:5001/api/cart', { headers: { 'Authorization': `Bearer ${token}` } });
+                    const cartRes = await fetch(`${API_BASE_URL}/cart`, { headers: { 'Authorization': `Bearer ${token}` } });
                     if (cartRes.ok) {
                         const cartData = await cartRes.json();
                         setCartItems(cartData.items || []);
@@ -157,7 +157,7 @@ export default function ProductPage() {
         const token = localStorage.getItem('authToken');
         if (!token) { window.location.href = '/login'; return; }
         const isRemove = action === 'remove';
-        const endpoint = isRemove ? `http://localhost:5001/api/cart/${productToAdd._id}/${size}` : 'http://localhost:5001/api/cart';
+        const endpoint = isRemove ? `${API_BASE_URL}/cart/${productToAdd._id}/${size}` : `${API_BASE_URL}/cart`;
         try {
             const response = await fetch(endpoint, {
                 method: isRemove ? 'DELETE' : 'POST',
@@ -176,7 +176,7 @@ export default function ProductPage() {
     const handleReviewSubmit = async ({ rating, comment }) => {
         const token = localStorage.getItem('authToken');
         if (!token) throw new Error('You must be logged in to write a review.');
-        const response = await fetch(`http://localhost:5001/api/products/${productId}/reviews`, {
+        const response = await fetch(`${API_BASE_URL}/products/${productId}/reviews`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
             body: JSON.stringify({ rating, comment })

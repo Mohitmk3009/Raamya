@@ -381,7 +381,7 @@ export default function PaymentResultPage() {
       if (status === 'success' && orderId) {
         const token = localStorage.getItem('authToken');
         try {
-          const res = await fetch(`http://localhost:5001/api/orders/${orderId}`, { headers: { 'Authorization': `Bearer ${token}` } });
+          const res = await fetch(`${API_BASE_URL}/orders/${orderId}`, { headers: { 'Authorization': `Bearer ${token}` } });
           const data = await res.json();
           console.log(data);
           if (res.ok) setOrder(data);

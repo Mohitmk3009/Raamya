@@ -224,7 +224,7 @@ const Suggestion = () => {
   // Function to fetch products from the backend
   const fetchNewArrivals = async () => {
     try {
-      const response = await fetch('http://localhost:5001/api/products'); // Replace with your actual API endpoint
+      const response = await fetch(`${API_BASE_URL}/products`); // Replace with your actual API endpoint
       if (!response.ok) {
         throw new Error('Failed to fetch products.');
       }

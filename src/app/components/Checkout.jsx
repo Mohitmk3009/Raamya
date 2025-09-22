@@ -318,8 +318,8 @@ export default function CheckoutPage() {
             if (!token) { router.push('/login'); return; }
             try {
                 const [cartRes, userRes] = await Promise.all([
-                    fetch('http://localhost:5001/api/cart', { headers: { 'Authorization': `Bearer ${token}` } }),
-                    fetch('http://localhost:5001/api/users/me', { headers: { 'Authorization': `Bearer ${token}` } })
+                    fetch(`${API_BASE_URL}/cart`, { headers: { 'Authorization': `Bearer ${token}` } }),
+                    fetch(`${API_BASE_URL}/users/me`, { headers: { 'Authorization': `Bearer ${token}` } })
                 ]);
 
                 if (!cartRes.ok) throw new Error('Failed to fetch cart.');
@@ -352,7 +352,7 @@ export default function CheckoutPage() {
     const handleSaveNewAddress = async (formData) => {
         const token = localStorage.getItem('authToken');
         try {
-            const res = await fetch('http://localhost:5001/api/users/me/addresses', {
+            const res = await fetch(`${API_BASE_URL}/users/me/addresses`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
                 body: JSON.stringify(formData)
@@ -379,7 +379,7 @@ export default function CheckoutPage() {
         const finalShippingAddress = savedAddresses.find(addr => addr._id === selectedAddressId);
         
         try {
-            const res = await fetch('http://localhost:5001/api/orders', {
+            const res = await fetch(`${API_BASE_URL}/orders`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({
