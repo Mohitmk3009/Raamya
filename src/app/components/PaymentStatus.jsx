@@ -210,7 +210,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Lottie from 'lottie-react';
 import successAnimation from '../../../public/lottie/Success.json'; // Adjust path if needed
 import errorAnimation from '../../../public/lottie/error.json'; // Adjust path if needed
-import Image from 'next/image';
+// import Image from 'next/image';
 
 // --- SUB-COMPONENTS ---
 const AnimatedCheckmark = () => (<div className="w-40 h-40 mx-auto"><Lottie animationData={successAnimation} loop={false} /></div>);
