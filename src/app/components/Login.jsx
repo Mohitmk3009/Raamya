@@ -283,7 +283,7 @@ const SignInForm = ({ setAuthMode }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-yellow-400 text-black font-bold py-3 px-4 rounded-md disabled:bg-gray-500"
+            className="w-full bg-yellow-400 cursor-pointer text-black font-bold py-3 px-4 rounded-md disabled:bg-gray-500"
           >
             {loading ? 'Signing In...' : 'SIGN IN'}
           </button>
@@ -401,14 +401,14 @@ const SignUpForm = ({ setAuthMode }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-yellow-400 text-black font-bold py-3 px-4 rounded-md disabled:bg-gray-500"
+            className="w-full bg-yellow-400 cursor-pointer text-black font-bold py-3 px-4 rounded-md disabled:bg-gray-500"
           >
             {loading ? 'Creating Account...' : 'Create Account'}
           </button>
         </div>
         <div className="space-y-3">
           <a
-            href={`${API_BASE_URL}/api/auth/google`}
+            href={`${API_BASE_URL}/auth/google`}
             className="w-full flex items-center justify-center bg-white text-black font-medium py-2 px-4 rounded-md hover:bg-gray-200"
           >
             <GoogleIcon /> Sign up with Gmail

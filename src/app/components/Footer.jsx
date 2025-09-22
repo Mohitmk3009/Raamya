@@ -88,7 +88,7 @@ const Footer = () => {
                         <h3 className="text-[#FFBB00] font-bold text-lg tracking-wider mb-4">Contact Us</h3>
                         <ul className="space-y-2 text-base">
                             <li><span className="font-semibold text-[#FFBB00]">Email:</span> support@raamya.com</li>
-                            <li><span className="font-semibold text-[#FFBB00]">Mob:</span> +91 99999 99999 / 88888 88888</li>
+                            <li><span className="font-semibold text-[#FFBB00]">Mob:</span> +91-8950566899</li>
                             <li><span className="font-semibold text-[#FFBB00]">Opening Hours:</span> Mon to Sat: 10:30 AM - 6:30 PM</li>
                         </ul>
                     </div>
@@ -112,7 +112,7 @@ const Footer = () => {
                             <li><Link href="/privacypolicy" className="hover:text-yellow-500 transition">Privacy Policy</Link></li>
                             <li><a href="#" className="hover:text-yellow-500 transition">Shipping & Delivery Policy</a></li>
                             <li><a href="#" className="hover:text-yellow-500 transition">Exchange Policy</a></li>
-                            <li><Link href="/termsandconditions" className="hover:text-yellow-500 transition">Terms of Service</Link></li>
+                            <li><Link href="/termsandconditions" className="hover:text-yellow-500 transition">Terms & Conditions</Link></li>
                             <li><a href="#" className="hover:text-yellow-500 transition">Exchange My Order</a></li>
                         </ul>
                     </div>
@@ -125,8 +125,8 @@ const Footer = () => {
                 <div className="flex flex-col sm:flex-row justify-between items-center text-sm px-10 py-5">
                     <p className="text-center sm:text-left  sm:mb-0">
                         © 2025 RAAMYA. All Rights Reserved.
-                        <Link href="/termsandconditions" className="text-yellow-500 hover:underline ml-2">Terms and Conditions applied</Link> |
-                        <Link href="/exchangepolicy" className="text-yellow-500 hover:underline ml-2">Exchange Policy</Link>
+                        <Link href="/termsandconditions" className="text-yellow-500 hover:underline ">Terms and Conditions applied</Link> | <Link href="/exchangepolicy" className="text-yellow-500 hover:underline ">Exchange Policy</Link> | Made in India 
+                        {/* <Image width={100} height={100} src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_India.svg/800px-Flag_of_India.svg.png?20240117202436" alt="Visa" className="h-8 w-14 bg-white p-1 hover:scale-110  transition-all duration-300  object-contain" /> */}
                     </p>
                     <div className="flex items-center space-x-4">
                         {/* Payment Icons */}

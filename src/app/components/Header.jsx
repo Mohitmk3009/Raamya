@@ -44,7 +44,7 @@ export default function Header() {
                         <Link href="#" className="hover:text-white transition-colors duration-300">MOST WANTED</Link>
                         <Link href="#" className="hover:text-white transition-colors duration-300">NEW ARRIVALS</Link>
                         <Link href="#" className="hover:text-white transition-colors duration-300">CATEGORIES</Link>
-                        <Link href="#" className="hover:text-white transition-colors duration-300">CONTACT</Link>
+                        <Link href="/contactus" className="hover:text-white transition-colors duration-300">CONTACT</Link>
                     </nav>
 
                     {/* Right-side Icons and Auth buttons */}
