@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Image from 'next/image';
 import upi from '../../assets/qr.jpg'
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 export default function UpiPaymentPage() {
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);

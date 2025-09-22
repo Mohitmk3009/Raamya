@@ -210,7 +210,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const Suggestion = () => {
   const [newArrivalProducts, setNewArrivalProducts] = useState([]);
   const [loading, setLoading] = useState(true);

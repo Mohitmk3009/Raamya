@@ -205,7 +205,7 @@
 'use client'
 import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // Helper component for quantity controls
 const QuantitySelector = ({ quantity, onDecrease, onIncrease }) => (
   <div className="flex items-center justify-center border border-yellow-400 w-24 rounded-md">

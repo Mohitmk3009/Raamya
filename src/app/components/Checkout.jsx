@@ -234,7 +234,7 @@
 'use client';
 import React, { useState, useMemo, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // --- SUB-COMPONENTS ---
 const OrderSummaryItem = ({ item }) => (
     <div className="flex items-center space-x-4 mb-6 font-redhead">

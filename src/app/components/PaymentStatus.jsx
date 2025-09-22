@@ -211,7 +211,7 @@ import Lottie from 'lottie-react';
 import successAnimation from '../../../public/lottie/Success.json'; // Adjust path if needed
 import errorAnimation from '../../../public/lottie/Error.json'; // Adjust path if needed
 // import Image from 'next/image';
-
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // --- SUB-COMPONENTS ---
 const AnimatedCheckmark = () => (<div className="w-40 h-40 mx-auto"><Lottie animationData={successAnimation} loop={false} /></div>);
 const ErrorIcon = () => (<div className="w-32 h-32 mx-auto mb-4"><Lottie animationData={errorAnimation} loop={false} /></div>);

@@ -2,7 +2,7 @@
 import { useState, useEffect } from "react";
 import LoadingScreen from "./components/LoadingScreen";
 import HomePage from "./homepage/page";
-
+import { Analytics } from "@vercel/analytics/next"
 export default function Home() {
   const [showLoading, setShowLoading] = useState(true);
 
