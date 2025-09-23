@@ -288,6 +288,15 @@ const SignInForm = ({ setAuthMode }) => {
           >
             {loading ? 'Signing In...' : 'SIGN IN'}
           </button>
+
+        </div>
+        <div className="space-y-3">
+          <Link
+            href={`${API_BASE_URL}/auth/google`}
+            className="w-full flex items-center justify-center bg-white text-black font-medium py-2 px-4 rounded-md hover:bg-gray-200"
+          >
+            <GoogleIcon /> Sign in with Gmail
+          </Link>
         </div>
         <p className="text-sm text-center text-white">
           Don't have an account yet? <span onClick={() => setAuthMode('signup')} className="font-medium text-yellow-400 cursor-pointer">SIGN UP</span>
@@ -299,7 +308,7 @@ const SignInForm = ({ setAuthMode }) => {
 
 // --- SIGN UP FORM ---
 const SignUpForm = ({ setAuthMode }) => {
-  const [formData, setFormData] = useState({ name: '', email: '', password: '', confirmPassword: '' });
+  const [formData, setFormData] = useState({ name: '', email: '',phone:'', password: '', confirmPassword: '' });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -318,7 +327,7 @@ const SignUpForm = ({ setAuthMode }) => {
       const response = await fetch(`${API_BASE_URL}/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: formData.name, email: formData.email, password: formData.password }),
+        body: JSON.stringify({ name: formData.name, email: formData.email, phone: formData.phone, password: formData.password }),
       });
       const data = await response.json();
       if (!response.ok) throw new Error(data.message || 'Something went wrong');
@@ -360,6 +369,20 @@ const SignUpForm = ({ setAuthMode }) => {
             placeholder="Email Address"
           />
         </div>
+        <div>
+                    <label className="block text-sm font-medium text-white">Mobile Number</label>
+                    <input
+                        name="phone"
+                        type="tel" // Use type="tel" for phone numbers
+                        value={formData.phone}
+                        onChange={handleChange}
+            required
+
+                        // required // Make it required if needed
+                        className="mt-1 block w-full bg-gray-700 p-2 rounded text-white focus:bg-white focus:text-black transition-colors duration-200"
+                        placeholder="Mobile Number"
+                    />
+                </div>
         <div className="relative">
           <label className="block text-sm font-medium text-white">Password</label>
           <input

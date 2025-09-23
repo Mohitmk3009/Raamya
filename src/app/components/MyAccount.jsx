@@ -394,56 +394,88 @@ const ChevronLeftIcon = (props) => ( <svg xmlns="http://www.w3.org/2000/svg" wid
 // --- SUB-COMPONENTS ---
 
 const AccountDetails = ({ user }) => {
-    const [profileData, setProfileData] = useState({ name: '', email: '' });
+    const [profileData, setProfileData] = useState({ name: '', email: '', phone: '' });
     const [passwordData, setPasswordData] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' });
     const [profileMessage, setProfileMessage] = useState({ text: '', type: '' });
     const [passwordMessage, setPasswordMessage] = useState({ text: '', type: '' });
 
     useEffect(() => {
+        // When the user prop is passed, populate the form fields
         if (user) {
-            setProfileData({ name: user.name || '', email: user.email || '' });
+            setProfileData({
+                name: user.name || '',
+                email: user.email || '',
+                phone: user.phone || ''
+            });
         }
     }, [user]);
 
-    const handleProfileChange = (e) => setProfileData({ ...profileData, [e.target.name]: e.target.value });
-    const handlePasswordChange = (e) => setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
+    // Generic handler to update state for profile form
+    const handleProfileChange = (e) => {
+        setProfileData({ ...profileData, [e.target.name]: e.target.value });
+    };
 
+    // Generic handler to update state for password form
+    const handlePasswordChange = (e) => {
+        setPasswordData({ ...passwordData, [e.target.name]: e.target.value });
+    };
+
+    // Handler for submitting profile changes
     const handleProfileSubmit = async (e) => {
         e.preventDefault();
         setProfileMessage({ text: 'Saving...', type: 'info' });
         const token = localStorage.getItem('authToken');
+
         try {
             const res = await fetch(`${API_BASE_URL}/users/me`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
                 body: JSON.stringify(profileData),
             });
+
             const data = await res.json();
-            if (!res.ok) throw new Error(data.message);
+            if (!res.ok) {
+                throw new Error(data.message || 'Failed to update profile.');
+            }
             setProfileMessage({ text: 'Profile updated successfully!', type: 'success' });
         } catch (error) {
             setProfileMessage({ text: error.message, type: 'error' });
         }
     };
 
+    // Handler for submitting password change
     const handlePasswordSubmit = async (e) => {
         e.preventDefault();
         setPasswordMessage({ text: 'Updating...', type: 'info' });
+
         if (passwordData.newPassword !== passwordData.confirmPassword) {
             setPasswordMessage({ text: 'New passwords do not match.', type: 'error' });
             return;
         }
+
         const token = localStorage.getItem('authToken');
         try {
             const res = await fetch(`${API_BASE_URL}/users/me/password`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
-                body: JSON.stringify({ oldPassword: passwordData.oldPassword, newPassword: passwordData.newPassword }),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    oldPassword: passwordData.oldPassword,
+                    newPassword: passwordData.newPassword
+                }),
             });
+
             const data = await res.json();
-            if (!res.ok) throw new Error(data.message);
+            if (!res.ok) {
+                throw new Error(data.message || 'Failed to change password.');
+            }
             setPasswordMessage({ text: 'Password changed successfully!', type: 'success' });
-            setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' });
+            setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' }); // Clear fields on success
         } catch (error) {
             setPasswordMessage({ text: error.message, type: 'error' });
         }
@@ -452,31 +484,102 @@ const AccountDetails = ({ user }) => {
     return (
         <div className="w-full">
             <h2 className="text-2xl font-bold text-yellow-400 mb-6 font-redhead">ACCOUNT DETAILS</h2>
-            
+
+            {/* --- Profile Details Form --- */}
             <form onSubmit={handleProfileSubmit} className="space-y-6 bg-gray-900 p-6 rounded-lg border border-gray-700 mb-8">
-                {profileMessage.text && <p className={`text-center text-sm ${profileMessage.type === 'success' ? 'text-green-400' : profileMessage.type === 'error' ? 'text-red-400' : 'text-blue-400'}`}>{profileMessage.text}</p>}
+                {profileMessage.text && (
+                    <p className={`text-center text-sm ${profileMessage.type === 'success' ? 'text-green-400' : profileMessage.type === 'error' ? 'text-red-400' : 'text-blue-400'}`}>
+                        {profileMessage.text}
+                    </p>
+                )}
                 <div>
                     <label className="block text-white mb-2" htmlFor="name">Display Name *</label>
-                    <input type="text" id="name" name="name" placeholder="Your Name" value={profileData.name} onChange={handleProfileChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Your Name"
+                        value={profileData.name}
+                        onChange={handleProfileChange}
+                        className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white"
+                        required
+                    />
                 </div>
                 <div>
                     <label className="block text-white mb-2" htmlFor="email">Email Address *</label>
-                    <input type="email" id="email" name="email" placeholder="Your Email" value={profileData.email} onChange={handleProfileChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Your Email"
+                        value={profileData.email}
+                        onChange={handleProfileChange}
+                        className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white"
+                        required
+                    />
                 </div>
-                <button type="submit" className="bg-yellow-400 text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">SAVE CHANGES</button>
+                <div>
+                    <label className="block text-white mb-2" htmlFor="phone">Mobile Number</label>
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        placeholder="Your Mobile Number"
+                        value={profileData.phone}
+                        onChange={handleProfileChange}
+                        className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white"
+                    />
+                </div>
+
+                <button type="submit" className="bg-yellow-400 text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">
+                    SAVE CHANGES
+                </button>
             </form>
 
+            {/* --- Change Password Form --- */}
             <form onSubmit={handlePasswordSubmit} className="space-y-6 bg-gray-900 p-6 rounded-lg border border-gray-700">
                 <h3 className="text-xl font-bold text-yellow-400">CHANGE PASSWORD</h3>
-                {passwordMessage.text && <p className={`text-center text-sm ${passwordMessage.type === 'success' ? 'text-green-400' : passwordMessage.type === 'error' ? 'text-red-400' : 'text-blue-400'}`}>{passwordMessage.text}</p>}
-                <input type="password" name="oldPassword" placeholder="Current Password" value={passwordData.oldPassword} onChange={handlePasswordChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
-                <input type="password" name="newPassword" placeholder="New Password" value={passwordData.newPassword} onChange={handlePasswordChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
-                <input type="password" name="confirmPassword" placeholder="Confirm New Password" value={passwordData.confirmPassword} onChange={handlePasswordChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
-                <button type="submit" className="bg-yellow-400 text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">CHANGE PASSWORD</button>
+                {passwordMessage.text && (
+                    <p className={`text-center text-sm ${passwordMessage.type === 'success' ? 'text-green-400' : passwordMessage.type === 'error' ? 'text-red-400' : 'text-blue-400'}`}>
+                        {passwordMessage.text}
+                    </p>
+                )}
+                <input
+                    type="password"
+                    name="oldPassword"
+                    placeholder="Current Password"
+                    value={passwordData.oldPassword}
+                    onChange={handlePasswordChange}
+                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white"
+                    required
+                />
+                <input
+                    type="password"
+                    name="newPassword"
+                    placeholder="New Password"
+                    value={passwordData.newPassword}
+                    onChange={handlePasswordChange}
+                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white"
+                    required
+                />
+                <input
+                    type="password"
+                    name="confirmPassword"
+                    placeholder="Confirm New Password"
+                    value={passwordData.confirmPassword}
+                    onChange={handlePasswordChange}
+                    className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white"
+                    required
+                />
+                <button type="submit" className="bg-yellow-400 text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">
+                    CHANGE PASSWORD
+                </button>
             </form>
         </div>
     );
 };
+
+
 
 const AddressModal = ({ onClose, onSave }) => {
     const [formData, setFormData] = useState({ label: 'Home', name: '', phone: '', street: '', city: '', state: '', postalCode: '', country: 'India' });
@@ -530,26 +633,68 @@ const Orders = ({ orders }) => {
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
     const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
 
+    // --- 👇 NEW: Helper function for status logic 👇 ---
+    const getStatus = (order) => {
+        if (order.hasExchangeRequest) {
+            return { text: 'Exchange Requested', className: 'bg-purple-500/20 text-purple-400' };
+        }
+        switch (order.status) {
+            case 'Cancelled':
+                return { text: 'Cancelled', className: 'bg-red-500/20 text-red-400' };
+            case 'Delivered':
+                return { text: 'Delivered', className: 'bg-green-500/20 text-green-400' };
+            case 'Shipped':
+                return { text: 'Shipped', className: 'bg-blue-500/20 text-blue-400' };
+            case 'Processing':
+            default:
+                return { text: 'Processing', className: 'bg-yellow-500/20 text-yellow-400' };
+        }
+    };
+
     if (!orders || orders.length === 0) {
         return <div className="text-center text-gray-500 py-10"><p>You haven't placed any orders yet.</p></div>;
     }
+
     return (
         <div className="w-full">
             <h2 className="text-2xl font-bold text-yellow-400 mb-6 font-redhead">ORDER HISTORY</h2>
             <div className="overflow-x-auto">
                 <table className="w-full text-left text-white">
-                    <thead><tr className="border-b border-yellow-400 text-sm"><th className="py-3 pr-4">ORDER ID</th><th className="py-3 pr-4">DATE</th><th className="py-3 pr-4">TOTAL</th><th className="py-3 pr-4">PAYMENT</th><th className="py-3 pr-4">STATUS</th><th></th></tr></thead>
+                    <thead>
+                        <tr className="border-b border-yellow-400 text-sm">
+                            <th className="py-3 pr-4">ORDER ID</th>
+                            <th className="py-3 pr-4">DATE</th>
+                            <th className="py-3 pr-4">TOTAL</th>
+                            <th className="py-3 pr-4">PAYMENT</th>
+                            <th className="py-3 pr-4">STATUS</th>
+                            <th></th>
+                        </tr>
+                    </thead>
                     <tbody>
-                        {currentOrders.map((order) => (
-                            <tr key={order._id} className="border-b border-gray-700">
-                                <td className="py-4 pr-4 font-mono text-xs">{order._id}</td>
-                                <td className="py-4 pr-4">{new Date(order.createdAt).toLocaleDateString()}</td>
-                                <td className="py-4 pr-4 font-bold">&#8377;{order.totalPrice.toLocaleString()}</td>
-                                <td className="py-4 pr-4"><span className={`px-2 py-1 text-xs rounded-full ${order.isPaid ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>{order.isPaid ? 'Paid' : 'Not Paid'}</span></td>
-                                <td className="py-4 pr-4"><span className={`px-2 py-1 text-xs rounded-full ${order.isDelivered ? 'bg-blue-500/20 text-blue-400' : 'bg-yellow-500/20 text-yellow-400'}`}>{order.isDelivered ? 'Delivered' : 'Processing'}</span></td>
-                                <td className="py-4 pr-4"><Link href={`/order/${order._id}`} className="text-amber-400 hover:underline text-sm">View Details</Link></td>
-                            </tr>
-                        ))}
+                        {currentOrders.map((order) => {
+                            const status = getStatus(order); // --- 👈 Use the helper function
+                            return (
+                                <tr key={order._id} className="border-b border-gray-700">
+                                    <td className="py-4 pr-4 font-mono text-xs">{order._id}</td>
+                                    <td className="py-4 pr-4">{new Date(order.createdAt).toLocaleDateString()}</td>
+                                    <td className="py-4 pr-4 font-bold">&#8377;{order.totalPrice.toLocaleString()}</td>
+                                    <td className="py-4 pr-4">
+                                        <span className={`px-2 py-1 text-xs rounded-full ${order.isPaid ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'}`}>
+                                            {order.isPaid ? 'Paid' : 'Not Paid'}
+                                        </span>
+                                    </td>
+                                    <td className="py-4 pr-4">
+                                        {/* --- 👇 UPDATED STATUS DISPLAY 👇 --- */}
+                                        <span className={`px-2 py-1 text-xs rounded-full ${status.className}`}>
+                                            {status.text}
+                                        </span>
+                                    </td>
+                                    <td className="py-4 pr-4">
+                                        <Link href={`/order/${order._id}`} className="text-amber-400 hover:underline text-sm">View Details</Link>
+                                    </td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </div>
@@ -635,7 +780,7 @@ export default function MyAccountPage() {
     const menuItems = ['Account', 'Address', 'Orders', 'Log Out'];
 
     return (
-        <div className="bg-black text-white min-h-screen pt-12 font-redhead">
+        <div className="bg-black text-white min-h-screen py-12 font-redhead">
             <div className="max-w-7xl mx-auto p-4 sm:p-0">
                 <h1 className="text-4xl font-extrabold text-yellow-400 text-center mb-10">MY ACCOUNT</h1>
                 <div className="flex flex-col md:flex-row gap-10">

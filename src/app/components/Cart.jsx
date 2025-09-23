@@ -255,7 +255,7 @@ export default function ShoppingCart() {
             return;
         }
         try {
-            const response = await fetch('http://localhost:5001/api/cart', {
+            const response = await fetch(`${API_BASE_URL}/cart`, {
                 headers: { 'Authorization': `Bearer ${token}` }
             });
             if (!response.ok) throw new Error('Failed to fetch your cart.');

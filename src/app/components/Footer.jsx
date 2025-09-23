@@ -113,7 +113,7 @@ const Footer = () => {
                             <li><a href="#" className="hover:text-yellow-500 transition">Shipping & Delivery Policy</a></li>
                             <li><a href="#" className="hover:text-yellow-500 transition">Exchange Policy</a></li>
                             <li><Link href="/termsandconditions" className="hover:text-yellow-500 transition">Terms & Conditions</Link></li>
-                            <li><a href="#" className="hover:text-yellow-500 transition">Exchange My Order</a></li>
+                            <li><a href="/exchangemyorder" className="hover:text-yellow-500 transition">Exchange My Order</a></li>
                         </ul>
                     </div>
                 </div>

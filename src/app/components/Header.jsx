@@ -1,6 +1,6 @@
 'use client';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { useAuth } from '../context/AuthContext';
 import login from '../../assets/icons/login.png';
@@ -17,13 +17,34 @@ const GoogleIcon = () => (
     </svg>
 );
 
+// SVG Icon for Dropdown Chevron
+const ChevronDownIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <polyline points="6 9 12 15 18 9"></polyline>
+    </svg>
+);
 
 export default function Header() {
     const { isAuthenticated, logout } = useAuth();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const dropdownRef = useRef(null);
+
+    const CATEGORIES = ['IT girl', 'Girly Pop', 'bloom girl', 'desi diva', 'street chic'];
+
+    useEffect(() => {
+        function handleClickOutside(event) {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                setIsDropdownOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [dropdownRef]);
 
     return (
         <>
-            {/* Style tag for fonts */}
             <style jsx global>{`
                 @import url('https://db.onlinewebfonts.com/c/b3c57ee1d58f270818c2df37acff9fbc?family=Black+No.7');
                 @import url("https://db.onlinewebfonts.com/c/5c55a2b5490cd6ebc5d9b2fa18e7d9df?family=Real+Head+Web+W01+Bold");
@@ -31,7 +52,8 @@ export default function Header() {
                 .font-black-no7-style { font-family: 'Black No.7'; }
             `}</style>
 
-            <header className="bg-black text-yellow-400 shadow-md w-full font-redhead">
+            {/* Added sticky, top-0, and z-50 for the sticky effect */}
+            <header className="bg-black text-yellow-400 shadow-md w-full font-redhead sticky top-0 z-50">
                 <div className="mx-auto flex items-center justify-between p-4">
                     {/* Logo */}
                     <div className="text-5xl font-bold tracking-wider bg-gradient-to-b text-transparent bg-clip-text from-yellow-400 mt-[-10px] to-yellow-800">
@@ -43,36 +65,51 @@ export default function Header() {
                         <Link href="/allproducts" className="hover:text-white transition-colors duration-300">ALL PRODUCTS</Link>
                         <Link href="#" className="hover:text-white transition-colors duration-300">MOST WANTED</Link>
                         <Link href="#" className="hover:text-white transition-colors duration-300">NEW ARRIVALS</Link>
-                        <Link href="#" className="hover:text-white transition-colors duration-300">CATEGORIES</Link>
+                        
+                        {/* Categories Dropdown */}
+                        <div className="relative" ref={dropdownRef}>
+                            <button
+                                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                className="flex items-center hover:text-white transition-colors duration-300"
+                            >
+                                CATEGORIES
+                                <ChevronDownIcon className={`ml-1 h-4 w-4 transition-transform duration-200 ${isDropdownOpen ? 'rotate-180' : ''}`} />
+                            </button>
+                            {isDropdownOpen && (
+                                <div className="absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-black ring-1 ring-yellow-500/50">
+                                    <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                        {CATEGORIES.map((category) => (
+                                            <Link
+                                                key={category}
+                                                href={{ pathname: '/allproducts', query: { category: category } }}
+                                                className="block px-4 py-2 text-sm text-yellow-400 hover:bg-gray-800 hover:text-white"
+                                                role="menuitem"
+                                                onClick={() => setIsDropdownOpen(false)}
+                                            >
+                                                {category}
+                                            </Link>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                         <Link href="/contactus" className="hover:text-white transition-colors duration-300">CONTACT</Link>
                     </nav>
 
                     {/* Right-side Icons and Auth buttons */}
                     <div className="hidden md:flex items-center space-x-4">
-                        {/* <Link href="/wishlist" className='rounded-full bg-gray-800 p-2 hover:scale-110 transition-all duration-300'>
-                            <Image width={30} height={30} src={heart} alt="Wishlist Icon" className="w-6 h-6" />
-                        </Link> */}
                         <Link href="/cart" className='rounded-full bg-yellow-400 p-2 hover:scale-110 transition-all duration-300'>
                             <Image width={30} height={30} src={bag} alt="Shopping Cart Icon" className="w-6 h-6" />
                         </Link>
                         
                         {isAuthenticated ? (
-                            // Show Profile and Logout if user is logged in
                             <>
                                 <Link href="/myaccount" className='rounded-full bg-white p-2 hover:scale-110 transition-all duration-300'>
                                     <Image width={40} height={40} src={login} alt="User Profile Icon" className="w-6 h-6" />
                                 </Link>
-                                {/* <button 
-                                    onClick={logout} 
-                                    className="bg-red-600 text-white text-xs font-bold py-2 px-3 rounded-full hover:bg-red-700 transition-colors"
-                                >
-                                    LOGOUT
-                                </button> */}
                             </>
                         ) : (
-                            // Show Login options if user is not logged in
                             <>
-                                
                                 <Link href="/login" className='rounded-full bg-gray-200 p-2 hover:scale-110 transition-all duration-300'>
                                     <Image width={40} height={40} src={login} alt="Login Icon" className="w-6 h-6" />
                                 </Link>
