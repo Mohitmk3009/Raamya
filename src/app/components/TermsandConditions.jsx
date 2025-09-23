@@ -3,7 +3,7 @@ import React from 'react';
 
 const TermsAndConditions = () => {
   return (
-    <div className="bg-black text-yellow-400 pt-10 text-justify font-redhead">
+    <div className="bg-black text-yellow-400 px-5 py-10 lg:px-0  pt-10 text-justify font-redhead">
       <div className="max-w-7xl mx-auto">
         {/* Breadcrumbs */}
          <nav className="text-lg mb-8">

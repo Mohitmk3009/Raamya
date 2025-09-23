@@ -225,8 +225,8 @@ const PaymentSuccess = ({ onAnimationEnd }) => {
   return (
     <div className="text-center text-yellow-200 font-redhead">
       <AnimatedCheckmark />
-      <h1 className="text-4xl font-bold text-green-500 mt-6 mb-4">Order Placed Successfully!</h1>
-      <p className="text-lg">Thank you for choosing RAAMYA. Your order is being processed.</p>
+      <h1 className="lg:text-4xl text-2xl font-bold text-green-500 lg:mt-6 mt-2 mb-4">Order Placed Successfully!</h1>
+      <p className="lg:text-lg">Thank you for choosing RAAMYA. Your order is being processed.</p>
     </div>
   );
 };
@@ -257,18 +257,18 @@ const OrderModal = ({ order }) => {
     exit={{ scale: 0.5, opacity: 0 }}
   >
    
-    <h2 className="text-5xl text-center font-bold mb-4">COMPLETE !!</h2>
+    <h2 className="lg:text-5xl text-3xl text-center font-bold mb-4">COMPLETE !!</h2>
 
    
 
     <div className="bg-black/80 backdrop-blur-sm border  border-yellow-500/30 rounded-lg p-6">
       <h3 className="text-3xl text-center font-semibold">Thank you!</h3>
-      <p className="text-2xl text-center mt-1 mb-6">Your order has been received</p>
+      <p className="lg:text-2xl text-xl text-center mt-1 whitespace-nowrap mb-6">Your order has been received</p>
 
       {/* --- Order Summary --- */}
-      <div className="text-left space-y-2 text-yellow-100/80 mb-6">
+      <div className="text-left space-y-2 lg:text-base text-sm text-yellow-100/80 mb-6">
         <div className="flex justify-between">
-          <span className="font-semibold">Order Code:</span>
+          <span className="font-semibold">Order ID:</span>
           <span>{order._id}</span>
         </div>
         <div className="flex justify-between">
@@ -403,7 +403,7 @@ export default function PaymentResultPage() {
   };
 
   return (
-    <main className="bg-black min-h-[80vh] flex items-center justify-center relative font-redhead">
+    <main className="bg-black lg:min-h-[80vh] min-h-screen flex items-center justify-center relative font-redhead">
       <div className="w-full max-w-4xl mx-auto">
         {status === 'success' ? <PaymentSuccess onAnimationEnd={handleAnimationEnd} /> : <PaymentFailed onRetry={handleRetry} />}
       </div>

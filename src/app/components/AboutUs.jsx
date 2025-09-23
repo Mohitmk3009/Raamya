@@ -17,7 +17,7 @@ const ListItemCheck = () => (
 
 export default function AboutUs() {
   return (
-    <div className="bg-black text-yellow-400  pt-10 font-redhead">
+    <div className="bg-black text-yellow-400 lg:p-0 px-5 pt-10 font-redhead">
       <div className="max-w-[1400px] text-justify mx-auto">
         {/* Breadcrumbs */}
         <nav className="text-lg mb-8">

@@ -412,7 +412,7 @@ export default function CheckoutPage() {
         }
     };
 
-    if (loading) return <div className="text-center text-white py-20">Loading Checkout...</div>;
+    if (loading) return <div className="text-center text-yellow-400 font-redhead text-white py-20">Loading Checkout...</div>;
     if (error) return <div className="text-center text-red-500 py-20">Error: {error}</div>;
 
     return (

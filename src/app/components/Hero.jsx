@@ -26,7 +26,7 @@ const ImageCard = ({ src, title, containerClassName }) => {
       
       {/* Centered text */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <h2 className="text-yellow-400 text-3xl md:text-4xl lg:text-5xl font-bold tracking-widest uppercase transition-all duration-500 ease-in-out transform group-hover:scale-110">
+        <h2 className="text-yellow-400 text-2xl md:text-4xl lg:text-5xl font-bold tracking-widest uppercase transition-all duration-500 ease-in-out transform group-hover:scale-110">
           {title}
         </h2>
       </div>
@@ -42,19 +42,20 @@ export default function Hero() {
       title: 'BLOOM GIRL',
       queryValue: 'bloom girl', // Matches the filter on the products page
       src: MODERNMUSE,
-      placementClassName: 'lg:row-start-1 lg:col-start-1',
+      placementClassName: 'lg:row-start-1 lg:col-start-1   ',
     },
     {
       title: 'DESI DIVA',
       queryValue: 'desi diva',
       src:DESIDIVA,
-      placementClassName: 'lg:row-start-1 lg:col-start-3',
+      placementClassName: 'lg:row-start-1 lg:col-start-3 ',
     },
     {
       title: 'IT GIRL',
       queryValue: 'IT girl',
       src: ITGIRL,
-      placementClassName: 'lg:row-span-2 lg:col-start-2 relative z-10 ', 
+      // This is the corrected line
+placementClassName: 'col-span-2 lg:col-span-1 lg:row-span-2 lg:col-start-2 lg:row-start-1 relative z-10',
     },
     {
       title: 'GIRLY POP',
@@ -73,7 +74,7 @@ export default function Hero() {
   return (
     <section className="w-full bg-black flex items-center justify-center">
       {/* The grid container now uses a 3-column, 2-row layout on large screens */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 w-full h-[92vh]">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 w-full h-[92vh]">
         {categories.map((cat) => (
           // Wrap the ImageCard with a Link component
           <Link

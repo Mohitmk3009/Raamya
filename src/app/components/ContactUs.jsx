@@ -69,12 +69,12 @@ export default function ContactUs() {
             <h1 className="text-4xl sm:text-5xl font-bold mb-6">
             CONTACT US
             </h1>
-            <div className="space-y-4 text-sm sm:text-base leading-relaxed">
+            <div className="space-y-4 text-sm sm:text-base text-justify leading-relaxed">
                 <p>
                 We Always Love Hearing From Our Customers! Please Do Not Hesitate To Contact Us Should You Have Any Questions Regarding Our Products And Sizing Recommendations Or Inquiries About Your Current Order.
                 </p>
                 <p>
-                Contact Our Customer Care Team Through The Contact Form Below, Email Us At Hello@raamya.com Or Live Chat With Us Via Our Chat Widget On The Bottom Right Hand Corner Of This Page.
+                Contact Our Customer Care Team Through The Contact Form Below, Email Us At support@raamya.net.in Or Live Chat With Us Via Our Chat Widget On The Bottom Right Hand Corner Of This Page.
                 </p>
                 <p>
                 We Will Aim To Respond To You Within 1-2 Business Days.
@@ -128,8 +128,8 @@ export default function ContactUs() {
         </div>
 
         {/* Contact Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
-          {/* Chat Card */}
+        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-8 ">
+          
           <div className="bg-amber-600/20 border border-amber-600 p-6 rounded-lg text-center flex flex-col items-center justify-between text-white">
             <div className="flex flex-col items-center">
                 <ChatIcon />
@@ -141,7 +141,7 @@ export default function ContactUs() {
             </button>
           </div>
 
-          {/* Call Card */}
+          
           <div className="bg-amber-600/20 border border-amber-600 p-6 rounded-lg text-center flex flex-col items-center justify-between text-white">
             <div className="flex flex-col items-center">
                 <PhoneIcon />
@@ -153,7 +153,7 @@ export default function ContactUs() {
             </button>
           </div>
 
-          {/* Email Card */}
+         
           <div className="bg-amber-600/20 border border-amber-600 p-6 rounded-lg text-center flex flex-col items-center justify-between text-white">
             <div className="flex flex-col items-center">
                 <EmailIcon />
@@ -164,7 +164,7 @@ export default function ContactUs() {
               Send Email
             </button>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

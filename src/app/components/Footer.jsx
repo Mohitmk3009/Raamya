@@ -49,12 +49,12 @@ const Footer = () => {
                 {/* Top section with columns */}
                 <div className=' bg-[#FFBB00] h-0.5 w-full  '></div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 my-8 px-20 ">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 my-8 lg:px-20 px-5 ">
 
                     {/* Column 1: Brand and Socials */}
                     <div className="space-y-4 ">
                         {/* mt-[-8px] */}
-                        <h2 className="text-6xl  font-bold tracking-wider bg-gradient-to-b text-transparent bg-clip-text from-yellow-400  to-yellow-800 raamya-font ">RAAMYA</h2>
+                        <h2 className="lg:text-6xl text-4xl  font-bold tracking-wider bg-gradient-to-b text-transparent bg-clip-text from-yellow-400  to-yellow-800 raamya-font ">RAAMYA</h2>
                         <p className="text-base">
                            One Brand. Five Personalities. Infinite You. ✨
                         </p>
@@ -87,7 +87,7 @@ const Footer = () => {
                     <div>
                         <h3 className="text-[#FFBB00] font-bold text-lg tracking-wider mb-4">Contact Us</h3>
                         <ul className="space-y-2 text-base">
-                            <li><span className="font-semibold text-[#FFBB00]">Email:</span> support@raamya.com</li>
+                            <li><span className="font-semibold text-[#FFBB00]">Email:</span> support@raamya.net.in</li>
                             <li><span className="font-semibold text-[#FFBB00]">Mob:</span> +91-8950566899</li>
                             <li><span className="font-semibold text-[#FFBB00]">Opening Hours:</span> Mon to Sat: 10:30 AM - 6:30 PM</li>
                         </ul>

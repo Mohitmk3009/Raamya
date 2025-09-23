@@ -83,7 +83,7 @@ export default function OrderDetailsPage({ params }) {
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [isCancelModalOpen, setIsCancelModalOpen] = useState(true);
+    const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
 
     useEffect(() => {
         const fetchOrderDetails = async () => {

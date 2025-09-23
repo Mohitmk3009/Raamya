@@ -22,6 +22,18 @@ const ChevronLeftIcon = (props) => (
         <polyline points="15 18 9 12 15 6"></polyline>
     </svg>
 );
+// NEW: Filter and Close Icons for mobile
+const FilterIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+    </svg>
+);
+const XIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+    </svg>
+);
+
 
 // --- PRODUCT CARD COMPONENT ---
 const ProductCard = ({ product }) => {
@@ -61,7 +73,7 @@ const FilterAccordion = ({ title, children, defaultOpen = false }) => {
 };
 
 // --- SIDEBAR COMPONENT ---
-const Sidebar = ({ setGridClass, gridClass, filters, setFilters, maxProductPrice }) => {
+const Sidebar = ({ filters, setFilters, maxProductPrice }) => {
     const SIZES = ['XS', 'S', 'M', 'L', 'XL'];
     const CATEGORIES = ['IT girl', 'Girly Pop', 'bloom girl', 'desi diva', 'street chic'];
 
@@ -77,7 +89,7 @@ const Sidebar = ({ setGridClass, gridClass, filters, setFilters, maxProductPrice
     const handlePriceChange = (e) => setFilters(prev => ({ ...prev, maxPrice: e.target.value }));
 
     return (
-        <aside className="w-full lg:w-1/4 lg:pr-8 mb-8 lg:mb-0 font-redhead">
+        <aside className="w-full font-redhead">
             <div className="py-6">
                 <h3 className="font-bold mb-4 text-2xl text-[#FFBB00]">FILTERS</h3>
                 <div className="mb-6">
@@ -89,10 +101,6 @@ const Sidebar = ({ setGridClass, gridClass, filters, setFilters, maxProductPrice
                         <label className="flex items-center space-x-2 text-sm cursor-pointer">
                             <input type="checkbox" name="inStock" checked={filters.availability.inStock} onChange={handleAvailabilityChange} className="bg-transparent border-gray-600 rounded-sm" />
                             <span>In Stock</span>
-                        </label>
-                        <label className="flex items-center space-x-2 text-sm cursor-pointer">
-                            <input type="checkbox" name="outOfStock" checked={filters.availability.outOfStock} onChange={handleAvailabilityChange} className="bg-transparent border-gray-600 rounded-sm" />
-                            <span>Out of Stock</span>
                         </label>
                     </div>
                 </FilterAccordion>
@@ -115,18 +123,18 @@ function ProductsContent() {
     const searchParams = useSearchParams();
     const categoryFromUrl = searchParams.get('category');
 
-    const [gridClass, setGridClass] = useState('grid-cols-3');
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState(1);
     const [loading, setLoading] = useState(true);
     const maxProductPrice = 50000;
+    const [isFilterOpen, setIsFilterOpen] = useState(false);
 
     const [filters, setFilters] = useState({
         keyword: '',
         sortBy: 'default',
         selectedSize: null,
-        availability: { inStock: false, outOfStock: false }, // Updated state
+        availability: { inStock: false, outOfStock: false },
         selectedCategories: categoryFromUrl ? [categoryFromUrl] : [],
         maxPrice: maxProductPrice,
     });
@@ -140,14 +148,10 @@ function ProductsContent() {
             if (filters.sortBy !== 'default') params.append('sortBy', filters.sortBy);
             if (filters.selectedSize) params.append('size', filters.selectedSize);
             
-            // Updated availability logic
-            const { inStock, outOfStock } = filters.availability;
-            if (inStock && !outOfStock) {
+            const { inStock } = filters.availability;
+            if (inStock) {
                 params.append('inStock', 'true');
-            } else if (!inStock && outOfStock) {
-                params.append('inStock', 'false');
             }
-            // If both are checked or unchecked, we don't add the filter, showing all products.
 
             if (filters.selectedCategories.length > 0) params.append('category', filters.selectedCategories.join(','));
             if (filters.maxPrice < maxProductPrice) params.append('maxPrice', filters.maxPrice);
@@ -172,6 +176,18 @@ function ProductsContent() {
     useEffect(() => {
         setPage(1);
     }, [filters]);
+    
+    useEffect(() => {
+        if (isFilterOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [isFilterOpen]);
+
 
     const handleGoToPage = (pageNumber) => {
         setPage(pageNumber);
@@ -179,15 +195,19 @@ function ProductsContent() {
     };
 
     return (
-        <div className="bg-black text-gray-400 min-h-screen font-redhead p-10 pb-0 ">
+        <div className="bg-black text-gray-400 lg:min-h-screen font-redhead px-5 py-10 md:p-10 pb-0">
             <div className="container mx-auto">
                 <div className="flex flex-col lg:flex-row">
-                    <Sidebar setGridClass={setGridClass} gridClass={gridClass} filters={filters} setFilters={setFilters} maxProductPrice={maxProductPrice} />
+                    {/* --- DESKTOP SIDEBAR --- */}
+                    <div className="hidden lg:block lg:w-1/4 lg:pr-8">
+                        <Sidebar filters={filters} setFilters={setFilters} maxProductPrice={maxProductPrice} />
+                    </div>
+
                     <main className="w-full lg:w-3/4 lg:pl-8">
                         <div className="flex justify-between items-center mb-6">
-                            <div className="text-lg font-bold text-[#FFBB00]"><span className=" font-normal">Home /</span> Products</div>
+                            <div className="lg:text-lg text-sm font-bold text-[#FFBB00]"><span className="font-normal">Home /</span> Products</div>
                             <div className="flex items-center border text-[#FFBB00] border-gray-700 p-2 rounded-md">
-                                <label htmlFor="sort" className="mr-2 text-sm">SORT BY</label>
+                                <label htmlFor="sort" className="mr-2 lg:text-sm text-xs">SORT BY</label>
                                 <select id="sort" value={filters.sortBy} onChange={e => setFilters(prev => ({...prev, sortBy: e.target.value}))} className="bg-black text-sm outline-none">
                                     <option value="default">Default</option>
                                     <option value="price-asc">Price: Low to High</option>
@@ -195,22 +215,30 @@ function ProductsContent() {
                                 </select>
                             </div>
                         </div>
-                        <div className="relative mb-8">
-                            <input type="text" placeholder="Search" value={filters.keyword} onChange={e => setFilters(prev => ({...prev, keyword: e.target.value}))} className="w-full bg-black border border-gray-700 text-white p-3 pl-12 focus:outline-none focus:bg-gray-900 focus:border-yellow-500 rounded-md" />
-                            <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+
+                        {/* --- MOBILE FILTER BUTTON & SEARCH BAR --- */}
+                        <div className="flex flex-col md:flex-row gap-4 mb-8">
+                            <div className="relative flex-grow">
+                                <input type="text" placeholder="Search Products..." value={filters.keyword} onChange={e => setFilters(prev => ({...prev, keyword: e.target.value}))} className="w-full bg-black border border-gray-700 text-white p-3 pl-12 focus:outline-none focus:bg-gray-900 focus:border-yellow-500 rounded-md" />
+                                <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+                            </div>
+                            <button onClick={() => setIsFilterOpen(true)} className="lg:hidden flex items-center justify-center gap-2 p-3 bg-black border border-yellow-500 text-yellow-500 rounded-md font-semibold">
+                                <FilterIcon size={18} />
+                                FILTERS
+                            </button>
                         </div>
                         
                         {loading ? (
                             <div className="text-center py-20 text-yellow-400">Loading Products...</div>
                         ) : products.length > 0 ? (
-                            <div className={`grid ${gridClass} gap-8`}>
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
                                 {products.map(product => <ProductCard key={product._id} product={product} />)}
                             </div>
                         ) : (
                             <div className="text-center py-20 text-gray-500">No products found matching your criteria.</div>
                         )}
 
-                        <div className="flex justify-center items-center mt-12 pb-12 space-x-2">
+                        <div className="flex justify-center items-center lg:mt-12 lg:pb-12 mt-5 space-x-2">
                             <button onClick={() => handleGoToPage(page - 1)} disabled={page === 1} className="p-2 border border-yellow-500 text-yellow-500 rounded-full hover:bg-yellow-500 hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed"><ChevronLeftIcon size={20} /></button>
                             {pages > 1 && Array.from({ length: pages }, (_, i) => i + 1).map(pageNum => (
                                 <button key={pageNum} onClick={() => handleGoToPage(pageNum)} className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-medium transition ${page === pageNum ? 'bg-yellow-500 text-black' : 'bg-gray-800 text-gray-300 hover:bg-yellow-500 hover:text-black'}`}>{pageNum}</button>
@@ -220,6 +248,32 @@ function ProductsContent() {
                     </main>
                 </div>
             </div>
+
+            {/* --- MOBILE FILTER DRAWER --- */}
+            {isFilterOpen && (
+                <div className="fixed inset-0 z-50 flex">
+                    <div className="fixed inset-0 bg-black/60" onClick={() => setIsFilterOpen(false)}></div>
+                    <div className="relative w-full max-w-xs bg-black h-full shadow-xl flex flex-col">
+                        <div className="flex justify-between items-center p-4 border-b border-gray-800">
+                           <h2 className="text-lg font-bold text-yellow-500">Filters</h2>
+                           <button onClick={() => setIsFilterOpen(false)} className="p-1 text-gray-400 hover:text-white">
+                                <XIcon size={24}/>
+                           </button>
+                        </div>
+                        <div className="flex-grow overflow-y-auto px-4">
+                            <Sidebar filters={filters} setFilters={setFilters} maxProductPrice={maxProductPrice} />
+                        </div>
+                         <div className="p-4 border-t border-gray-800">
+                            <button 
+                                onClick={() => setIsFilterOpen(false)} 
+                                className="w-full bg-yellow-500 text-black font-bold py-3 rounded-md hover:bg-yellow-600 transition-colors"
+                            >
+                                Show Results
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
