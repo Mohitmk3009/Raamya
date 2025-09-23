@@ -183,6 +183,7 @@
 'use client';
 import { React, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // --- (Your SVG Icons: EyeIcon, EyeOffIcon, GoogleIcon) ---
 const EyeIcon = ({ ...props }) => (
@@ -407,12 +408,12 @@ const SignUpForm = ({ setAuthMode }) => {
           </button>
         </div>
         <div className="space-y-3">
-          <a
+          <Link
             href={`${API_BASE_URL}/auth/google`}
             className="w-full flex items-center justify-center bg-white text-black font-medium py-2 px-4 rounded-md hover:bg-gray-200"
           >
             <GoogleIcon /> Sign up with Gmail
-          </a>
+          </Link>
         </div>
         <p className="text-sm text-center text-white">
           Already have an account? <span onClick={() => setAuthMode('signin')} className="font-medium text-yellow-400 cursor-pointer">SIGN IN</span>
