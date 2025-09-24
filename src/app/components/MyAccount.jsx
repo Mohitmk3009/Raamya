@@ -231,7 +231,7 @@ const Orders = ({ orders }) => {
                             <div className="flex justify-between items-center mb-3 pb-3 border-b border-gray-700">
                                 <div>
                                     <span className="text-xs text-gray-400 block">ORDER ID</span>
-                                    <span className="font-mono text-sm font-semibold">{order._id}</span>
+                                    <span className="font-mono text-sm  font-semibold">{order._id}</span>
                                 </div>
                                 <span className={`px-2 py-1 text-xs whitespace-nowrap rounded-full ${status.className}`}>{status.text}</span>
                             </div>
@@ -295,6 +295,7 @@ export default function MyAccountPage() {
                 ]);
                 if (!userRes.ok || !ordersRes.ok) throw new Error('Failed to fetch account data.');
                 const userData = await userRes.json();
+                
                 const ordersData = await ordersRes.json();
                 setUser(userData);
                 setOrders(ordersData);

@@ -6,7 +6,7 @@ import React, { useState } from 'react';
 const faqData = [
   {
     question: 'How Do I Contact Your Customer Service?',
-    answer: 'Our RAAMYA Customer Service Team Is Available Monday Through Friday, 9 AM – 5 PM IST, Excluding Holidays. You Can Reach Us Via Email At Support@raamya.com (Preferred And Fastest Response), Via Chat Using The Icon At The Bottom Right Corner Of Our Website, Or By Leaving Us A Voicemail At +91-XXXXXXXXXX. We’ll Get Back To You Within 24 Business Hours.',
+    answer: 'Our RAAMYA Customer Service Team Is Available Monday Through Friday, 9 AM – 5 PM IST, Excluding Holidays. You Can Reach Us Via Email At support@raamya.net.in (Preferred And Fastest Response), Via Chat Using The Icon At The Bottom Right Corner Of Our Website, Or By Leaving Us A Voicemail At +91-8950566899. We’ll Get Back To You Within 24 Business Hours.',
   },
   {
     question: '1. What is RAAMYA?',

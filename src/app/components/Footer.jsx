@@ -110,10 +110,10 @@ const Footer = () => {
                         <h3 className="text-[#FFBB00] text-lg font-bold tracking-wider mb-4">Policies</h3>
                         <ul className="space-y-2 text-base">
                             <li><Link href="/privacypolicy" className="hover:text-yellow-500 transition">Privacy Policy</Link></li>
-                            <li><a href="#" className="hover:text-yellow-500 transition">Shipping & Delivery Policy</a></li>
-                            <li><a href="#" className="hover:text-yellow-500 transition">Exchange Policy</a></li>
+                            <li><Link href="/shippingpolicy" className="hover:text-yellow-500 transition">Shipping & Delivery Policy</Link></li>
+                            <li><Link href="/exchangepolicy" className="hover:text-yellow-500 transition">Exchange Policy</Link></li>
                             <li><Link href="/termsandconditions" className="hover:text-yellow-500 transition">Terms & Conditions</Link></li>
-                            <li><a href="/exchangemyorder" className="hover:text-yellow-500 transition">Exchange My Order</a></li>
+                            <li><Link href="/exchangemyorder" className="hover:text-yellow-500 transition">Exchange My Order</Link></li>
                         </ul>
                     </div>
                 </div>

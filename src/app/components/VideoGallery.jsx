@@ -4,6 +4,7 @@
 import React, { useState } from "react";
 import VideoModal from "./VideoModal";
 import { Play } from "lucide-react"; // ✅ Lucide Play icon
+import Link from "next/link";
 
 const videos = [
     { id: 1, src: "/videos/video2.mp4", poster: "https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
@@ -23,7 +24,7 @@ export default function VideoGallery() {
 
                 <div className="bg-yellow-400 h-2 w-full blur-lg"></div>
                 <h2 className="text-center text-3xl md:text-5xl font-bold tracking-widest text-yellow-500 my-5 px-4">
-                    NEW ARRIVALS
+                   FOLLOW US ON INSTAGRAM <Link href={'https://www.instagram.com/raamya___?igsh=MWpiNTFoa2NuM29maQ=='} target="_blank"> @raamya</Link>
                 </h2>
                 <div className="bg-yellow-400 h-2 w-full blur-lg"></div>
 

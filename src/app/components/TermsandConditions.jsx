@@ -1,84 +1,117 @@
+'use client'
 import Link from 'next/link';
 import React from 'react';
 
 const TermsAndConditions = () => {
   return (
-    <div className="bg-black text-yellow-400 px-5 py-10 lg:px-0  pt-10 text-justify font-redhead">
-      <div className="max-w-7xl mx-auto">
+    <div className="bg-black text-yellow-400 pt-10 text-justify font-redhead">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         {/* Breadcrumbs */}
-         <nav className="text-lg mb-8">
+        <nav className="text-lg mb-8">
           <Link href="/homepage" className="hover:text-white">Home</Link>
           <span className="mx-2">/</span>
-          <span className="text-yellow-400 font-bold ">Terms & Conditions</span>
+          <span className="text-yellow-400 font-bold">Terms and Conditions</span>
         </nav>
 
-
-        <h1 className="text-4xl font-bold text-yellow-500 mb-6">Terms & Conditions</h1>
+        <h1 className="text-4xl font-bold text-yellow-500 mb-8">Terms and Conditions</h1>
 
         <p className="mb-10 leading-relaxed">
-          Welcome to RAAMYA. These terms and conditions outline the rules and regulations for the use of RAAMYA's Website. By accessing this website, we assume you accept these terms and conditions. Do not continue to use RAAMYA if you do not agree to all of the terms and conditions stated on this page.
+          These Terms and Conditions (“Terms”) govern your access to and use of the RAAMYA website and services. By accessing or using our services, you agree to be bound by these Terms.
         </p>
 
-        {/* Section 1: Intellectual Property Rights */}
+        {/* Section 1: Acceptance of Terms */}
         <div className="mb-10">
-          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">1. Intellectual Property Rights</h2>
+          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">1. Acceptance of Terms</h2>
           <p className="leading-relaxed">
-            Other than the content you own, under these Terms, RAAMYA and/or its licensors own all the intellectual property rights and materials contained in this Website. You are granted a limited license only for purposes of viewing the material contained on this Website.
+            By creating an account, making a purchase, or using any part of our website, you agree to comply with and be bound by these Terms. If you do not agree to these Terms, you may not access or use our services.
           </p>
         </div>
 
-        {/* Section 2: Restrictions */}
+        {/* Section 2: Use of the Service */}
         <div className="mb-10">
-          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">2. Restrictions</h2>
-          <p className="mb-4">You are specifically restricted from all of the following:</p>
+          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">2. Use of the Service</h2>
+          <p className="mb-4 leading-relaxed">
+            <strong>Eligibility:</strong> You must be at least 18 years of age to use our services. By using our services, you represent and warrant that you meet this age requirement.
+          </p>
+          <p className="mb-4 leading-relaxed">
+            <strong>Prohibited Activities:</strong> You agree not to engage in any of the following activities:
+          </p>
           <ul className="list-disc list-inside space-y-3 pl-4">
-            <li>Publishing any Website material in any other media.</li>
-            <li>Selling, sublicensing and/or otherwise commercializing any Website material.</li>
-            <li>Publicly performing and/or showing any Website material.</li>
-            <li>Using this Website in any way that is or may be damaging to this Website.</li>
-            <li>Using this Website contrary to applicable laws and regulations, or in any way may cause harm to the Website, or to any person or business entity.</li>
+            <li>Using the website for any illegal or unauthorized purpose.</li>
+            <li>Violating any applicable laws or regulations.</li>
+            <li>Attempting to interfere with the proper working of the website.</li>
+            <li>Harassing, abusing, or harming other users.</li>
+            <li>Transmitting any viruses or malicious code.</li>
+            <li>Scraping, mining, or harvesting data from our website.</li>
           </ul>
         </div>
         
-        {/* Section 3: Your Content */}
+        {/* Section 3: User Accounts */}
         <div className="mb-10">
-          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">3. Your Content</h2>
+          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">3. User Accounts</h2>
+          <p className="mb-4 leading-relaxed">
+            <strong>Account Creation:</strong> You may be required to create an account to access certain features of our services. You agree to provide accurate, current, and complete information during the registration process.
+          </p>
           <p className="leading-relaxed">
-            In these Website Standard Terms and Conditions, “Your Content” shall mean any audio, video text, images or other material you choose to display on this Website. By displaying Your Content, you grant RAAMYA a non-exclusive, worldwide irrevocable, sub-licensable license to use, reproduce, adapt, publish, translate and distribute it in any and all media.
+            <strong>Account Responsibility:</strong> You are responsible for maintaining the confidentiality of your account password and for all activities that occur under your account. You agree to notify us immediately of any unauthorized use of your account.
           </p>
         </div>
 
-        {/* Section 4: No warranties */}
+        {/* Section 4: Intellectual Property */}
         <div className="mb-10">
-          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">4. No Warranties</h2>
+          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">4. Intellectual Property</h2>
           <p className="leading-relaxed">
-            This Website is provided “as is,” with all faults, and RAAMYA expresses no representations or warranties, of any kind related to this Website or the materials contained on this Website.
-          </p>
-        </div>
-        
-        {/* Section 5: Limitation of Liability */}
-        <div className="mb-10">
-          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">5. Limitation of Liability</h2>
-          <p className="leading-relaxed">
-            In no event shall RAAMYA, nor any of its officers, directors, and employees, be held liable for anything arising out of or in any way connected with your use of this Website whether such liability is under contract. RAAMYA, including its officers, directors, and employees shall not be held liable for any indirect, consequential, or special liability arising out of or in any way related to your use of this Website.
+            All content on the RAAMYA website, including text, graphics, logos, images, and software, is the property of RAAMYA or its content suppliers and is protected by intellectual property laws. You may not use, reproduce, or distribute any content from our website without our express written permission.
           </p>
         </div>
 
-        {/* Section 6: Governing Law & Jurisdiction */}
+        {/* Section 5: Disclaimer of Warranties */}
         <div className="mb-10">
-          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">6. Governing Law & Jurisdiction</h2>
+          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">5. Disclaimer of Warranties</h2>
           <p className="leading-relaxed">
-            These Terms will be governed by and interpreted in accordance with the laws of India, and you submit to the non-exclusive jurisdiction of the state and federal courts located in India for the resolution of any disputes.
+            Our services are provided on an “as is” and “as available” basis. We make no warranties, express or implied, regarding the operation of our website or the information, content, or materials included on the site. We do not warrant that the website will be uninterrupted, error-free, or secure.
           </p>
         </div>
 
-        {/* Contact Us */}
+        {/* Section 6: Limitation of Liability */}
+        <div className="mb-10">
+          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">6. Limitation of Liability</h2>
+          <p className="leading-relaxed">
+            In no event shall RAAMYA, its directors, employees, or affiliates be liable for any indirect, incidental, special, or consequential damages arising out of or in connection with your use of our services, even if we have been advised of the possibility of such damages.
+          </p>
+        </div>
+
+        {/* Section 7: Indemnification */}
+        <div className="mb-10">
+          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">7. Indemnification</h2>
+          <p className="leading-relaxed">
+            You agree to indemnify and hold harmless RAAMYA and its affiliates from and against any and all claims, damages, costs, and expenses (including reasonable attorneys' fees) arising from your use of the services or your violation of these Terms.
+          </p>
+        </div>
+
+        {/* Section 8: Governing Law and Jurisdiction */}
+        <div className="mb-10">
+          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">8. Governing Law and Jurisdiction</h2>
+          <p className="leading-relaxed">
+            These Terms shall be governed by and construed in accordance with the laws of Delhi, India, without regard to its conflict of law provisions. Any legal action or proceeding related to your use of our services shall be brought exclusively in the courts of Delhi, India.
+          </p>
+        </div>
+
+        {/* Section 9: Changes to Terms */}
+        <div className="mb-10">
+          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">9. Changes to Terms</h2>
+          <p className="leading-relaxed">
+            We reserve the right to modify these Terms at any time. We will provide notice of any changes by posting the new Terms on this page. Your continued use of the services after any such changes constitutes your acceptance of the new Terms.
+          </p>
+        </div>
+
+        {/* Section 10: Contact Us */}
         <div>
-          <h2 className="text-xl font-semibold text-yellow-500">
-            Contact Us: <a href="mailto:Support@Raamya.com" className="underline hover:text-yellow-300">Support@Raamya.com</a>
-          </h2>
+          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">10. Contact Us</h2>
+          <p className="leading-relaxed">
+            If you have any questions about these Terms, please contact us at <a href="mailto:support@raamya.net.in" className="text-yellow-400 underline hover:text-yellow-300">support@raamya.net.in</a>.
+          </p>
         </div>
-
       </div>
     </div>
   );

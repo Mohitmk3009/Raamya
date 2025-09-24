@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-// --- CANCEL ORDER MODAL COMPONENT (UPDATED) ---
+// --- CANCEL ORDER MODAL COMPONENT ---
 const CancelOrderModal = ({ onClose, onConfirm }) => {
     const [reason, setReason] = useState('');
     const [otherDetails, setOtherDetails] = useState('');
@@ -16,7 +16,7 @@ const CancelOrderModal = ({ onClose, onConfirm }) => {
         "Item not required anymore",
         "Found a better price elsewhere",
         "Delivery is delayed",
-        "Other" // "Other" option is included here
+        "Other"
     ];
 
     const handleConfirm = () => {
@@ -24,8 +24,12 @@ const CancelOrderModal = ({ onClose, onConfirm }) => {
             alert('Please select a reason for cancellation.');
             return;
         }
-        // This correctly passes the typed details if "Other" is selected
-        onConfirm({ reason, details: reason === 'Other' ? otherDetails : '' });
+        if (reason === 'Other' && !otherDetails.trim()) {
+            alert('Please provide details for your cancellation reason.');
+            return;
+        }
+        const finalReason = reason === 'Other' ? otherDetails.trim() : reason;
+        onConfirm({ reason: finalReason, details: '' });
     };
 
     return (
@@ -47,8 +51,7 @@ const CancelOrderModal = ({ onClose, onConfirm }) => {
                             {reasons.map(r => <option key={r} value={r}>{r}</option>)}
                         </select>
                     </div>
-                    
-                    {/* --- NEW: Conditional Textbox for "Other" reason --- */}
+
                     {reason === 'Other' && (
                         <div>
                             <label className="block text-white mb-2 text-sm" htmlFor="otherDetails">Please specify:</label>
@@ -63,11 +66,8 @@ const CancelOrderModal = ({ onClose, onConfirm }) => {
                             />
                         </div>
                     )}
-                    {/* --- End of new section --- */}
-
                     <div className="pt-4 flex gap-4">
                         <button onClick={handleConfirm} className="w-full bg-red-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-red-700 transition-colors">CONFIRM CANCELLATION</button>
-                        {/* <button onClick={onClose} className="w-full bg-gray-600 text-white font-bold py-2 px-6 rounded-lg hover:bg-gray-500 transition-colors">GO BACK</button> */}
                     </div>
                 </div>
             </div>
@@ -76,7 +76,7 @@ const CancelOrderModal = ({ onClose, onConfirm }) => {
 };
 
 
-// --- MAIN ORDER DETAILS PAGE COMPONENT ---
+// --- MAIN ORDER DETAILS PAGE COMPONENT (UPDATED) ---
 export default function OrderDetailsPage({ params }) {
     const { orderId } = use(params);
     const router = useRouter();
@@ -101,7 +101,6 @@ export default function OrderDetailsPage({ params }) {
                     throw new Error(errData.message || 'Failed to fetch order details.');
                 }
                 const data = await res.json();
-                console.log('Fetched order data:', data);
                 setOrder(data);
             } catch (err) {
                 setError(err.message);
@@ -136,19 +135,62 @@ export default function OrderDetailsPage({ params }) {
         }
     };
 
-    const getStatusChip = (status) => {
-        switch (status) {
-            case 'Processing': return 'bg-yellow-500/20 text-yellow-400';
-            case 'Shipped': return 'bg-blue-500/20 text-blue-400';
-            case 'Delivered': return 'bg-green-500/20 text-green-400';
-            case 'Cancelled': return 'bg-red-500/20 text-red-400';
-            default: return 'bg-gray-500/20 text-gray-400';
+    // --- NEW: Enhanced status function ---
+    const getOrderStatus = (order) => {
+        // If an exchange request exists, its status takes priority
+        if (order.status === 'Delivered' && order.exchangeRequest) {
+            switch (order.exchangeRequest.status) {
+                case 'Pending':
+                    return { text: 'Exchange Pending', className: 'bg-blue-500/20 text-blue-400' };
+                case 'Approved':
+                    return { text: 'Exchange Approved', className: 'bg-teal-500/20 text-teal-400' };
+                case 'Rejected':
+                    return { text: 'Exchange Rejected', className: 'bg-red-500/20 text-red-400' };
+                case 'Completed':
+                    return { text: 'Exchange Completed', className: 'bg-green-500/20 text-green-400' };
+                default:
+                    // Fallback for any other exchange statuses
+                    return { text: 'Exchange in Process', className: 'bg-gray-500/20 text-gray-400' };
+            }
+        }
+
+        // Default status logic if no exchange is active
+        switch (order.status) {
+            case 'Processing':
+                return { text: 'Processing', className: 'bg-yellow-500/20 text-yellow-400' };
+            case 'Shipped':
+                return { text: 'Shipped', className: 'bg-blue-500/20 text-blue-400' };
+            case 'Delivered':
+                return { text: 'Delivered', className: 'bg-green-500/20 text-green-400' };
+            case 'Cancelled':
+                return { text: 'Cancelled', className: 'bg-red-500/20 text-red-400' };
+            default:
+                return { text: order.status, className: 'bg-gray-500/20 text-gray-400' };
         }
     };
-    
+
+
+    const handleCancelClick = () => {
+        const currentHoursSinceOrder = (new Date().getTime() - new Date(order.createdAt).getTime()) / (1000 * 60 * 60);
+        if (currentHoursSinceOrder >= 24) {
+            alert("Sorry, orders can only be cancelled within 24 hours of placement.");
+            window.location.reload();
+        } else {
+            setIsCancelModalOpen(true);
+        }
+    };
+
     if (loading) return <div className="text-center text-white py-20 bg-black min-h-screen">Loading Order Details...</div>;
     if (error) return <div className="text-center text-red-500 py-20 bg-black min-h-screen">{error}</div>;
     if (!order) return <div className="text-center text-gray-500 py-20 bg-black min-h-screen">Order not found.</div>;
+
+    const orderDate = new Date(order.createdAt);
+    const now = new Date();
+    const hoursSinceOrder = (now.getTime() - orderDate.getTime()) / (1000 * 60 * 60);
+    const isCancellable = hoursSinceOrder < 24;
+
+    // Get the dynamic status info
+    const orderStatusInfo = getOrderStatus(order);
 
     return (
         <div className="bg-black text-white min-h-screen pt-12 font-redhead">
@@ -157,7 +199,7 @@ export default function OrderDetailsPage({ params }) {
                     <p className="text-sm text-gray-400">
                         <Link href="/myaccount" className="hover:text-yellow-400">My Account</Link> &gt; <span>Order Details</span>
                     </p>
-                    <h1 className="text-4xl font-extrabold text-yellow-400 mt-2">ORDER #{order._id}</h1>
+                    <h1 className="lg:text-4xl text-xl font-extrabold text-yellow-400 mt-2">ORDER #{order._id}</h1>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -165,8 +207,8 @@ export default function OrderDetailsPage({ params }) {
                         <h2 className="text-2xl font-bold text-yellow-400 mb-6">ORDER ITEMS ({order.orderItems.length})</h2>
                         <div className="space-y-4">
                             {order.orderItems.map(item => (
-                                <div key={item._id} className="flex items-center gap-4 border-b border-gray-700 pb-4">
-                                    <Image src={item.image} alt={item.name} width={80} height={80} className="rounded-md object-cover"/>
+                                <div key={item._id} className="flex items-center gap-4 border-b border-gray-700 pb-4 last:border-b-0 last:pb-0">
+                                    <Image src={item.image} alt={item.name} width={80} height={80} className="rounded-md object-cover" />
                                     <div className="flex-grow">
                                         <p className="font-bold text-white">{item.name}</p>
                                         <p className="text-sm text-gray-400">Qty: {item.qty}</p>
@@ -180,8 +222,34 @@ export default function OrderDetailsPage({ params }) {
                     <div className="bg-gray-900 p-6 rounded-lg border border-gray-700 self-start">
                         <h2 className="text-2xl font-bold text-yellow-400 mb-6">SUMMARY</h2>
                         <div className="space-y-3 text-white">
-                            <div className="flex justify-between"><span className="text-gray-400">Order Status:</span> <span className={`px-2 py-1 text-xs rounded-full font-semibold ${getStatusChip(order.status)}`}>{order.status}</span></div>
+                            {/* --- UPDATED STATUS DISPLAY --- */}
+                            <div className="flex justify-between">
+                                <span className="text-gray-400">Order Status:</span>
+                                <span className={`px-2 py-1 text-xs rounded-full font-semibold ${orderStatusInfo.className}`}>
+                                    {orderStatusInfo.text}
+                                </span>
+                            </div>
                             <div className="flex justify-between"><span className="text-gray-400">Payment:</span> <span className={`font-semibold ${order.isPaid ? 'text-green-400' : 'text-red-400'}`}>{order.isPaid ? 'Paid' : 'Not Paid'}</span></div>
+
+                            <div className="flex justify-between">
+                                <span className="text-gray-400">Order Placed:</span>
+                                <span className="text-right">
+                                    <p>
+                                        {new Date(order.createdAt).toLocaleDateString('en-IN', {
+                                            day: 'numeric',
+                                            month: 'long',
+                                            year: 'numeric',
+                                        })}
+                                    </p>
+                                    <p className="text-sm text-gray-500">
+                                        {new Date(order.createdAt).toLocaleTimeString('en-IN', {
+                                            hour: 'numeric',
+                                            minute: '2-digit',
+                                        })}
+                                    </p>
+                                </span>
+                            </div>
+
                             <hr className="border-gray-700 my-4" />
                             <div className="flex justify-between"><span className="text-gray-400">Subtotal:</span> <span>&#8377;{(order.itemsPrice || 0).toLocaleString()}</span></div>
                             <div className="flex justify-between"><span className="text-gray-400">Shipping:</span> <span>&#8377;{(order.shippingPrice || 0).toLocaleString()}</span></div>
@@ -192,42 +260,53 @@ export default function OrderDetailsPage({ params }) {
 
                         <div className="mt-8">
                             <h3 className="text-lg font-bold text-yellow-400 mb-4">SHIPPING ADDRESS</h3>
-                            <div className="text-gray-300">
+                            <div className="text-gray-300 leading-relaxed">
                                 <p className="font-semibold">{order.shippingAddress.fullName}</p>
-                                <p className="font-semibold">{order.shippingAddress.phone}</p>
-                                <div className="flex ">
-                                    <p >{order.shippingAddress.address}</p>
-                                <p>{order.shippingAddress.street}, {order.shippingAddress.city}</p>
-                                <p>{order.shippingAddress.state}, {order.shippingAddress.postalCode}</p>
-                                </div>
+                                <p>{order.shippingAddress.phone}</p>
+                                <p>{order.shippingAddress.address}, {order.shippingAddress.street}</p>
+                                <p>{order.shippingAddress.city}, {order.shippingAddress.state} - {order.shippingAddress.postalCode}</p>
                                 <p>{order.shippingAddress.country}</p>
-                                
                             </div>
                         </div>
 
-                        {/* --- NEW: Conditional Action Buttons --- */}
                         {order.status !== 'Delivered' && order.status !== 'Cancelled' && (
                             <div className="mt-8">
-                                <button
-                                    onClick={() => setIsCancelModalOpen(true)}
-                                    className="w-full bg-red-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-700 transition-colors"
-                                >
-                                    CANCEL ORDER
-                                </button>
+                                {isCancellable ? (
+                                    <button
+                                        onClick={handleCancelClick}
+                                        className="w-full bg-red-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-700 transition-colors"
+                                    >
+                                        CANCEL ORDER
+                                    </button>
+                                ) : (
+                                    <div className="text-center p-3 bg-gray-800 rounded-lg">
+                                        <p className="text-gray-400 text-sm">Cancellation window (24 hours) has passed.</p>
+                                    </div>
+                                )}
                             </div>
                         )}
-
+                        
+                        {/* --- CORRECTED LOGIC FOR EXCHANGE BUTTON --- */}
                         {order.status === 'Delivered' && (
                             <div className="mt-8">
-                                <Link
-                                    href="/exchangemyorder"
-                                    className="block w-full text-center bg-yellow-400 text-black font-bold py-3 px-6 rounded-lg hover:bg-yellow-500 transition-colors"
-                                >
-                                    EXCHANGE ORDER
-                                </Link>
+                                {/* Check for the existence of the exchangeRequest object */}
+                                {order.exchangeRequest ? (
+                                    // If an exchange request exists, show a message with its status
+                                    <div className="text-center p-3 bg-blue-900/50 border border-blue-700 rounded-lg">
+                                        <p className="text-blue-300 text-sm font-semibold">Your exchange request is in process.</p>
+                                        <p className="text-xs text-gray-400 mt-1">Status: {order.exchangeRequest.status}</p>
+                                    </div>
+                                ) : (
+                                    // Otherwise, show the exchange button
+                                    <Link
+                                        href={`/exchangemyorder?orderId=${order._id}`}
+                                        className="block w-full text-center bg-yellow-400 text-black font-bold py-3 px-6 rounded-lg hover:bg-yellow-500 transition-colors"
+                                    >
+                                        EXCHANGE ORDER
+                                    </Link>
+                                )}
                             </div>
                         )}
-                        {/* --- End of new section --- */}
                     </div>
                 </div>
             </div>

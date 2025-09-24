@@ -74,7 +74,7 @@ placementClassName: 'col-span-2 lg:col-span-1 lg:row-span-2 lg:col-start-2 lg:ro
   return (
     <section className="w-full bg-black flex items-center justify-center">
       {/* The grid container now uses a 3-column, 2-row layout on large screens */}
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 w-full h-[92vh]">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 w-full lg:h-[92vh] h-[85vh]">
         {categories.map((cat) => (
           // Wrap the ImageCard with a Link component
           <Link

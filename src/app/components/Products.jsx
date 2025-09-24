@@ -8,29 +8,47 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // --- ICONS ---
 const SearchIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
 );
 const ChevronRightIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <polyline points="9 18 15 12 9 6"></polyline>
-    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="9 18 15 12 9 6"></polyline></svg>
 );
 const ChevronLeftIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="15 18 9 12 15 6"></polyline></svg>
 );
-// NEW: Filter and Close Icons for mobile
 const FilterIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
-    </svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
 );
 const XIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-        <line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+);
+
+// --- MODIFIED: Grid layout icons to show lines ---
+const Grid3Icon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <rect x="3" y="4" width="18" height="6" rx="1"></rect>
+        <rect x="3" y="14" width="18" height="6" rx="1"></rect>
+    </svg>
+);
+
+// Icon for 4-column layout ("4 box" style with more space)
+const Grid4Icon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <rect x="4" y="4" width="6" height="6" rx="1"></rect>
+        <rect x="14" y="4" width="6" height="6" rx="1"></rect>
+        <rect x="4" y="14" width="6" height="6" rx="1"></rect>
+        <rect x="14" y="14" width="6" height="6" rx="1"></rect>
+    </svg>
+);
+
+// Icon for 6-column layout ("6 vertical line" style)
+const Grid6Icon = (props) => (
+    <svg xmlns="http://www.w.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <line x1="4" y1="3" x2="4" y2="21"></line>
+        <line x1="8" y1="3" x2="8" y2="21"></line>
+        <line x1="12" y1="3" x2="12" y2="21"></line>
+        <line x1="16" y1="3" x2="16" y2="21"></line>
+        <line x1="20" y1="3" x2="20" y2="21"></line>
     </svg>
 );
 
@@ -52,7 +70,7 @@ const ProductCard = ({ product }) => {
             <p className="text-sm text-[#FFBB00]">{product.category}</p>
             <div className='flex justify-between items-center text-lg'>
                 <h3 className="font-medium mb-1">{product.name}</h3>
-                <p className="font-semibold text-yellow-500">&#8377;{product.price}</p>
+                <p className="font-semibold text-yellow-500">₹{product.price}</p>
             </div>
         </div>
     );
@@ -122,17 +140,19 @@ const Sidebar = ({ filters, setFilters, maxProductPrice }) => {
 function ProductsContent() {
     const searchParams = useSearchParams();
     const categoryFromUrl = searchParams.get('category');
-
+    const sortByFromUrl = searchParams.get('sortBy');
+    const filterFromUrl = searchParams.get('filter');
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState(1);
     const [loading, setLoading] = useState(true);
     const maxProductPrice = 50000;
     const [isFilterOpen, setIsFilterOpen] = useState(false);
+    const [gridCols, setGridCols] = useState(3);
 
     const [filters, setFilters] = useState({
         keyword: '',
-        sortBy: 'default',
+        sortBy: sortByFromUrl || 'default',
         selectedSize: null,
         availability: { inStock: false, outOfStock: false },
         selectedCategories: categoryFromUrl ? [categoryFromUrl] : [],
@@ -146,8 +166,12 @@ function ProductsContent() {
 
             if (filters.keyword) params.append('keyword', filters.keyword);
             if (filters.sortBy !== 'default') params.append('sortBy', filters.sortBy);
-            if (filters.selectedSize) params.append('size', filters.selectedSize);
             
+            if (filterFromUrl) {
+                params.append('filter', filterFromUrl);
+            }
+            if (filters.selectedSize) params.append('size', filters.selectedSize);
+
             const { inStock } = filters.availability;
             if (inStock) {
                 params.append('inStock', 'true');
@@ -171,12 +195,12 @@ function ProductsContent() {
         };
 
         fetchProducts();
-    }, [filters, page]);
+    }, [filters, page, searchParams]);
 
     useEffect(() => {
         setPage(1);
     }, [filters]);
-    
+
     useEffect(() => {
         if (isFilterOpen) {
             document.body.style.overflow = 'hidden';
@@ -194,11 +218,16 @@ function ProductsContent() {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
 
+    const gridLayoutClasses = {
+        3: 'lg:grid-cols-3',
+        4: 'lg:grid-cols-4',
+        6: 'lg:grid-cols-6',
+    };
+
     return (
         <div className="bg-black text-gray-400 lg:min-h-screen font-redhead px-5 py-10 md:p-10 pb-0">
             <div className="container mx-auto">
                 <div className="flex flex-col lg:flex-row">
-                    {/* --- DESKTOP SIDEBAR --- */}
                     <div className="hidden lg:block lg:w-1/4 lg:pr-8">
                         <Sidebar filters={filters} setFilters={setFilters} maxProductPrice={maxProductPrice} />
                     </div>
@@ -206,20 +235,34 @@ function ProductsContent() {
                     <main className="w-full lg:w-3/4 lg:pl-8">
                         <div className="flex justify-between items-center mb-6">
                             <div className="lg:text-lg text-sm font-bold text-[#FFBB00]"><span className="font-normal">Home /</span> Products</div>
-                            <div className="flex items-center border text-[#FFBB00] border-gray-700 p-2 rounded-md">
-                                <label htmlFor="sort" className="mr-2 lg:text-sm text-xs">SORT BY</label>
-                                <select id="sort" value={filters.sortBy} onChange={e => setFilters(prev => ({...prev, sortBy: e.target.value}))} className="bg-black text-sm outline-none">
-                                    <option value="default">Default</option>
-                                    <option value="price-asc">Price: Low to High</option>
-                                    <option value="price-desc">Price: High to Low</option>
-                                </select>
+                            
+                            <div className="flex items-center gap-4">
+                                <div className="hidden lg:flex items-center gap-1 border border-gray-700 p-1 rounded-md">
+                                    <button onClick={() => setGridCols(3)} className={`p-1 rounded transition-colors ${gridCols === 3 ? 'bg-gray-700 text-yellow-400' : 'text-gray-500 hover:text-white'}`}>
+                                        <Grid3Icon />
+                                    </button>
+                                    <button onClick={() => setGridCols(4)} className={`p-1 rounded transition-colors ${gridCols === 4 ? 'bg-gray-700 text-yellow-400' : 'text-gray-500 hover:text-white'}`}>
+                                        <Grid4Icon />
+                                    </button>
+                                    <button onClick={() => setGridCols(6)} className={`p-1 rounded transition-colors ${gridCols === 6 ? 'bg-gray-700 text-yellow-400' : 'text-gray-500 hover:text-white'}`}>
+                                        <Grid6Icon />
+                                    </button>
+                                </div>
+
+                                <div className="flex items-center border text-[#FFBB00] border-gray-700 p-2 rounded-md">
+                                    <label htmlFor="sort" className="mr-2 lg:text-sm text-xs">SORT BY</label>
+                                    <select id="sort" value={filters.sortBy} onChange={e => setFilters(prev => ({ ...prev, sortBy: e.target.value }))} className="bg-black text-sm outline-none">
+                                        <option value="default">Default</option>
+                                        <option value="price-asc">Price: Low to High</option>
+                                        <option value="price-desc">Price: High to Low</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
-                        {/* --- MOBILE FILTER BUTTON & SEARCH BAR --- */}
                         <div className="flex flex-col md:flex-row gap-4 mb-8">
                             <div className="relative flex-grow">
-                                <input type="text" placeholder="Search Products..." value={filters.keyword} onChange={e => setFilters(prev => ({...prev, keyword: e.target.value}))} className="w-full bg-black border border-gray-700 text-white p-3 pl-12 focus:outline-none focus:bg-gray-900 focus:border-yellow-500 rounded-md" />
+                                <input type="text" placeholder="Search Products..." value={filters.keyword} onChange={e => setFilters(prev => ({ ...prev, keyword: e.target.value }))} className="w-full bg-black border border-gray-700 text-white p-3 pl-12 focus:outline-none focus:bg-gray-900 focus:border-yellow-500 rounded-md" />
                                 <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
                             </div>
                             <button onClick={() => setIsFilterOpen(true)} className="lg:hidden flex items-center justify-center gap-2 p-3 bg-black border border-yellow-500 text-yellow-500 rounded-md font-semibold">
@@ -227,11 +270,11 @@ function ProductsContent() {
                                 FILTERS
                             </button>
                         </div>
-                        
+
                         {loading ? (
                             <div className="text-center py-20 text-yellow-400">Loading Products...</div>
                         ) : products.length > 0 ? (
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+                            <div className={`grid grid-cols-1 md:grid-cols-2 ${gridLayoutClasses[gridCols]} gap-6 md:gap-8`}>
                                 {products.map(product => <ProductCard key={product._id} product={product} />)}
                             </div>
                         ) : (
@@ -249,31 +292,40 @@ function ProductsContent() {
                 </div>
             </div>
 
-            {/* --- MOBILE FILTER DRAWER --- */}
-            {isFilterOpen && (
-                <div className="fixed inset-0 z-50 flex">
-                    <div className="fixed inset-0 bg-black/60" onClick={() => setIsFilterOpen(false)}></div>
-                    <div className="relative w-full max-w-xs bg-black h-full shadow-xl flex flex-col">
-                        <div className="flex justify-between items-center p-4 border-b border-gray-800">
-                           <h2 className="text-lg font-bold text-yellow-500">Filters</h2>
-                           <button onClick={() => setIsFilterOpen(false)} className="p-1 text-gray-400 hover:text-white">
-                                <XIcon size={24}/>
-                           </button>
-                        </div>
-                        <div className="flex-grow overflow-y-auto px-4">
-                            <Sidebar filters={filters} setFilters={setFilters} maxProductPrice={maxProductPrice} />
-                        </div>
-                         <div className="p-4 border-t border-gray-800">
-                            <button 
-                                onClick={() => setIsFilterOpen(false)} 
-                                className="w-full bg-yellow-500 text-black font-bold py-3 rounded-md hover:bg-yellow-600 transition-colors"
-                            >
-                                Show Results
-                            </button>
-                        </div>
+            <div
+                className={`fixed inset-0 z-50 transition-opacity duration-300 ease-in-out lg:hidden ${
+                    isFilterOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+                }`}
+                aria-hidden={!isFilterOpen}
+            >
+                <div
+                    className="fixed inset-0 bg-black/60"
+                    onClick={() => setIsFilterOpen(false)}
+                ></div>
+                <div
+                    className={`relative w-full max-w-xs bg-black h-full shadow-xl flex flex-col transition-transform duration-300 ease-in-out ${
+                        isFilterOpen ? 'translate-x-0' : '-translate-x-full'
+                    }`}
+                >
+                    <div className="flex justify-between items-center p-4 border-b border-gray-800">
+                        <h2 className="text-lg font-bold text-yellow-500">Filters</h2>
+                        <button onClick={() => setIsFilterOpen(false)} className="p-1 text-gray-400 hover:text-white">
+                            <XIcon size={24} />
+                        </button>
+                    </div>
+                    <div className="flex-grow overflow-y-auto px-4">
+                        <Sidebar filters={filters} setFilters={setFilters} maxProductPrice={maxProductPrice} />
+                    </div>
+                    <div className="p-4 border-t border-gray-800">
+                        <button
+                            onClick={() => setIsFilterOpen(false)}
+                            className="w-full bg-yellow-500 text-black font-bold py-3 rounded-md hover:bg-yellow-600 transition-colors"
+                        >
+                            Show Results
+                        </button>
                     </div>
                 </div>
-            )}
+            </div>
         </div>
     );
 }

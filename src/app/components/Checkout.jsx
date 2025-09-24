@@ -300,56 +300,79 @@ const ComingSoonDialog = ({ onClose }) => (
 
 // --- MAIN CHECKOUT PAGE COMPONENT ---
 export default function CheckoutPage() {
-    const [cart, setCart] = useState(null);
+    // This state now holds ONLY the items to be purchased in this session
+    const [orderItems, setOrderItems] = useState([]);
+    
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const router = useRouter();
     const [activePaymentMethod, setActivePaymentMethod] = useState('COD');
-    
     const [contactDetails, setContactDetails] = useState({ firstName: '', lastName: '', phone: '', email: '' });
     const [savedAddresses, setSavedAddresses] = useState([]);
     const [selectedAddressId, setSelectedAddressId] = useState(null);
     const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
-    const [showUpiDialog, setShowUpiDialog] = useState(false); // New state for dialog
+    const [showUpiDialog, setShowUpiDialog] = useState(false);
 
+    // This useEffect is now much smarter
     useEffect(() => {
-        const fetchInitialData = async () => {
+        const loadPageData = async () => {
             const token = localStorage.getItem('authToken');
-            if (!token) { router.push('/login'); return; }
+            if (!token) {
+                router.push('/login');
+                return;
+            }
+
+            // 1. Check for items passed from "Buy Now" or "Proceed to Checkout"
+            const itemsFromSession = sessionStorage.getItem('checkoutItems');
+            
+            if (itemsFromSession) {
+                const parsedItems = JSON.parse(itemsFromSession);
+                if (parsedItems && parsedItems.length > 0) {
+                    setOrderItems(parsedItems);
+                } else {
+                    // If session is empty for some reason, redirect to cart
+                    router.push('/cart');
+                    return;
+                }
+            } else {
+                // 2. If no items were passed, user likely navigated here directly.
+                // Redirect them to the cart to make a selection.
+                alert("Please select items from your cart to check out.");
+                router.push('/cart');
+                return;
+            }
+
+            // 3. Fetch user data (address, contact) as before
             try {
-                const [cartRes, userRes] = await Promise.all([
-                    fetch(`${API_BASE_URL}/cart`, { headers: { 'Authorization': `Bearer ${token}` } }),
-                    fetch(`${API_BASE_URL}/users/me`, { headers: { 'Authorization': `Bearer ${token}` } })
-                ]);
-
-                if (!cartRes.ok) throw new Error('Failed to fetch cart.');
-                const cartData = await cartRes.json();
-                if (!cartData.items || cartData.items.length === 0) { router.push('/cart'); return; }
-                setCart(cartData);
-
+                const userRes = await fetch(`${API_BASE_URL}/users/me`, { headers: { 'Authorization': `Bearer ${token}` } });
                 if (userRes.ok) {
                     const userData = await userRes.json();
                     setContactDetails(prev => ({ ...prev, firstName: userData.name.split(' ')[0] || '', lastName: userData.name.split(' ').slice(1).join(' ') || '', email: userData.email }));
                     setSavedAddresses(userData.addresses || []);
                     if (userData.addresses && userData.addresses.length > 0) {
-                        setSelectedAddressId(userData.addresses[0]._id); // Pre-select the first address
+                        setSelectedAddressId(userData.addresses[0]._id);
                     }
                 }
-            } catch (err) { setError(err.message); } 
-            finally { setLoading(false); }
+            } catch (err) {
+                setError("Could not load your user details.");
+            } finally {
+                setLoading(false);
+            }
         };
-        fetchInitialData();
+
+        loadPageData();
     }, [router]);
     
     const handleContactChange = (e) => setContactDetails({ ...contactDetails, [e.target.name]: e.target.value });
 
+    // UPDATE: `useMemo` now calculates based on the `orderItems` state
     const { subtotal, shipping, total } = useMemo(() => {
-        const sub = cart?.items.reduce((sum, item) => sum + item.price * item.qty, 0) || 0;
+        const sub = orderItems.reduce((sum, item) => sum + item.price * item.qty, 0);
         const ship = sub > 2000 ? 0 : 150;
         return { subtotal: sub, shipping: ship, total: sub + ship };
-    }, [cart]);
+    }, [orderItems]);
 
-    const handleSaveNewAddress = async (formData) => {
+     const handleSaveNewAddress = async (formData) => {
         const token = localStorage.getItem('authToken');
         try {
             const res = await fetch(`${API_BASE_URL}/users/me/addresses`, {
@@ -359,14 +382,17 @@ export default function CheckoutPage() {
             });
             const updatedAddresses = await res.json();
             if (!res.ok) throw new Error(updatedAddresses.message || "Failed to save address");
+            
+            console.log('Received updated addresses:', updatedAddresses);
             setSavedAddresses(updatedAddresses);
-            setSelectedAddressId(updatedAddresses[updatedAddresses.length - 1]._id); // Select the new address
+            setSelectedAddressId(updatedAddresses[updatedAddresses.length - 1]._id);
             setIsAddressModalOpen(false);
         } catch (err) {
             alert(`Error: ${err.message}`);
         }
     };
 
+    // UPDATE: `placeOrderHandler` now sends `orderItems` to the backend
     const placeOrderHandler = async (e) => {
         e.preventDefault();
         if (!selectedAddressId) {
@@ -375,7 +401,6 @@ export default function CheckoutPage() {
         }
         const token = localStorage.getItem('authToken');
         setLoading(true);
-
         const finalShippingAddress = savedAddresses.find(addr => addr._id === selectedAddressId);
         
         try {
@@ -383,7 +408,7 @@ export default function CheckoutPage() {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({
-                    orderItems: cart.items,
+                    orderItems: orderItems, // Use the state with the correct items
                     shippingAddress: {
                         fullName: contactDetails.firstName + ' ' + contactDetails.lastName,
                         phone: contactDetails.phone,
@@ -401,6 +426,9 @@ export default function CheckoutPage() {
             const createdOrder = await res.json();
             if (!res.ok) throw new Error(createdOrder.message || 'Failed to create order.');
 
+            // Clear the checkout items from session storage after successful order
+            sessionStorage.removeItem('checkoutItems');
+
             if (activePaymentMethod === 'UPI') {
                 router.push(`/upi-payment/${createdOrder._id}`);
             } else { // Cash on Delivery
@@ -412,8 +440,9 @@ export default function CheckoutPage() {
         }
     };
 
-    if (loading) return <div className="text-center text-yellow-400 font-redhead text-white py-20">Loading Checkout...</div>;
+    if (loading) return <div className="text-center text-yellow-400 font-redhead py-20">Loading Checkout...</div>;
     if (error) return <div className="text-center text-red-500 py-20">Error: {error}</div>;
+
 
     return (
         <div className="bg-black text-yellow-400 min-h-screen pt-10 font-redhead">
@@ -459,7 +488,8 @@ export default function CheckoutPage() {
                         <div className="border border-yellow-400 p-6 rounded-md h-fit">
                             <h2 className="text-lg font-semibold mb-6 tracking-wide">ORDER SUMMARY</h2>
                             <div className="max-h-[350px] overflow-y-auto pr-2">
-                                {cart && cart.items.map((item) => <OrderSummaryItem key={`${item.product}-${item.size}`} item={item} />)}
+                                {/* UPDATE: Map over `orderItems` */}
+                                {orderItems.map((item) => <OrderSummaryItem key={`${item.product || item._id}-${item.size}`} item={item} />)}
                             </div>
                             <div className="mt-8 space-y-3 text-sm">
                                 <div className="flex justify-between"><span>SUBTOTAL</span><span>Rs {subtotal.toLocaleString()}</span></div>
