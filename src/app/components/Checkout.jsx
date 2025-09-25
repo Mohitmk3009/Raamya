@@ -73,7 +73,7 @@ const ComingSoonDialog = ({ onClose }) => (
             <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button>
             <h3 className="text-2xl font-bold text-[#EFAF00] mb-4 font-redhead">UPI Payments</h3>
             <p className="text-gray-300 mb-6">We're sorry, UPI payments are currently unavailable.</p>
-            <p className="text-gray-300">This feature is coming soon!</p>
+            <p className="text-gray-300">This feature will be coming in 7 days!</p>
             <button onClick={onClose} className="mt-6 bg-[#EFAF00] text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">OK</button>
         </div>
     </div>
