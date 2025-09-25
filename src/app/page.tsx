@@ -27,6 +27,7 @@ export default function Home() {
 
       {/* Overlay loading screen */}
       {showLoading && <LoadingScreen />}
+       <Analytics />
     </div>
   );
 }
