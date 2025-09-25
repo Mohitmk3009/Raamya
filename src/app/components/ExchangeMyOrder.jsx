@@ -134,7 +134,7 @@ const ExchangeOrderForm = () => {
               />
             </div>
             <div className="mb-6">
-              <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-300">Upload Image</label>
+              <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-300">Upload Image (Mandatory)</label>
               <p className="text-xs text-gray-500 mb-2">If your item is damaged or incorrect, please upload a photo.</p>
               <input
                 type="file"
