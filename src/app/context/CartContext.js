@@ -62,7 +62,7 @@ export const CartProvider = ({ children }) => {
         }
     };
 
-    const addToCart = async (product, quantity) => {
+    const addToCart = async (item, quantity) => {
         if (!isAuthenticated) {
             alert("Please log in to add items to your cart.");
             return;
@@ -76,14 +76,34 @@ export const CartProvider = ({ children }) => {
                     'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify({
-                    productId: product._id,
-                    size: product.selectedSize,
+                    productId: item.product,
+                    size: item.size,
                     qty: quantity
                 })
             });
             const data = await response.json();
             if (!response.ok) throw new Error(data.message || "Failed to add item.");
-            setCartItems(data.items || []);
+
+            // --- VITAL FIX: Check if item already exists in cart and update quantity ---
+            setCartItems(prevCartItems => {
+                const existingItemIndex = prevCartItems.findIndex(
+                    cartItem => cartItem.product === item.product && cartItem.size === item.size
+                );
+
+                if (existingItemIndex > -1) {
+                    // Item exists, create a new array with the updated item
+                    const newCart = [...prevCartItems];
+                    newCart[existingItemIndex] = {
+                        ...newCart[existingItemIndex],
+                        qty: newCart[existingItemIndex].qty + quantity
+                    };
+                    return newCart;
+                } else {
+                    // Item is new, add it to the array with the correct quantity
+                    return [...prevCartItems, { ...item, qty: quantity }];
+                }
+            });
+
         } catch (error) {
             console.error("Error adding to cart:", error);
             alert(`Error: ${error.message}`);

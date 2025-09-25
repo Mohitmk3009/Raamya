@@ -22,11 +22,11 @@ export default function VideoGallery() {
         <>
             <div className='flex flex-col justify-between  relative pb-10 bg-black font-redhead'>
 
-                <div className="bg-yellow-400 h-2 w-full blur-lg"></div>
-                <h2 className="text-center text-3xl md:text-5xl font-bold tracking-widest text-yellow-500 my-5 px-4">
-                   FOLLOW US ON INSTAGRAM <Link href={'https://www.instagram.com/raamya___?igsh=MWpiNTFoa2NuM29maQ=='} target="_blank"> @raamya</Link>
+                <div className="bg-[#EFAF00] h-2 w-full blur-lg"></div>
+                <h2 className="text-center text-3xl md:text-5xl font-bold tracking-widest text-[#EFAF00] my-5 px-4">
+                   FOLLOW US ON INSTAGRAM <Link href={'https://www.instagram.com/raamya___?igsh=MWpiNTFoa2NuM29maQ=='} target="_blank"> @Raamya</Link>
                 </h2>
-                <div className="bg-yellow-400 h-2 w-full blur-lg"></div>
+                <div className="bg-[#EFAF00] h-2 w-full blur-lg"></div>
 
             </div>
             <div className="p-6  bg-black min-h-screen flex justify-center">
@@ -131,12 +131,12 @@ function VideoCard({ video, onClick, className }) {
 //     return (
 //         <>
 //             <div className='flex flex-col justify-between relative pb-10 bg-black font-redhead'>
-//                 <div className='bg-yellow-400 h-2 w-full blur-lg'></div>
+//                 <div className='bg-[#EFAF00] h-2 w-full blur-lg'></div>
 //                 {/* ✅ MODIFICATION: Responsive heading font size */}
-//                 <h2 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-yellow-500 my-5 uppercase px-4">
+//                 <h2 className="text-center text-3xl sm:text-4xl md:text-5xl font-bold tracking-widest text-[#EFAF00] my-5 uppercase px-4">
 //                     follow us on instagram @raamya
 //                 </h2>
-//                 <div className='bg-yellow-400 h-2 w-full blur-lg'></div>
+//                 <div className='bg-[#EFAF00] h-2 w-full blur-lg'></div>
 //             </div>
 
 //             {/* ✅ MODIFICATION: Added padding and max-width for better spacing */}

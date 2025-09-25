@@ -5,7 +5,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSwipeable } from 'react-swipeable'; // NEW: Import the swipe hook
-
+import Lottie from 'lottie-react';
+import Loader from '../../../public/lottie/Loading.json';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 const NewArrivals = () => {
@@ -128,13 +129,9 @@ const NewArrivals = () => {
   });
 
   // --- Conditional UI ---
-  if (loading) {
-    return (
-      <div className="bg-black h-96 flex items-center justify-center text-yellow-400 font-redhead">
-        <p>Loading New Arrivals...</p>
-      </div>
-    );
-  }
+  if (loading) return <div className="flex justify-center items-center min-h-[90vh]">
+        <Lottie animationData={Loader} loop={true} className="lg:w-64 lg:h-64 w-40 h-40" />
+      </div>;
 
   if (error) {
     return (
@@ -154,13 +151,13 @@ const NewArrivals = () => {
 
   // --- MAIN RENDER ---
   return (
-    <div className="bg-black text-yellow-400 lg:pt-12 pt-6 lg:pb-8 overflow-hidden font-redhead">
+    <div className="bg-black text-[#EFAF00] lg:pt-12 pt-6 lg:pb-8 overflow-hidden font-redhead">
       <div className="flex flex-col justify-between relative mb-10">
-        <div className="bg-yellow-400 h-2 w-full blur-lg"></div>
-        <h2 className="text-center text-3xl md:text-5xl font-bold tracking-widest text-yellow-500 my-5 px-4">
+        <div className="bg-[#EFAF00] h-2 w-full blur-lg"></div>
+        <h2 className="text-center text-3xl md:text-5xl font-bold tracking-widest text-[#EFAF00] my-5 px-4">
           NEW ARRIVALS
         </h2>
-        <div className="bg-yellow-400 h-2 w-full blur-lg"></div>
+        <div className="bg-[#EFAF00] h-2 w-full blur-lg"></div>
       </div>
 
       <div className="relative flex items-center justify-center">
@@ -169,7 +166,7 @@ const NewArrivals = () => {
           className="absolute left-2 md:left-10 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/50 hover:bg-gray-800/90 rounded-full disabled:opacity-50"
           disabled={newArrivalProducts.length === 0}
         >
-          <ChevronLeft className="h-6 w-6 text-yellow-500" />
+          <ChevronLeft className="h-6 w-6 text-[#EFAF00]" />
         </button>
 
         {/* NEW: Spread the handlers onto the swipeable container */}
@@ -207,18 +204,18 @@ const NewArrivals = () => {
                 {itemsToShow === 1 ? (
                   // --- Mobile Layout ---
                   <div className=" absolute bottom-0 text-center w-full bg-black/50 pr-4">
-                    <h3 className="text-lg font-bold text-yellow-500 tracking-wider">{product.name}</h3>
+                    <h3 className="text-lg font-bold text-[#EFAF00] tracking-wider">{product.name}</h3>
                     <p className="text-xs text-yellow-300 uppercase tracking-wider ">{product.category || 'Category'}</p>
-                    <p className="text-sm text-yellow-400 tracking-wider">&#8377;{product.price}</p>
+                    <p className="text-sm text-[#EFAF00] tracking-wider">&#8377;{product.price}</p>
                   </div>
                 ) : (
                   // --- Desktop Layout ---
                   <div className="absolute inset-0 flex items-end p-4">
-                    <h3 className="absolute bottom-4 left-2 text-5xl font-bold text-yellow-500 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out transform translate-x-full group-hover:translate-x-0 vertical-text">
+                    <h3 className="absolute bottom-4 left-2 text-5xl font-bold text-[#EFAF00] opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out transform translate-x-full group-hover:translate-x-0 vertical-text">
                       {product.name.toUpperCase()}
                     </h3>
                     <div className="absolute top-2 right-4 text-right opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out transform -translate-y-full group-hover:translate-y-0">
-                      <p className="text-lg font-semibold text-yellow-500">&#8377;{product.price}</p>
+                      <p className="text-lg font-semibold text-[#EFAF00]">&#8377;{product.price}</p>
                       <p className="text-sm text-yellow-300 uppercase">{product.category || 'Category'}</p>
                     </div>
                   </div>
@@ -233,13 +230,13 @@ const NewArrivals = () => {
           className="absolute right-2 md:right-10 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/50 hover:bg-gray-800/90 rounded-full disabled:opacity-50"
           disabled={newArrivalProducts.length === 0}
         >
-          <ChevronRight className="h-6 w-6 text-yellow-500" />
+          <ChevronRight className="h-6 w-6 text-[#EFAF00]" />
         </button>
       </div>
 
       <div className="text-center my-8">
         <Link href={'/allproducts?filter=newArrivals'}>
-          <button className="bg-transparent border border-yellow-500 text-yellow-500 py-3 px-10 hover:bg-yellow-500 hover:text-black transition-colors duration-300 tracking-widest">
+          <button className="bg-transparent border border-[#EFAF00] text-[#EFAF00] py-3 px-10 hover:bg-[#EFAF00] hover:text-black transition-colors duration-300 tracking-widest">
             VIEW MORE
           </button>
         </Link>

@@ -26,7 +26,7 @@ const ImageCard = ({ src, title, containerClassName }) => {
       
       {/* Centered text */}
       <div className="absolute inset-0 flex items-center justify-center">
-        <h2 className="text-yellow-400 text-2xl md:text-4xl lg:text-5xl font-bold tracking-widest uppercase transition-all duration-500 ease-in-out transform group-hover:scale-110">
+        <h2 className="text-[#EFAF00] text-2xl md:text-4xl lg:text-5xl font-bold tracking-widest uppercase transition-all duration-500 ease-in-out transform group-hover:scale-110">
           {title}
         </h2>
       </div>

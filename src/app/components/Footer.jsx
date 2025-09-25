@@ -54,7 +54,7 @@ const Footer = () => {
                     {/* Column 1: Brand and Socials */}
                     <div className="space-y-4 ">
                         {/* mt-[-8px] */}
-                        <h2 className="lg:text-6xl text-4xl  font-bold tracking-wider bg-gradient-to-b text-transparent bg-clip-text from-yellow-400  to-yellow-800 raamya-font ">RAAMYA</h2>
+                        <h2 className="lg:text-6xl text-4xl  font-bold tracking-wider bg-gradient-to-b text-transparent bg-clip-text from-[#EFAF00]  to-yellow-800 raamya-font ">RAAMYA</h2>
                         <p className="text-base">
                            One Brand. Five Personalities. Infinite You. ✨
                         </p>
@@ -75,11 +75,11 @@ const Footer = () => {
                                     <MailIcon />
                                 </div>
                             </a>
-                            <a href="#" className="w-9 h-9 bg-white rounded-full flex hover:scale-110 items-center transition-all duration-300 justify-center group">
+                            <Link href={'https://www.instagram.com/raamya___?igsh=MWpiNTFoa2NuM29maQ=='} target='_blank' className="w-9 h-9 bg-white rounded-full flex hover:scale-110 items-center transition-all duration-300 justify-center group">
                                 <div className="filter grayscale group-hover:grayscale-0 transition duration-300">
                                     <InstagramIcon />
                                 </div>
-                            </a>
+                            </Link>
                         </div>
                     </div>
 
@@ -97,11 +97,11 @@ const Footer = () => {
                     <div>
                         <h3 className="text-[#FFBB00] text-lg font-bold tracking-wider mb-4">Support</h3>
                         <ul className="space-y-2 text-base">
-                            <li><Link href="/aboutus" className="hover:text-yellow-500 transition">About Us</Link></li>
-                            <li><Link href="/contactus" className="hover:text-yellow-500 transition">Contact Us</Link></li>
-                            <li><Link href="/faq" className="hover:text-yellow-500 transition">FAQ's</Link></li>
-                            <li><Link href="/exchangemyorder" className="hover:text-yellow-500 transition">Exchange My Order</Link></li>
-                            <li><Link href="/exchangepolicy" className="hover:text-yellow-500 transition">Exchange Policy</Link></li>
+                            <li><Link href="/aboutus" className="hover:text-[#EFAF00] transition">About Us</Link></li>
+                            <li><Link href="/contactus" className="hover:text-[#EFAF00] transition">Contact Us</Link></li>
+                            <li><Link href="/faq" className="hover:text-[#EFAF00] transition">FAQ's</Link></li>
+                            <li><Link href="/exchangemyorder" className="hover:text-[#EFAF00] transition">Exchange My Order</Link></li>
+                            <li><Link href="/exchangepolicy" className="hover:text-[#EFAF00] transition">Exchange Policy</Link></li>
                         </ul>
                     </div>
 
@@ -109,11 +109,11 @@ const Footer = () => {
                     <div>
                         <h3 className="text-[#FFBB00] text-lg font-bold tracking-wider mb-4">Policies</h3>
                         <ul className="space-y-2 text-base">
-                            <li><Link href="/privacypolicy" className="hover:text-yellow-500 transition">Privacy Policy</Link></li>
-                            <li><Link href="/shippingpolicy" className="hover:text-yellow-500 transition">Shipping & Delivery Policy</Link></li>
-                            <li><Link href="/exchangepolicy" className="hover:text-yellow-500 transition">Exchange Policy</Link></li>
-                            <li><Link href="/termsandconditions" className="hover:text-yellow-500 transition">Terms & Conditions</Link></li>
-                            <li><Link href="/exchangemyorder" className="hover:text-yellow-500 transition">Exchange My Order</Link></li>
+                            <li><Link href="/privacypolicy" className="hover:text-[#EFAF00] transition">Privacy Policy</Link></li>
+                            <li><Link href="/shippingpolicy" className="hover:text-[#EFAF00] transition">Shipping & Delivery Policy</Link></li>
+                            <li><Link href="/exchangepolicy" className="hover:text-[#EFAF00] transition">Exchange Policy</Link></li>
+                            <li><Link href="/termsandconditions" className="hover:text-[#EFAF00] transition">Terms & Conditions</Link></li>
+                            <li><Link href="/exchangemyorder" className="hover:text-[#EFAF00] transition">Exchange My Order</Link></li>
                         </ul>
                     </div>
                 </div>
@@ -125,7 +125,7 @@ const Footer = () => {
                 <div className="flex flex-col sm:flex-row justify-between items-center text-sm px-10 py-5">
                     <p className="text-center sm:text-left  sm:mb-0">
                         © 2025 RAAMYA. All Rights Reserved.
-                        <Link href="/termsandconditions" className="text-yellow-500 hover:underline ">Terms and Conditions applied</Link> | <Link href="/exchangepolicy" className="text-yellow-500 hover:underline ">Exchange Policy</Link> | Made in India 
+                        <Link href="/termsandconditions" className="text-[#EFAF00] hover:underline ">Terms and Conditions applied</Link> | <Link href="/exchangepolicy" className="text-[#EFAF00] hover:underline ">Exchange Policy</Link> | Made in India 
                         {/* <Image width={100} height={100} src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Flag_of_India.svg/800px-Flag_of_India.svg.png?20240117202436" alt="Visa" className="h-8 w-14 bg-white p-1 hover:scale-110  transition-all duration-300  object-contain" /> */}
                     </p>
                     <div className="flex items-center space-x-4">

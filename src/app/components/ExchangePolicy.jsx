@@ -4,27 +4,27 @@ import React from 'react';
 
 const ExchangePolicy = () => {
   return (
-    <div className="bg-black text-yellow-400 pt-10 text-justify font-redhead">
+    <div className="bg-black text-[#EFAF00] pt-10  font-redhead">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         {/* Breadcrumbs */}
         <nav className="text-lg mb-8">
-          <Link href="/homepage" className="hover:text-white">Home</Link>
+          <Link href="/homepage" className="hover:text-white cursor-pointer">Home</Link>
           <span className="mx-2">/</span>
-          <span className="text-yellow-400 font-bold">Exchange Policy</span>
+          <span className="text-[#EFAF00] font-bold">Exchange Policy</span>
         </nav>
 
-        <h1 className="text-4xl font-bold text-yellow-500 mb-8">Exchange Policy</h1>
+        <h1 className="lg:text-4xl text-2xl font-bold text-[#EFAF00] mb-8">Exchange Policy</h1>
 
         <p className="mb-6 leading-relaxed">
           Thank you for your purchase with RAAMYA. We are committed to providing you with high-quality products. Please review our exchange policy carefully, as it outlines the conditions for all product exchanges.
         </p>
-        <p className="mb-10 leading-relaxed font-semibold">
+        <p className="lg:mb-10 mb-5 leading-relaxed font-semibold">
           This is an exchange-only policy. We do not offer returns or refunds for any purchases.
         </p>
 
         {/* Exchange Eligibility Window Section */}
-        <div className="mb-10">
-          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">Exchange Eligibility Window</h2>
+        <div className="lg:mb-10 mb-5">
+          <h2 className="text-2xl font-semibold text-[#EFAF00] mb-4">1. Exchange Eligibility Window</h2>
           <p className="leading-relaxed">
             An exchange is only valid for 3 days from the date of product delivery.
           </p>
@@ -34,8 +34,8 @@ const ExchangePolicy = () => {
         </div>
 
         {/* Exchange Conditions Section */}
-        <div className="mb-10">
-          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">Exchange Conditions</h2>
+        <div className="lg:mb-10 mb-5">
+          <h2 className="text-2xl font-semibold text-[#EFAF00] mb-4">2. Exchange Conditions</h2>
           <p className="mb-4">To be eligible for an exchange, all products must meet the following criteria:</p>
           <ul className="list-disc list-inside space-y-4 pl-4">
             <li>
@@ -57,8 +57,8 @@ const ExchangePolicy = () => {
         </div>
 
         {/* Exchange Process Section */}
-        <div className="mb-10">
-          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">Exchange Process</h2>
+        <div className="lg:mb-10 mb-5">
+          <h2 className="text-2xl font-semibold text-[#EFAF00] mb-4">3. Exchange Process</h2>
           <ol className="list-decimal list-inside space-y-3 pl-4">
             <li>
               <strong>Initiate Request:</strong> Within the 3-day exchange window, please contact our customer support team to inform us of your intention to exchange the product.
@@ -73,8 +73,8 @@ const ExchangePolicy = () => {
         </div>
         
         {/* Non-Compliance Section */}
-        <div className="mb-10">
-          <h2 className="text-2xl font-semibold text-yellow-500 mb-4">Non-Compliance</h2>
+        <div className="lg:mb-10 mb-5">
+          <h2 className="text-2xl font-semibold text-[#EFAF00] mb-4">4. Non-Compliance</h2>
           <p className="leading-relaxed">
             If a product sent for exchange does not comply with the above policy, we will not process the exchange, and the product will be shipped back to you at your expense.
           </p>

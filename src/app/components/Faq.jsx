@@ -88,17 +88,17 @@ export default function FAQ() {
   };
 
   return (
-    <div className="bg-black text-yellow-400  pt-10 text-justify font-redhead ">
+    <div className="bg-black text-[#EFAF00]  pt-10 px-5 lg:px-0 text-justify font-redhead ">
       <div className="max-w-7xl mx-auto">
         {/* Breadcrumbs */}
         <nav className="text-lg mb-8">
-          <Link href="/homepage" className="hover:text-white">Home</Link>
+          <Link href="/homepage" className="hover:text-white cursor-pointer">Home</Link>
           <span className="mx-2">/</span>
-          <span className="text-yellow-400 font-bold ">FAQs</span>
+          <span className="text-[#EFAF00] font-bold ">FAQs</span>
         </nav>
 
         {/* Main Title */}
-        <h1 className="text-4xl sm:text-5xl font-bold text-amber-400 mb-8">
+        <h1 className="text-4xl sm:text-5xl font-bold text-[#EFAF00] mb-8">
           FAQs
         </h1>
 

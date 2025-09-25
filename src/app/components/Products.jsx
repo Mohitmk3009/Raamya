@@ -1,26 +1,24 @@
 'use client';
-import Image from 'next/image';
 import React, { useState, useEffect, Suspense } from 'react';
-import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-
+import Lottie from 'lottie-react';
+import Loader from '../../../public/lottie/Loading.json';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // --- ICONS ---
 const SearchIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
 );
 const ChevronRightIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="9 18 15 12 9 6"></polyline></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="9 18 15 12 9 6"></polyline></svg>
 );
 const ChevronLeftIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="15 18 9 12 15 6"></polyline></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="15 18 9 12 15 6"></polyline></svg>
 );
 const FilterIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon></svg>
 );
 const XIcon = (props) => (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
 );
 
 // --- MODIFIED: Grid layout icons to show lines ---
@@ -43,7 +41,7 @@ const Grid4Icon = (props) => (
 
 // Icon for 6-column layout ("6 vertical line" style)
 const Grid6Icon = (props) => (
-    <svg xmlns="http://www.w.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
         <line x1="4" y1="3" x2="4" y2="21"></line>
         <line x1="8" y1="3" x2="8" y2="21"></line>
         <line x1="12" y1="3" x2="12" y2="21"></line>
@@ -58,19 +56,19 @@ const ProductCard = ({ product }) => {
     const [isHovered, setIsHovered] = useState(false);
     return (
         <div className="text-gray-300 group font-redhead" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-            <Link href={`/product/${product._id}`} className="block overflow-hidden mb-4 border border-gray-800">
-                <Image
+            <a href={`/product/${product._id}`} className="block overflow-hidden mb-4 border border-gray-800">
+                <img
                     width={1000}
                     height={1000}
                     src={isHovered && product.images[1] ? product.images[1] : product.images[0]}
                     alt={product.name}
                     className="w-full h-auto max-h-[500px] object-cover transform transition-transform duration-500 ease-in-out group-hover:scale-110"
                 />
-            </Link>
+            </a>
             <p className="text-sm text-[#FFBB00]">{product.category}</p>
             <div className='flex justify-between items-center text-lg'>
                 <h3 className="font-medium mb-1">{product.name}</h3>
-                <p className="font-semibold text-yellow-500">₹{product.price}</p>
+                <p className="font-semibold text-[#EFAF00]">₹{product.price}</p>
             </div>
         </div>
     );
@@ -112,7 +110,7 @@ const Sidebar = ({ filters, setFilters, maxProductPrice }) => {
                 <h3 className="font-bold mb-4 text-2xl text-[#FFBB00]">FILTERS</h3>
                 <div className="mb-6">
                     <h4 className="font-medium mb-3 text-[#FFBB00]">SIZE</h4>
-                    <div className="flex flex-wrap gap-2">{SIZES.map(size => <button key={size} onClick={() => handleSizeSelect(size)} className={`w-10 h-10 border text-sm transition ${filters.selectedSize === size ? 'bg-yellow-500 border-yellow-500 text-black' : 'border-gray-700 hover:bg-gray-700'}`}>{size}</button>)}</div>
+                    <div className="flex flex-wrap gap-2">{SIZES.map(size => <button key={size} onClick={() => handleSizeSelect(size)} className={`w-10 h-10 border text-sm transition ${filters.selectedSize === size ? 'bg-[#EFAF00] border-[#EFAF00] text-black' : 'border-gray-700 hover:bg-gray-700'}`}>{size}</button>)}</div>
                 </div>
                 <FilterAccordion title="Availability" defaultOpen={true}>
                     <div className="space-y-2">
@@ -127,7 +125,7 @@ const Sidebar = ({ filters, setFilters, maxProductPrice }) => {
                 </FilterAccordion>
                 <FilterAccordion title="Price Range" defaultOpen={true}>
                     <div className="px-1 pt-2">
-                        <input type="range" min="0" max={maxProductPrice} value={filters.maxPrice} onChange={handlePriceChange} className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-yellow-500" />
+                        <input type="range" min="0" max={maxProductPrice} value={filters.maxPrice} onChange={handlePriceChange} className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#EFAF00]" />
                         <div className="flex justify-between text-xs text-gray-400 mt-2"><span>₹0</span><span>₹{filters.maxPrice}</span></div>
                     </div>
                 </FilterAccordion>
@@ -138,10 +136,6 @@ const Sidebar = ({ filters, setFilters, maxProductPrice }) => {
 
 // --- Inner component that contains the page logic ---
 function ProductsContent() {
-    const searchParams = useSearchParams();
-    const categoryFromUrl = searchParams.get('category');
-    const sortByFromUrl = searchParams.get('sortBy');
-    const filterFromUrl = searchParams.get('filter');
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState(1);
@@ -149,13 +143,14 @@ function ProductsContent() {
     const maxProductPrice = 50000;
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [gridCols, setGridCols] = useState(3);
+    const [mobileGridCols, setMobileGridCols] = useState(1);
 
     const [filters, setFilters] = useState({
         keyword: '',
-        sortBy: sortByFromUrl || 'default',
+        sortBy: 'default',
         selectedSize: null,
         availability: { inStock: false, outOfStock: false },
-        selectedCategories: categoryFromUrl ? [categoryFromUrl] : [],
+        selectedCategories: [],
         maxPrice: maxProductPrice,
     });
 
@@ -166,10 +161,7 @@ function ProductsContent() {
 
             if (filters.keyword) params.append('keyword', filters.keyword);
             if (filters.sortBy !== 'default') params.append('sortBy', filters.sortBy);
-            
-            if (filterFromUrl) {
-                params.append('filter', filterFromUrl);
-            }
+
             if (filters.selectedSize) params.append('size', filters.selectedSize);
 
             const { inStock } = filters.availability;
@@ -195,7 +187,7 @@ function ProductsContent() {
         };
 
         fetchProducts();
-    }, [filters, page, searchParams]);
+    }, [filters, page]);
 
     useEffect(() => {
         setPage(1);
@@ -224,6 +216,11 @@ function ProductsContent() {
         6: 'lg:grid-cols-6',
     };
 
+    const mobileGridLayoutClasses = {
+        1: 'grid-cols-1',
+        2: 'grid-cols-2',
+    };
+
     return (
         <div className="bg-black text-gray-400 lg:min-h-screen font-redhead px-5 py-10 md:p-10 pb-0">
             <div className="container mx-auto">
@@ -233,22 +230,42 @@ function ProductsContent() {
                     </div>
 
                     <main className="w-full lg:w-3/4 lg:pl-8">
+                        <div className="lg:text-lg text-sm font-bold mb-6 lg:hidden text-[#EFAF00]"><span className="font-normal hover:text-white cursor-pointer">Home /</span> Products</div>
+
                         <div className="flex justify-between items-center mb-6">
-                            <div className="lg:text-lg text-sm font-bold text-[#FFBB00]"><span className="font-normal">Home /</span> Products</div>
-                            
-                            <div className="flex items-center gap-4">
+                            <div className="lg:text-lg text-sm font-bold  hidden lg:block text-[#EFAF00]"><span className="font-normal hover:text-white cursor-pointer">Home /</span> Products</div>
+
+                            <div className="lg:flex items-center gap-4 hidden  ">
                                 <div className="hidden lg:flex items-center gap-1 border border-gray-700 p-1 rounded-md">
-                                    <button onClick={() => setGridCols(3)} className={`p-1 rounded transition-colors ${gridCols === 3 ? 'bg-gray-700 text-yellow-400' : 'text-gray-500 hover:text-white'}`}>
+                                    <button onClick={() => setGridCols(3)} className={`p-1 rounded transition-colors ${gridCols === 3 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
                                         <Grid3Icon />
                                     </button>
-                                    <button onClick={() => setGridCols(4)} className={`p-1 rounded transition-colors ${gridCols === 4 ? 'bg-gray-700 text-yellow-400' : 'text-gray-500 hover:text-white'}`}>
+                                    <button onClick={() => setGridCols(4)} className={`p-1 rounded transition-colors ${gridCols === 4 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
                                         <Grid4Icon />
                                     </button>
-                                    <button onClick={() => setGridCols(6)} className={`p-1 rounded transition-colors ${gridCols === 6 ? 'bg-gray-700 text-yellow-400' : 'text-gray-500 hover:text-white'}`}>
+                                    <button onClick={() => setGridCols(6)} className={`p-1 rounded transition-colors ${gridCols === 6 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
                                         <Grid6Icon />
                                     </button>
                                 </div>
+                                <div className="flex items-center border text-[#FFBB00] border-gray-700 p-2 rounded-md">
+                                    <label htmlFor="sort" className="mr-2 lg:text-sm text-xs">SORT BY</label>
+                                    <select id="sort" value={filters.sortBy} onChange={e => setFilters(prev => ({ ...prev, sortBy: e.target.value }))} className="bg-black text-sm outline-none">
+                                        <option value="default">Default</option>
+                                        <option value="price-asc">Price: Low to High</option>
+                                        <option value="price-desc">Price: High to Low</option>
+                                    </select>
+                                </div>
 
+                            </div>
+                            <div className="flex items-center justify-between lg:hidden w-full">
+                                <div className="lg:hidden flex items-center gap-1 border border-gray-700 p-1 rounded-md">
+                                    <button onClick={() => setMobileGridCols(1)} className={`p-1 rounded transition-colors ${mobileGridCols === 1 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
+                                        <Grid3Icon />
+                                    </button>
+                                    <button onClick={() => setMobileGridCols(2)} className={`p-1 rounded transition-colors ${mobileGridCols === 2 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
+                                        <Grid4Icon />
+                                    </button>
+                                </div>
                                 <div className="flex items-center border text-[#FFBB00] border-gray-700 p-2 rounded-md">
                                     <label htmlFor="sort" className="mr-2 lg:text-sm text-xs">SORT BY</label>
                                     <select id="sort" value={filters.sortBy} onChange={e => setFilters(prev => ({ ...prev, sortBy: e.target.value }))} className="bg-black text-sm outline-none">
@@ -262,19 +279,21 @@ function ProductsContent() {
 
                         <div className="flex flex-col md:flex-row gap-4 mb-8">
                             <div className="relative flex-grow">
-                                <input type="text" placeholder="Search Products..." value={filters.keyword} onChange={e => setFilters(prev => ({ ...prev, keyword: e.target.value }))} className="w-full bg-black border border-gray-700 text-white p-3 pl-12 focus:outline-none focus:bg-gray-900 focus:border-yellow-500 rounded-md" />
+                                <input type="text" placeholder="Search Products..." value={filters.keyword} onChange={e => setFilters(prev => ({ ...prev, keyword: e.target.value }))} className="w-full bg-black border border-gray-700 text-white p-3 pl-12 focus:outline-none focus:bg-gray-900 focus:border-[#EFAF00] rounded-md" />
                                 <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
                             </div>
-                            <button onClick={() => setIsFilterOpen(true)} className="lg:hidden flex items-center justify-center gap-2 p-3 bg-black border border-yellow-500 text-yellow-500 rounded-md font-semibold">
+                            <button onClick={() => setIsFilterOpen(true)} className="lg:hidden flex items-center justify-center gap-2 p-3 bg-black border border-[#EFAF00] text-[#EFAF00] rounded-md font-semibold">
                                 <FilterIcon size={18} />
                                 FILTERS
                             </button>
                         </div>
 
                         {loading ? (
-                            <div className="text-center py-20 text-yellow-400">Loading Products...</div>
+                            <div className="flex justify-center items-center min-h-[90vh]">
+                                <Lottie animationData={Loader} loop={true} className="lg:w-64 lg:h-64 w-40 h-40" />
+                            </div>
                         ) : products.length > 0 ? (
-                            <div className={`grid grid-cols-1 md:grid-cols-2 ${gridLayoutClasses[gridCols]} gap-6 md:gap-8`}>
+                            <div className={`grid ${mobileGridLayoutClasses[mobileGridCols]} md:grid-cols-2 ${gridLayoutClasses[gridCols]} gap-6 md:gap-8`}>
                                 {products.map(product => <ProductCard key={product._id} product={product} />)}
                             </div>
                         ) : (
@@ -282,20 +301,19 @@ function ProductsContent() {
                         )}
 
                         <div className="flex justify-center items-center lg:mt-12 lg:pb-12 mt-5 space-x-2">
-                            <button onClick={() => handleGoToPage(page - 1)} disabled={page === 1} className="p-2 border border-yellow-500 text-yellow-500 rounded-full hover:bg-yellow-500 hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed"><ChevronLeftIcon size={20} /></button>
+                            <button onClick={() => handleGoToPage(page - 1)} disabled={page === 1} className="p-2 border border-[#EFAF00] text-[#EFAF00] rounded-full hover:bg-[#EFAF00] hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed"><ChevronLeftIcon size={20} /></button>
                             {pages > 1 && Array.from({ length: pages }, (_, i) => i + 1).map(pageNum => (
-                                <button key={pageNum} onClick={() => handleGoToPage(pageNum)} className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-medium transition ${page === pageNum ? 'bg-yellow-500 text-black' : 'bg-gray-800 text-gray-300 hover:bg-yellow-500 hover:text-black'}`}>{pageNum}</button>
+                                <button key={pageNum} onClick={() => handleGoToPage(pageNum)} className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-medium transition ${page === pageNum ? 'bg-[#EFAF00] text-black' : 'bg-gray-800 text-gray-300 hover:bg-[#EFAF00] hover:text-black'}`}>{pageNum}</button>
                             ))}
-                            <button onClick={() => handleGoToPage(page + 1)} disabled={page === pages || pages === 0} className="p-2 border border-yellow-500 text-yellow-500 rounded-full hover:bg-yellow-500 hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed"><ChevronRightIcon size={20} /></button>
+                            <button onClick={() => handleGoToPage(page + 1)} disabled={page === pages || pages === 0} className="p-2 border border-[#EFAF00] text-[#EFAF00] rounded-full hover:bg-[#EFAF00] hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed"><ChevronRightIcon size={20} /></button>
                         </div>
                     </main>
                 </div>
             </div>
 
             <div
-                className={`fixed inset-0 z-50 transition-opacity duration-300 ease-in-out lg:hidden ${
-                    isFilterOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
-                }`}
+                className={`fixed inset-0 z-50 transition-opacity duration-300 ease-in-out lg:hidden ${isFilterOpen ? 'opacity-100 visible' : 'opacity-0 invisible'
+                    }`}
                 aria-hidden={!isFilterOpen}
             >
                 <div
@@ -303,12 +321,11 @@ function ProductsContent() {
                     onClick={() => setIsFilterOpen(false)}
                 ></div>
                 <div
-                    className={`relative w-full max-w-xs bg-black h-full shadow-xl flex flex-col transition-transform duration-300 ease-in-out ${
-                        isFilterOpen ? 'translate-x-0' : '-translate-x-full'
-                    }`}
+                    className={`relative w-full max-w-xs bg-black h-full shadow-xl flex flex-col transition-transform duration-300 ease-in-out ${isFilterOpen ? 'translate-x-0' : '-translate-x-full'
+                        }`}
                 >
                     <div className="flex justify-between items-center p-4 border-b border-gray-800">
-                        <h2 className="text-lg font-bold text-yellow-500">Filters</h2>
+                        <h2 className="text-lg font-bold text-[#EFAF00]">Filters</h2>
                         <button onClick={() => setIsFilterOpen(false)} className="p-1 text-gray-400 hover:text-white">
                             <XIcon size={24} />
                         </button>
@@ -319,7 +336,7 @@ function ProductsContent() {
                     <div className="p-4 border-t border-gray-800">
                         <button
                             onClick={() => setIsFilterOpen(false)}
-                            className="w-full bg-yellow-500 text-black font-bold py-3 rounded-md hover:bg-yellow-600 transition-colors"
+                            className="w-full bg-[#EFAF00] text-black font-bold py-3 rounded-md hover:bg-yellow-600 transition-colors"
                         >
                             Show Results
                         </button>
@@ -334,10 +351,11 @@ function ProductsContent() {
 export default function ProductsPage() {
     return (
         <Suspense fallback={
-            <div className="bg-black text-yellow-400 min-h-screen flex items-center justify-center font-redhead">
-                <p className="text-xl">Loading Page...</p>
+            <div className="flex justify-center items-center min-h-[90vh]">
+                <Lottie animationData={Loader} loop={true} className="lg:w-64 lg:h-64 w-40 h-40" />
             </div>
         }>
+
             <ProductsContent />
         </Suspense>
     );

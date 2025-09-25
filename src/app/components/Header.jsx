@@ -63,9 +63,9 @@ export default function Header() {
                 .font-black-no7-style { font-family: 'Black No.7'; }
             `}</style>
 
-            <header className="bg-black text-yellow-400 shadow-md w-full font-redhead sticky top-0 z-50">
+            <header className="bg-black text-[#EFAF00] shadow-md w-full font-redhead sticky top-0 z-50">
                 <div className="mx-auto flex items-center justify-between md:p-4 p-2">
-                    <div className="text-3xl md:text-5xl font-bold tracking-wider bg-gradient-to-b text-transparent bg-clip-text from-yellow-400 md:mt-[-10px] mt-[-5px] to-yellow-800">
+                    <div className="text-3xl md:text-5xl font-bold tracking-wider bg-gradient-to-b text-transparent bg-clip-text from-[#EFAF00] md:mt-[-10px] mt-[-5px] to-yellow-800">
                         <Link href="/homepage">RAAMYA</Link>
                     </div>
 
@@ -84,7 +84,7 @@ export default function Header() {
                                             <Link
                                                 key={category}
                                                 href={{ pathname: '/allproducts', query: { category: category } }}
-                                                className="block px-4 py-2 text-sm text-yellow-400 hover:bg-gray-800 hover:text-white"
+                                                className="block px-4 py-2 text-sm text-[#EFAF00] hover:bg-gray-800 hover:text-white"
                                                 onClick={() => setIsDropdownOpen(false)}>
                                                 {category}
                                             </Link>
@@ -97,7 +97,7 @@ export default function Header() {
                     </nav>
 
                     <div className="hidden lg:flex items-center space-x-4">
-                        <Link href="/cart" className='relative rounded-full bg-yellow-400 p-2 hover:scale-110 transition-all duration-300'>
+                        <Link href="/cart" className='relative rounded-full bg-[#EFAF00] p-2 hover:scale-110 transition-all duration-300'>
                             <Image width={30} height={30} src={bag} alt="Shopping Cart Icon" className="w-6 h-6" />
                             {cartItemCount > 0 && (
                                 <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-xs font-bold text-white">
@@ -118,7 +118,7 @@ export default function Header() {
                     </div>
 
                     <div className="lg:hidden">
-                        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="relative z-50 h-8 w-8 text-yellow-400" aria-label="Toggle menu">
+                        <button onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} className="relative z-50 h-8 w-8 text-[#EFAF00]" aria-label="Toggle menu">
                             <MenuIcon className={`absolute transition-all mt-[-12px] duration-300 transform ${isMobileMenuOpen ? 'rotate-180 opacity-0' : 'rotate-0 opacity-100'}`} />
                             <CloseIcon className={`absolute transition-all mt-[-12px] duration-300 transform ${isMobileMenuOpen ? 'rotate-0 opacity-100' : '-rotate-180 opacity-0'}`} />
                         </button>
@@ -132,7 +132,7 @@ export default function Header() {
                 className={`fixed top-12 right-0 z-40 bg-black/80 backdrop-blur-sm h-screen w-[60vw] transition-transform duration-500 ease-in-out lg:hidden ${isMobileMenuOpen ? "-translate-x-0" : "translate-x-full"
                     }`}
             >
-                <nav className="flex flex-col items-start w-full  text-base tracking-widest text-yellow-400 font-redhead lg:text-xl">
+                <nav className="flex flex-col items-start w-full  text-base tracking-widest text-[#EFAF00] font-redhead lg:text-xl">
 
                     {/* MODIFIED: Added text-right */}
                     <Link
@@ -184,7 +184,7 @@ export default function Header() {
                                     <Link
                                         key={category}
                                         href={{ pathname: "/allproducts", query: { category } }}
-                                        className="text-base text-yellow-400/80 hover:text-white"
+                                        className="text-base text-[#EFAF00]/80 hover:text-white"
                                         onClick={closeMobileMenu}
                                     >
                                         {category}

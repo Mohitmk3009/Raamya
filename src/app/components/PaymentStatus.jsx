@@ -76,7 +76,7 @@
 //     <div className="mt-12 flex flex-col items-center space-y-4">
 //       <button
 //         onClick={onRetry}
-//         className="bg-yellow-500 text-black font-bold py-3 px-16 rounded-lg text-lg hover:bg-yellow-600 transition-colors duration-300"
+//         className="bg-[#EFAF00] text-black font-bold py-3 px-16 rounded-lg text-lg hover:bg-yellow-600 transition-colors duration-300"
 //       >
 //         Pay Now
 //       </button>
@@ -112,14 +112,14 @@
 //       exit={{ opacity: 0 }}
 //     >
 //       <motion.div
-//         className="relative w-full max-w-lg mx-auto bg-black border border-yellow-500/50 rounded-2xl shadow-[0_0_20px_theme(colors.yellow.500/0.5)] p-8 text-center text-yellow-200"
+//         className="relative w-full max-w-lg mx-auto bg-black border border-[#EFAF00]/50 rounded-2xl shadow-[0_0_20px_theme(colors.yellow.500/0.5)] p-8 text-center text-yellow-200"
 //         initial={{ scale: 0.5, opacity: 0 }}
 //         animate={{ scale: 1, opacity: 1 }}
 //         exit={{ scale: 0.5, opacity: 0 }}
 //         transition={{ duration: 0.4, ease: 'easeOut', type: 'spring', stiffness: 200 }}
 //       >
 //         <h2 className="text-4xl font-bold mb-2">COMPLETE !!</h2>
-//         <div className="bg-black/80 backdrop-blur-sm border border-yellow-500/30 rounded-lg p-6">
+//         <div className="bg-black/80 backdrop-blur-sm border border-[#EFAF00]/30 rounded-lg p-6">
 //           <h3 className="text-3xl font-semibold">Thank you!</h3>
 //           <p className="text-2xl mt-1 mb-6">Your order has been received</p>
 
@@ -129,9 +129,9 @@
 //                 <img
 //                   src={item.src}
 //                   alt={`Order item ${item.id}`}
-//                   className="w-24 h-24 object-cover rounded-lg border-2 border-yellow-500/50"
+//                   className="w-24 h-24 object-cover rounded-lg border-2 border-[#EFAF00]/50"
 //                 />
-//                 <span className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full border-2 border-black">
+//                 <span className="absolute -top-2 -right-2 bg-[#EFAF00] text-black text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full border-2 border-black">
 //                   {item.id}
 //                 </span>
 //               </div>
@@ -146,7 +146,7 @@
 //           </div>
 
 //           <a href="/allproducts">
-//             <button className="mt-8 bg-yellow-500 cursor-pointer text-black font-bold py-3 px-10 rounded-full text-lg hover:bg-yellow-600 transition-colors duration-300 border border-yellow-700 shadow-[0_0_10px_theme(colors.yellow.500/0.7)]">
+//             <button className="mt-8 bg-[#EFAF00] cursor-pointer text-black font-bold py-3 px-10 rounded-full text-lg hover:bg-yellow-600 transition-colors duration-300 border border-yellow-700 shadow-[0_0_10px_theme(colors.yellow.500/0.7)]">
 //               Continue Shopping
 //             </button>
 //           </a>
@@ -204,12 +204,13 @@
 //   );
 // }
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Lottie from 'lottie-react';
 import successAnimation from '../../../public/lottie/Success.json'; // Adjust path if needed
 import errorAnimation from '../../../public/lottie/Error.json'; // Adjust path if needed
+import toast, { Toaster } from 'react-hot-toast';
 // import Image from 'next/image';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // --- SUB-COMPONENTS ---
@@ -236,7 +237,7 @@ const PaymentFailed = ({ onRetry }) => (
     <ErrorIcon />
     <h1 className="text-4xl font-bold text-red-500 mb-4">Sorry, Payment Failed</h1>
     <div className="mt-12 flex flex-col items-center space-y-4">
-      <button onClick={onRetry} className="bg-yellow-500 text-black font-bold py-3 px-16 rounded-lg text-lg hover:bg-yellow-600">Try Payment Again</button>
+      <button onClick={onRetry} className="bg-[#EFAF00] text-black font-bold py-3 px-16 rounded-lg text-lg hover:bg-yellow-600">Try Payment Again</button>
     </div>
   </div>
 );
@@ -251,7 +252,7 @@ const OrderModal = ({ order }) => {
   exit={{ opacity: 0 }}
 >
   <motion.div
-    className="relative w-full max-w-lg mx-auto bg-black border text-yellow-400 border-yellow-500/50 rounded-2xl p-4"
+    className="relative w-full max-w-lg mx-auto bg-black border text-[#EFAF00] border-[#EFAF00]/50 rounded-2xl p-4"
     initial={{ scale: 0.5, opacity: 0 }}
     animate={{ scale: 1, opacity: 1 }}
     exit={{ scale: 0.5, opacity: 0 }}
@@ -261,7 +262,7 @@ const OrderModal = ({ order }) => {
 
    
 
-    <div className="bg-black/80 backdrop-blur-sm border  border-yellow-500/30 rounded-lg p-6">
+    <div className="bg-black/80 backdrop-blur-sm border  border-[#EFAF00]/30 rounded-lg p-6">
       <h3 className="text-3xl text-center font-semibold">Thank you!</h3>
       <p className="lg:text-2xl text-xl text-center mt-1 whitespace-nowrap mb-6">Your order has been received</p>
 
@@ -290,7 +291,7 @@ const OrderModal = ({ order }) => {
         {order.orderItems?.map((item, idx) => (
           <div
             key={idx}
-            className="flex items-center gap-4 border border-yellow-500/20 rounded-lg p-3"
+            className="flex items-center gap-4 border border-[#EFAF00]/20 rounded-lg p-3"
           >
             <img
               src={item.image}
@@ -302,14 +303,14 @@ const OrderModal = ({ order }) => {
               <p className="text-sm text-yellow-200/80">
                 Size: {item.size} | Qty: {item.qty}
               </p>
-              <p className="text-yellow-400 font-bold">Rs {item.price}</p>
+              <p className="text-[#EFAF00] font-bold">Rs {item.price}</p>
             </div>
           </div>
         ))}
       </div>
 
       <a href="/allproducts">
-        <button className="mt-8 bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg text-lg w-full">
+        <button className="mt-8 bg-[#EFAF00] hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg text-lg w-full">
           Continue Shopping
         </button>
       </a>
@@ -317,54 +318,7 @@ const OrderModal = ({ order }) => {
   </motion.div>
 </motion.div>
 
-    // <motion.div
-    //   className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 font-redhead"
-    //   initial={{ opacity: 0 }}
-    //   animate={{ opacity: 1 }}
-    //   exit={{ opacity: 0 }}
-    // >
-    //   <motion.div
-    //     className="relative w-full max-w-lg mx-auto bg-black border border-yellow-500/50 rounded-2xl shadow-[0_0_20px_theme(colors.yellow.500/0.5)] p-8 text-center text-yellow-200"
-    //     initial={{ scale: 0.5, opacity: 0 }}
-    //     animate={{ scale: 1, opacity: 1 }}
-    //     exit={{ scale: 0.5, opacity: 0 }}
-    //     transition={{ duration: 0.4, ease: 'easeOut', type: 'spring', stiffness: 200 }}
-    //   >
-    //     <h2 className="text-4xl font-bold mb-2">COMPLETE !!</h2>
-    //     <div className="bg-black/80 backdrop-blur-sm border border-yellow-500/30 rounded-lg p-6">
-    //       <h3 className="text-3xl font-semibold">Thank you!</h3>
-    //       <p className="text-2xl mt-1 mb-6">Your order has been received</p>
-    //       <div className="flex justify-center space-x-4 mb-6">
-    //           <div key={item.id} className="relative">
-    //             <Image
-    //             width={100}
-    //             height={100}
-    //               src={item.src}
-    //               alt={`Order item ${item.id}`}
-    //               className="w-24 h-24 object-cover rounded-lg border-2 border-yellow-500/50"
-    //             />
-    //             <span className="absolute -top-2 -right-2 bg-yellow-500 text-black text-xs font-bold w-6 h-6 flex items-center justify-center rounded-full border-2 border-black">
-    //               {item.id}
-    //             </span>
-    //           </div>
-            
-    //       </div>
-
-    //       <div className="text-left space-y-2 text-yellow-100/80">
-    //         <div className="flex justify-between"><span className="font-semibold">Order Code :</span><span>{order._id}</span></div>
-    //         <div className="flex justify-between"><span className="font-semibold">Date :</span><span>{new Date(order.createdAt).toLocaleDateString()}</span></div>
-    //         <div className="flex justify-between"><span className="font-semibold">Total :</span><span>Rs {order.totalPrice.toLocaleString()}</span></div>
-    //         <div className="flex justify-between"><span className="font-semibold">Payment Method :</span><span>{order.paymentMethod}</span></div>
-    //       </div>
-
-    //       <a href="/allproducts">
-    //         <button className="mt-8 bg-yellow-500 cursor-pointer text-black font-bold py-3 px-10 rounded-full text-lg hover:bg-yellow-600 transition-colors duration-300 border border-yellow-700 shadow-[0_0_10px_theme(colors.yellow.500/0.7)]">
-    //           Continue Shopping
-    //         </button>
-    //       </a>
-    //     </div>
-    //   </motion.div>
-    // </motion.div>
+    
   );
 };
 
@@ -375,6 +329,7 @@ export default function PaymentResultPage() {
   const { orderId, status } = params;
   const [showModal, setShowModal] = useState(false);
   const [order, setOrder] = useState(null);
+ const toastShown = useRef(false); // <- add this
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -396,14 +351,27 @@ export default function PaymentResultPage() {
   };
 
   // Only show the modal for COD orders for now, as UPI success is handled on the other page
+
   const handleAnimationEnd = () => {
     if (order) {
       setShowModal(true);
+
+      // Only show toast once
+      if (!toastShown.current) {
+        toastShown.current = true;
+        toast.success("Order details have been sent to your email!", { duration: 5000 });
+      }
+
+      // Redirect after 5 seconds
+      setTimeout(() => {
+        router.replace('/allproducts');
+      }, 10000);
     }
   };
 
   return (
-    <main className="bg-black lg:min-h-[80vh] min-h-screen flex items-center justify-center relative font-redhead">
+    <main className="bg-black lg:min-h-[90vh] min-h-screen flex items-center justify-center relative font-redhead">
+      <Toaster position="top-center" />
       <div className="w-full max-w-4xl mx-auto">
         {status === 'success' ? <PaymentSuccess onAnimationEnd={handleAnimationEnd} /> : <PaymentFailed onRetry={handleRetry} />}
       </div>

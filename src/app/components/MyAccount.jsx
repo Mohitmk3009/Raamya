@@ -1,22 +1,25 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { useAuth } from '../context/AuthContext';
-import { useRouter } from 'next/navigation';
 
+import React, { useState, useEffect } from 'react';
+// Replaced next/link with <a> and useRouter with window.location.href for standalone use
+import toast, { Toaster } from 'react-hot-toast';
+import Lottie from 'lottie-react';
+import Loader from '../../../public/lottie/Loading.json';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // --- ICONS ---
-const ChevronRightIcon = (props) => ( <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-5 -5 34 34" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="9 18 15 12 9 6"></polyline></svg> );
-const ChevronLeftIcon = (props) => ( <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-5 -5 34 34" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="15 18 9 12 15 6"></polyline></svg> );
+const ChevronRightIcon = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-5 -5 34 34" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="9 18 15 12 9 6"></polyline></svg>);
+const ChevronLeftIcon = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-5 -5 34 34" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="15 18 9 12 15 6"></polyline></svg>);
 
 // --- SUB-COMPONENTS ---
 
 const AccountDetails = ({ user }) => {
     const [profileData, setProfileData] = useState({ name: '', email: '', phone: '' });
     const [passwordData, setPasswordData] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' });
-    const [profileMessage, setProfileMessage] = useState({ text: '', type: '' });
-    const [passwordMessage, setPasswordMessage] = useState({ text: '', type: '' });
+
+    // We no longer need these state variables
+    // const [profileMessage, setProfileMessage] = useState({ text: '', type: '' });
+    // const [passwordMessage, setPasswordMessage] = useState({ text: '', type: '' });
 
     useEffect(() => {
         if (user) {
@@ -27,7 +30,7 @@ const AccountDetails = ({ user }) => {
             });
         }
     }, [user]);
-
+    console.log(user);
     const handleProfileChange = (e) => {
         setProfileData({ ...profileData, [e.target.name]: e.target.value });
     };
@@ -37,7 +40,7 @@ const AccountDetails = ({ user }) => {
 
     const handleProfileSubmit = async (e) => {
         e.preventDefault();
-        setProfileMessage({ text: 'Saving...', type: 'info' });
+        const toastId = toast.loading('Saving profile...'); // Show loading toast
         const token = localStorage.getItem('authToken');
         try {
             const res = await fetch(`${API_BASE_URL}/users/me`, {
@@ -47,17 +50,17 @@ const AccountDetails = ({ user }) => {
             });
             const data = await res.json();
             if (!res.ok) { throw new Error(data.message || 'Failed to update profile.'); }
-            setProfileMessage({ text: 'Profile updated successfully!', type: 'success' });
+            toast.success('Profile updated successfully!', { id: toastId }); // Update to success toast
         } catch (error) {
-            setProfileMessage({ text: error.message, type: 'error' });
+            toast.error(error.message, { id: toastId }); // Update to error toast
         }
     };
 
     const handlePasswordSubmit = async (e) => {
         e.preventDefault();
-        setPasswordMessage({ text: 'Updating...', type: 'info' });
+        const toastId = toast.loading('Updating password...'); // Show loading toast
         if (passwordData.newPassword !== passwordData.confirmPassword) {
-            setPasswordMessage({ text: 'New passwords do not match.', type: 'error' });
+            toast.error('New passwords do not match.', { id: toastId }); // Update to error toast
             return;
         }
         const token = localStorage.getItem('authToken');
@@ -69,18 +72,18 @@ const AccountDetails = ({ user }) => {
             });
             const data = await res.json();
             if (!res.ok) { throw new Error(data.message || 'Failed to change password.'); }
-            setPasswordMessage({ text: 'Password changed successfully!', type: 'success' });
+            toast.success('Password changed successfully!', { id: toastId }); // Update to success toast
             setPasswordData({ oldPassword: '', newPassword: '', confirmPassword: '' });
         } catch (error) {
-            setPasswordMessage({ text: error.message, type: 'error' });
+            toast.error(error.message, { id: toastId }); // Update to error toast
         }
     };
 
     return (
         <div className="w-full">
-            <h2 className="text-2xl font-bold text-yellow-400 mb-6 font-redhead">ACCOUNT DETAILS</h2>
+            <h2 className="text-2xl font-bold text-[#EFAF00] mb-6 font-redhead">ACCOUNT DETAILS</h2>
             <form onSubmit={handleProfileSubmit} className="space-y-6 bg-gray-900 p-6 rounded-lg border border-gray-700 mb-8">
-                {profileMessage.text && (<p className={`text-center text-sm ${profileMessage.type === 'success' ? 'text-green-400' : profileMessage.type === 'error' ? 'text-red-400' : 'text-blue-400'}`}>{profileMessage.text}</p>)}
+                {/* The old message display element has been removed */}
                 <div>
                     <label className="block text-white mb-2" htmlFor="name">Display Name *</label>
                     <input type="text" id="name" name="name" placeholder="Your Name" value={profileData.name} onChange={handleProfileChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" required />
@@ -93,15 +96,15 @@ const AccountDetails = ({ user }) => {
                     <label className="block text-white mb-2" htmlFor="phone">Mobile Number</label>
                     <input type="tel" id="phone" name="phone" placeholder="Your Mobile Number" value={profileData.phone} onChange={handleProfileChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
                 </div>
-                <button type="submit" className="bg-yellow-400 text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">SAVE CHANGES</button>
+                <button type="submit" className="bg-[#EFAF00] text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">SAVE CHANGES</button>
             </form>
             <form onSubmit={handlePasswordSubmit} className="space-y-6 bg-gray-900 p-6 rounded-lg border border-gray-700">
-                <h3 className="text-xl font-bold text-yellow-400">CHANGE PASSWORD</h3>
-                {passwordMessage.text && (<p className={`text-center text-sm ${passwordMessage.type === 'success' ? 'text-green-400' : passwordMessage.type === 'error' ? 'text-red-400' : 'text-blue-400'}`}>{passwordMessage.text}</p>)}
+                <h3 className="text-xl font-bold text-[#EFAF00]">CHANGE PASSWORD</h3>
+                {/* The old message display element has been removed */}
                 <input type="password" name="oldPassword" placeholder="Current Password" value={passwordData.oldPassword} onChange={handlePasswordChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" required />
                 <input type="password" name="newPassword" placeholder="New Password" value={passwordData.newPassword} onChange={handlePasswordChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" required />
                 <input type="password" name="confirmPassword" placeholder="Confirm New Password" value={passwordData.confirmPassword} onChange={handlePasswordChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" required />
-                <button type="submit" className="bg-yellow-400 text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">CHANGE PASSWORD</button>
+                <button type="submit" className="bg-[#EFAF00] text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">CHANGE PASSWORD</button>
             </form>
         </div>
     );
@@ -115,7 +118,7 @@ const AddressModal = ({ onClose, onSave }) => {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 font-redhead">
             <div className="bg-gray-900 rounded-lg p-8 w-full max-w-md border border-gray-700 relative">
                 <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-white text-3xl">&times;</button>
-                <h2 className="text-2xl font-bold text-yellow-400 mb-6 font-redhead">ADD NEW ADDRESS</h2>
+                <h2 className="text-2xl font-bold text-[#EFAF00] mb-6 font-redhead">ADD NEW ADDRESS</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <input type="text" name="label" placeholder="Address Label (e.g., Home, Work)" value={formData.label} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
                     <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
@@ -125,7 +128,7 @@ const AddressModal = ({ onClose, onSave }) => {
                     <input type="text" name="state" placeholder="State" value={formData.state} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
                     <input type="text" name="postalCode" placeholder="Postal Code" value={formData.postalCode} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
                     <input type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
-                    <div className="pt-4"><button type="submit" className="w-full bg-yellow-400 text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500 transition-colors">SAVE ADDRESS</button></div>
+                    <div className="pt-4"><button type="submit" className="w-full bg-[#EFAF00] text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500 transition-colors">SAVE ADDRESS</button></div>
                 </form>
             </div>
         </div>
@@ -134,11 +137,11 @@ const AddressModal = ({ onClose, onSave }) => {
 
 const Address = ({ addresses, onAddNew }) => (
     <div className="w-full ">
-        <h2 className="text-2xl font-bold text-yellow-400 mb-6 font-redhead">ADDRESS</h2>
+        <h2 className="text-2xl font-bold text-[#EFAF00] mb-6 font-redhead">ADDRESS</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
             {addresses.map(addr => (
                 <div key={addr._id} className="bg-gray-900 p-6 rounded-lg border border-gray-700">
-                    <h3 className="text-lg font-bold text-yellow-400 mb-4 uppercase">{addr.label || 'ADDRESS'}</h3>
+                    <h3 className="text-lg font-bold text-[#EFAF00] mb-4 uppercase">{addr.label || 'ADDRESS'}</h3>
                     <p className="text-white">{addr.fullName || addr.name}</p>
                     <p className="text-white">{addr.phone}</p>
                     <p className="text-gray-400">{`${addr.address || addr.street}, ${addr.city}, ${addr.state} - ${addr.postalCode || addr.zipCode}`}</p>
@@ -182,13 +185,13 @@ const Orders = ({ orders }) => {
     }
 
     return (
-        <div className="lg:min-w-[800px] w-full ">
-            <h2 className="text-2xl font-bold text-yellow-400 mb-6 font-redhead">ORDER HISTORY</h2>
-            
+        <div className="lg:min-w-[800px] min-w-[360px] w-full ">
+            <h2 className="text-2xl font-bold text-[#EFAF00] mb-6 font-redhead">ORDER HISTORY</h2>
+
             <div className="overflow-x-auto hidden md:block">
                 <table className="w-full text-left text-white align-middle">
                     <thead>
-                        <tr className="border-b border-yellow-400 text-sm">
+                        <tr className="border-b border-[#EFAF00] text-sm">
                             <th className="py-3 pr-4">ORDER ID</th>
                             <th className="py-3 pr-4">DATE</th>
                             <th className="py-3 pr-4">TOTAL</th>
@@ -214,7 +217,7 @@ const Orders = ({ orders }) => {
                                         <span className={`px-2 py-1 whitespace-nowrap text-xs rounded-full ${status.className}`}>{status.text}</span>
                                     </td>
                                     <td className="py-4 pr-4">
-                                        <Link href={`/order/${order._id}`} className="text-amber-400 hover:underline text-sm">View Details</Link>
+                                        <a href={`/order/${order._id}`} className="text-amber-400 hover:underline text-sm">View Details</a>
                                     </td>
                                 </tr>
                             );
@@ -231,7 +234,7 @@ const Orders = ({ orders }) => {
                             <div className="flex justify-between items-center mb-3 pb-3 border-b border-gray-700">
                                 <div>
                                     <span className="text-xs text-gray-400 block">ORDER ID</span>
-                                    <span className="font-mono text-sm  font-semibold">{order._id}</span>
+                                    <span className="font-mono text-sm  font-semibold">{order._id}</span>
                                 </div>
                                 <span className={`px-2 py-1 text-xs whitespace-nowrap rounded-full ${status.className}`}>{status.text}</span>
                             </div>
@@ -252,9 +255,9 @@ const Orders = ({ orders }) => {
                                     </span>
                                 </div>
                             </div>
-                            
+
                             <div className="mt-4 pt-3 text-right">
-                                <Link href={`/order/${order._id}`} className="text-amber-400 hover:underline text-sm font-semibold">View Details</Link>
+                                <a href={`/order/${order._id}`} className="text-amber-400 hover:underline text-sm font-semibold">View Details</a>
                             </div>
                         </div>
                     );
@@ -276,18 +279,28 @@ const Orders = ({ orders }) => {
 // --- MAIN MyAccountPage COMPONENT ---
 export default function MyAccountPage() {
     const [activeSection, setActiveSection] = useState('account');
-    const { logout } = useAuth();
-    const router = useRouter();
     const [user, setUser] = useState(null);
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [isAddressModalOpen, setIsAddressModalOpen] = useState(false);
 
+    // Replaced useRouter with a simple navigation function for standalone use
+    const navigateTo = (path) => {
+        window.location.href = path;
+    };
+    const logout = () => {
+        localStorage.removeItem('authToken');
+        window.location.replace('/login'); // ← use replace to prevent back navigation
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             const token = localStorage.getItem('authToken');
-            if (!token) { router.push('/login'); return; }
+            if (!token) {
+                window.location.replace('/login'); // ← replace instead of navigateTo
+                return;
+            }
             try {
                 const [userRes, ordersRes] = await Promise.all([
                     fetch(`${API_BASE_URL}/users/me`, { headers: { 'Authorization': `Bearer ${token}` } }),
@@ -295,35 +308,40 @@ export default function MyAccountPage() {
                 ]);
                 if (!userRes.ok || !ordersRes.ok) throw new Error('Failed to fetch account data.');
                 const userData = await userRes.json();
-                
+
                 const ordersData = await ordersRes.json();
                 setUser(userData);
                 setOrders(ordersData);
-            } catch (err) { setError(err.message); } 
+            } catch (err) {
+                setError(err.message);
+                toast.error(err.message);
+            }
             finally { setLoading(false); }
         };
         fetchData();
-    }, [router]);
+    }, []);
 
     const handleMenuClick = (item) => {
-        if (item === 'log out') { logout(); } 
+        if (item === 'log out') { logout(); }
         else { setActiveSection(item); }
     };
 
     const handleSaveAddress = async (formData) => {
+        const toastId = toast.loading("Saving address...");
         const token = localStorage.getItem('authToken');
         try {
             const res = await fetch(`${API_BASE_URL}/users/me/addresses`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`},
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify(formData)
             });
             const updatedAddresses = await res.json();
             if (!res.ok) throw new Error(updatedAddresses.message || "Failed to save address");
-            setUser(prevUser => ({...prevUser, addresses: updatedAddresses}));
+            setUser(prevUser => ({ ...prevUser, addresses: updatedAddresses }));
             setIsAddressModalOpen(false);
+            toast.success("Address saved successfully!", { id: toastId });
         } catch (err) {
-            alert(`Error: ${err.message}`);
+            toast.error(`Error: ${err.message}`, { id: toastId });
         }
     };
 
@@ -337,19 +355,23 @@ export default function MyAccountPage() {
         }
     };
 
-    if (loading) return <div className="text-center font-redhead text-yellow-400 py-20">Loading Your Account...</div>;
-    if (error) return <div className="text-center font-redhead text-red-500 py-20">{error}</div>;
+    if (loading) return <div className="flex justify-center items-center min-h-[90vh]">
+        <Lottie animationData={Loader} loop={true} className="lg:w-64 lg:h-64 w-40 h-40" />
+      </div>;
+    // Removed error message display here as toasts will handle it
+    // if (error) return <div className="text-center font-redhead text-red-500 py-20">{error}</div>;
 
     const menuItems = ['Account', 'Address', 'Orders', 'Log Out'];
 
     return (
         <div className="bg-black text-white min-h-screen py-12 font-redhead">
+            <Toaster position="top-center" />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <h1 className="text-4xl font-extrabold text-yellow-400 text-center mb-10">MY ACCOUNT</h1>
+                <h1 className="text-4xl font-extrabold text-[#EFAF00] text-center mb-10">MY ACCOUNT</h1>
                 <div className="flex flex-col md:flex-row gap-10">
                     <aside className="w-full md:w-[400px]">
-                        <div className="bg-gray-200  text-black p-6 rounded-2xl flex flex-col items-center">
-                            <h2 className="text-lg font-bold">{user?.name}</h2>
+                        <div className="bg-gray-200  text-black p-6 rounded-2xl flex flex-col items-center">
+                            <h2 className="text-lg text-black font-bold">{user?.name}</h2>
                             <nav className="w-full mt-4">
                                 <ul className="space-y-2">
                                     {menuItems.map(item => (

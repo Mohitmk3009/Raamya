@@ -3,9 +3,10 @@ import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
-
+import toast, { Toaster } from 'react-hot-toast'; 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
+import Lottie from 'lottie-react';
+import Loader from '../../../public/lottie/Loading.json';
 // --- ICONS ---
 const HeartIcon = ({ filled = false, ...props }) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" /></svg>);
 const StarIcon = ({ filled = true, ...props }) => (<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill={filled ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg>);
@@ -17,15 +18,15 @@ const SuggestedItem = ({ item, onCartAction, isInCart }) => {
     return (
         <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-                <Image width={48} height={48} src={item.images[0]} alt={item.name} className="w-12 h-12 rounded-md object-cover border border-yellow-500/50" />
+                <Image width={48} height={48} src={item.images[0]} alt={item.name} className="w-12 h-12 rounded-md object-cover border border-[#EFAF00]/50" />
                 <div>
                     <p className="text-sm text-gray-300">Pair it with: {item.name}</p>
-                    <p className="font-bold text-yellow-400 text-sm">₹{item.price}</p>
+                    <p className="font-bold text-[#EFAF00] text-sm">₹{item.price}</p>
                 </div>
             </div>
             <button
                 onClick={() => onCartAction(isInCart ? 'remove' : 'add', item)}
-                className={`font-bold py-2 px-4 rounded-md transition-colors text-sm ${isInCart ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-yellow-400 text-black hover:bg-yellow-300'}`}
+                className={`font-bold py-2 px-4 rounded-md transition-colors text-sm ${isInCart ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-[#EFAF00] text-black hover:bg-yellow-300'}`}
             >
                 {isInCart ? 'REMOVE' : 'ADD'}
             </button>
@@ -36,12 +37,12 @@ const SuggestedItem = ({ item, onCartAction, isInCart }) => {
 const ProductDetails = ({ product }) => (<div className="text-gray-300 leading-relaxed p-4 md:p-6 font-redhead"><h3 className="font-bold text-xl text-yellow-300 mb-4">Product Description</h3><p className="mb-4">{product.description}</p></div>);
 
 const ReviewCard = ({ review }) => (
-    <div className="border border-yellow-500/30 rounded-lg lg:p-6 p-4 flex flex-col font-redhead">
+    <div className="border border-[#EFAF00]/30 rounded-lg lg:p-6 p-4 flex flex-col font-redhead">
         <div className="flex justify-between items-start mb-3">
             <div className="flex items-center gap-2"><p className="font-bold text-white">{review.name}</p><VerifiedIcon className="text-green-500" /></div>
             <button className="text-gray-500 hover:text-white"><MoreHorizontalIcon /></button>
         </div>
-        <div className="flex items-center gap-1 mb-4 text-yellow-400">{[...Array(5)].map((_, i) => <StarIcon key={i} filled={i < review.rating} />)}</div>
+        <div className="flex items-center gap-1 mb-4 text-[#EFAF00]">{[...Array(5)].map((_, i) => <StarIcon key={i} filled={i < review.rating} />)}</div>
         <p className="text-gray-400 text-sm leading-relaxed">{review.comment}</p>
     </div>
 );
@@ -64,10 +65,10 @@ const Reviews = ({ product, onReviewSubmit }) => {
     };
     return (
         <div className="p-4 md:p-6 font-redhead">
-            <div className="flex justify-between items-center lg:mb-6 gap-4"><h3 className="font-bold lg:text-xl text-white">ALL REVIEWS ({product.reviews.length})</h3><div className="flex items-center gap-4"><select className="bg-black border border-yellow-500/30 rounded-md py-2 px-3 text-white focus:outline-none focus:border-yellow-400"><option>Latest</option><option>Highest Rated</option></select></div></div>
+            <div className="flex justify-between items-center lg:mb-6 gap-4"><h3 className="font-bold lg:text-xl text-white">ALL REVIEWS ({product.reviews.length})</h3><div className="flex items-center gap-4"><select className="bg-black border border-[#EFAF00]/30 rounded-md py-2 px-3 text-white focus:outline-none focus:border-[#EFAF00]"><option>Latest</option><option>Highest Rated</option></select></div></div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">{product.reviews.slice(0, visibleReviewCount).map(review => <ReviewCard key={review._id} review={review} />)}</div>
             {product.reviews.length > visibleReviewCount && (<div className="text-center mb-12"><button onClick={() => setVisibleReviewCount(prev => prev + 4)} className="bg-white text-black font-bold py-3 px-8 rounded-full hover:bg-[#FFBB00] hover:text-white transition-colors">Load More Reviews</button></div>)}
-            <div className="w-full mt-8"><h3 className="font-bold text-xl text-white mb-4">Write a Customer Review</h3>{error && <p className="text-red-500 mb-4">{error}</p>}<form onSubmit={handleSubmit} className="border border-yellow-500/30 rounded-lg p-6"><div className="mb-4"><label className="block text-yellow-400 mb-2">Your Rating</label><div className="flex" onMouseLeave={() => setHoverRating(0)}>{[...Array(5)].map((_, i) => (<StarIcon key={i} onClick={() => setRating(i + 1)} onMouseEnter={() => setHoverRating(i + 1)} className={`cursor-pointer ${(hoverRating || rating) > i ? 'text-yellow-400' : 'text-gray-600'}`} />))}</div></div><textarea placeholder="Write your review here" value={comment} onChange={(e) => setComment(e.target.value)} className="w-full bg-transparent text-white placeholder-gray-500 border-b border-gray-700 focus:border-yellow-400 focus:outline-none h-24 resize-none mb-4"></textarea><button type="submit" className="bg-white text-black font-bold py-3 px-8 rounded-lg hover:bg-[#FFBB00] w-full">Submit Your Review</button></form></div>
+            <div className="w-full mt-8"><h3 className="font-bold text-xl text-white mb-4">Write a Customer Review</h3>{error && <p className="text-red-500 mb-4">{error}</p>}<form onSubmit={handleSubmit} className="border border-[#EFAF00]/30 rounded-lg p-6"><div className="mb-4"><label className="block text-[#EFAF00] mb-2">Your Rating</label><div className="flex" onMouseLeave={() => setHoverRating(0)}>{[...Array(5)].map((_, i) => (<StarIcon key={i} onClick={() => setRating(i + 1)} onMouseEnter={() => setHoverRating(i + 1)} className={`cursor-pointer ${(hoverRating || rating) > i ? 'text-[#EFAF00]' : 'text-gray-600'}`} />))}</div></div><textarea placeholder="Write your review here" value={comment} onChange={(e) => setComment(e.target.value)} className="w-full bg-transparent text-white placeholder-gray-500 border-b border-gray-700 focus:border-[#EFAF00] focus:outline-none h-24 resize-none mb-4"></textarea><button type="submit" className="bg-white text-black font-bold py-3 px-8 rounded-lg hover:bg-[#FFBB00] w-full">Submit Your Review</button></form></div>
         </div>
     );
 };
@@ -76,7 +77,7 @@ const FAQ = ({ faqs }) => {
     if (!faqs || faqs.length === 0) {
         return <div className="p-4 md:p-6 text-gray-500 font-redhead">No FAQs available for this product yet.</div>;
     }
-    return (<div className="p-4 md:p-6 space-y-6 font-redhead">{faqs.map(item => (<div key={item._id} className="border-b border-yellow-500/20 pb-4"><h4 className="font-bold text-lg text-yellow-300 mb-2">{item.question}</h4><p className="text-gray-300 leading-relaxed">{item.answer}</p></div>))}</div>);
+    return (<div className="p-4 md:p-6 space-y-6 font-redhead">{faqs.map(item => (<div key={item._id} className="border-b border-[#EFAF00]/20 pb-4"><h4 className="font-bold text-lg text-yellow-300 mb-2">{item.question}</h4><p className="text-gray-300 leading-relaxed">{item.answer}</p></div>))}</div>);
 };
 
 // --- MAIN PRODUCT PAGE COMPONENT ---
@@ -128,43 +129,90 @@ export default function ProductPage() {
     };
 
     const handleAddToCart = async () => {
-        if (!selectedSize) {
-            alert("Please select a size.");
-            return;
-        }
-        const itemToAdd = { ...product, selectedSize };
-        await addToCart(itemToAdd, quantity);
-        alert(`${quantity} x ${product.name} (${selectedSize}) added to cart!`);
+    const token = localStorage.getItem('authToken'); // Check if user is logged in
+    if (!token) {
+        toast.error("Please login to add items to cart.");
+        router.push('/login');
+        return;
+    }
+
+    if (!selectedSize) {
+        toast.error("Please select a size.");
+        return;
+    }
+
+    const selectedVariant = product.variants.find(v => v.size === selectedSize);
+    if (!selectedVariant) {
+        toast.error("Selected size is not available.");
+        return;
+    }
+
+    const itemToAdd = {
+        product: product._id,
+        name: product.name,
+        price: product.price,
+        image: product.images[0],
+        size: selectedSize,
+        sku: selectedVariant.sku,
     };
 
+    await addToCart(itemToAdd, quantity);
+    toast.success(`${quantity} x ${product.name} (${selectedSize}) added to cart!`);
+};
+
     const handleBuyNow = () => {
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+        toast.error("Please login to buy the product.");
+        router.push('/login');
+        return;
+    }
         if (!selectedSize) {
-            alert("Please select a size.");
+            toast.error("Please select a size.");
             return;
         }
+
+
+        // --- 👇 FIND THE VARIANT TO GET THE SKU (SAME LOGIC) 👇 ---
+        const selectedVariant = product.variants.find(v => v.size === selectedSize);
+        if (!selectedVariant) {
+            toast.error("Selected size is not available.");
+            return;
+        }
+
+        // --- 👇 CREATE THE ITEM OBJECT WITH THE SKU 👇 ---
         const buyNowItem = {
             product: product._id,
             name: product.name,
             price: product.price,
             image: product.images[0],
             size: selectedSize,
+            sku: selectedVariant.sku, // Add the SKU here!
             qty: quantity,
         };
+
         sessionStorage.setItem('checkoutItems', JSON.stringify([buyNowItem]));
         router.push('/checkout');
     };
 
     const handleSuggestedItemCartAction = async (action, item) => {
-        const size = item.variants?.[0]?.size || 'One Size';
-        if (action === 'add') {
-            const itemToAdd = { ...item, selectedSize: size };
-            await addToCart(itemToAdd, 1);
-            alert(`${item.name} added to cart!`);
-        } else {
-            await removeFromCart(item._id, size);
-            alert(`${item.name} removed from cart!`);
-        }
-    };
+    const token = localStorage.getItem('authToken'); // Check if user is logged in
+    if (!token) {
+        toast.error("Please login to add items to cart.");
+        router.push('/login');
+        return;
+    }
+
+    const size = item.variants?.[0]?.size || 'One Size';
+    if (action === 'add') {
+        const itemToAdd = { ...item, selectedSize: size };
+        await addToCart(itemToAdd, 1);
+        toast.success(`${item.name} added to cart!`);
+    } else {
+        await removeFromCart(item._id, size);
+        toast.success(`${item.name} removed from cart!`);
+    }
+};
 
     const handleReviewSubmit = async ({ rating, comment }) => {
         const token = localStorage.getItem('authToken');
@@ -184,46 +232,49 @@ export default function ProductPage() {
             const updatedProduct = await res.json();
             setProduct(updatedProduct);
         } catch (error) {
-            alert(`Error: ${error.message}`);
+            toast.error(`Error: ${error.message}`);
         }
     };
 
     const handleAddToWishlist = () => {
-        setIsWishlisted(!isWishlisted);
-        alert('Wishlist functionality will be built next!');
+        // setIsWishlisted(!isWishlisted);
+        toast.error('Wishlist functionality will be built next!');
     };
 
-    if (loading) return <div className="text-center font-redhead text-yellow-400 py-20">Loading Product...</div>;
+    if (loading) return <div className="flex justify-center items-center min-h-[90vh]">
+        <Lottie animationData={Loader} loop={true} className="lg:w-64 lg:h-64 w-40 h-40" />
+      </div>;
     if (error) return <div className="text-center font-redhead text-red-500 py-20">Error: {error}</div>;
     if (!product) return null;
 
     return (
         <div className="bg-black text-white min-h-screen lg:pt-10 lg:pb-20 px-5 py-10 font-redhead">
+            <Toaster position="top-center" />
             <div className="mx-auto max-w-[1400px]">
                 <main className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:mb-20 mb-5">
-                    <div className="lg:col-span-6 max-h-[800px] border border-yellow-400 p-2 rounded-lg">
+                    <div className="lg:col-span-6 max-h-[800px] border border-[#EFAF00] p-2 rounded-lg">
                         <Image width={1000} height={1200} src={mainImage} alt={product.name} className="w-full h-full object-cover rounded-md" />
                     </div>
                     <div className="lg:col-span-1 flex lg:flex-col justify-center items-center gap-2">
                         {product.images.map((img, index) => (
-                            <div key={index} className={`border p-1 rounded-md cursor-pointer ${mainImage === img ? 'border-yellow-400' : 'border-gray-700'}`} onClick={() => setMainImage(img)}>
+                            <div key={index} className={`border p-1 rounded-md cursor-pointer ${mainImage === img ? 'border-[#EFAF00]' : 'border-gray-700'}`} onClick={() => setMainImage(img)}>
                                 <Image width={64} height={80} src={img} alt={`Thumbnail ${index + 1}`} className="w-16 h-20 object-cover rounded-sm" />
                             </div>
                         ))}
                     </div>
-                    <div className="lg:col-span-4 border border-yellow-400 lg:p-6 p-4 lg:min-w-[500px] h-fit lg:ml-12 rounded-lg flex flex-col">
+                    <div className="lg:col-span-4 border border-[#EFAF00] lg:p-6 p-4 lg:min-w-[500px] h-fit lg:ml-12 rounded-lg flex flex-col">
                         <div className="flex justify-between items-start mb-4">
                             <h1 className="text-3xl font-bold text-yellow-300 tracking-wider">{product.name}</h1>
-                            <button onClick={handleAddToWishlist} className={`p-2 border rounded-md transition-colors ${isWishlisted ? 'bg-yellow-400 border-yellow-400' : 'border-gray-600 hover:border-yellow-400'}`}>
-                                <HeartIcon filled={isWishlisted} className={`${isWishlisted ? 'text-white' : 'text-yellow-400'}`} />
+                            <button onClick={handleAddToWishlist} className={`p-2 border rounded-md transition-colors ${isWishlisted ? 'bg-[#EFAF00] border-[#EFAF00]' : 'border-gray-600 hover:border-[#EFAF00]'}`}>
+                                <HeartIcon filled={isWishlisted} className={`${isWishlisted ? 'text-white' : 'text-[#EFAF00]'}`} />
                             </button>
                         </div>
                         <p className="text-2xl mb-1 text-gray-200">₹{product.price.toLocaleString('en-IN')}</p>
                         <p className="text-xs text-gray-400 mb-6">MRP incl. of all taxes</p>
 
                         {product.suggestedItems?.length > 0 && (
-                            <div className="bg-gray-900 border border-yellow-500/30 rounded-lg p-4 mb-8 space-y-4">
-                                <h2 className="font-bold text-yellow-400 text-lg">BEST VALUE OFFERS</h2>
+                            <div className="bg-gray-900 border border-[#EFAF00]/30 rounded-lg p-4 mb-8 space-y-4">
+                                <h2 className="font-bold text-[#EFAF00] text-lg">BEST VALUE OFFERS</h2>
                                 {product.suggestedItems.map(item => {
                                     const size = item.variants?.[0]?.size || 'One Size';
                                     const isInCart = cartItems.some(cartItem => cartItem.product === item._id && cartItem.size === size);
@@ -236,7 +287,7 @@ export default function ProductPage() {
                             <label className="block text-sm font-medium text-gray-300 mb-2">Size</label>
                             <div className="flex gap-2 flex-wrap">
                                 {product.variants.map((variant) => (
-                                    <button key={variant.size} onClick={() => setSelectedSize(variant.size)} disabled={variant.stock === 0} className={`w-12 h-12 border rounded-md font-bold transition-colors ${selectedSize === variant.size ? 'bg-yellow-400 text-black border-yellow-400' : 'border-gray-600 hover:border-yellow-400 disabled:opacity-50 disabled:cursor-not-allowed'}`}>
+                                    <button key={variant.size} onClick={() => setSelectedSize(variant.size)} disabled={variant.stock === 0} className={`w-12 h-12 border rounded-md font-bold transition-colors ${selectedSize === variant.size ? 'bg-[#EFAF00] text-black border-[#EFAF00]' : 'border-gray-600 hover:border-[#EFAF00] disabled:opacity-50 disabled:cursor-not-allowed'}`}>
                                         {variant.size}
                                     </button>
                                 ))}
@@ -250,7 +301,7 @@ export default function ProductPage() {
                                 <button onClick={() => handleQuantityChange(1)} className="px-4 py-3 hover:bg-gray-800 rounded-r-md">+</button>
                             </div>
                             <div className="flex flex-col gap-2 w-full">
-                                <button onClick={handleAddToCart} className="bg-yellow-400 text-black font-bold py-3 w-full rounded-md hover:bg-yellow-300 transition-colors">
+                                <button onClick={handleAddToCart} className="bg-[#EFAF00] text-black font-bold py-3 w-full rounded-md hover:bg-yellow-300 transition-colors">
                                     ADD TO CART
                                 </button>
                             </div>
@@ -263,9 +314,9 @@ export default function ProductPage() {
 
                 <section>
                     <div className="flex justify-center items-center whitespace-nowrap gap-4 md:gap-8 border-b border-gray-800 lg:mb-8 mb-4">
-                        <button onClick={() => setActiveTab('details')} className={`font-bold py-2 px-4 font-redhead transition-colors duration-300 ${activeTab === 'details' ? 'text-yellow-400 border-b-2 border-yellow-400' : 'text-gray-500 hover:text-yellow-300'}`}>DETAILS</button>
-                        <button onClick={() => setActiveTab('reviews')} className={`font-bold py-2 px-4 font-redhead transition-colors duration-300 ${activeTab === 'reviews' ? 'text-yellow-400 border-b-2 border-yellow-400' : 'text-gray-500 hover:text-yellow-300'}`}>REVIEWS</button>
-                        <button onClick={() => setActiveTab('faq')} className={`font-bold py-2 px-4 font-redhead transition-colors duration-300 ${activeTab === 'faq' ? 'text-yellow-400 border-b-2 border-yellow-400' : 'text-gray-500 hover:text-yellow-300'}`}>FAQs</button>
+                        <button onClick={() => setActiveTab('details')} className={`font-bold py-2 px-4 font-redhead transition-colors duration-300 ${activeTab === 'details' ? 'text-[#EFAF00] border-b-2 border-[#EFAF00]' : 'text-gray-500 hover:text-yellow-300'}`}>DETAILS</button>
+                        <button onClick={() => setActiveTab('reviews')} className={`font-bold py-2 px-4 font-redhead transition-colors duration-300 ${activeTab === 'reviews' ? 'text-[#EFAF00] border-b-2 border-[#EFAF00]' : 'text-gray-500 hover:text-yellow-300'}`}>REVIEWS</button>
+                        <button onClick={() => setActiveTab('faq')} className={`font-bold py-2 px-4 font-redhead transition-colors duration-300 ${activeTab === 'faq' ? 'text-[#EFAF00] border-b-2 border-[#EFAF00]' : 'text-gray-500 hover:text-yellow-300'}`}>FAQs</button>
                     </div>
                     <div>
                         {activeTab === 'details' && <ProductDetails product={product} />}

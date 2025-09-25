@@ -107,7 +107,7 @@
 //           </div> */}
 
 //           <h1
-//             className="font-redhead text-7xl md:text-[250px] font-bold tracking-wider text-transparent bg-clip-text mb-[20px] bg-gradient-to-b from-yellow-400  to-yellow-800 animate-fade-in-up"
+//             className="font-redhead text-7xl md:text-[250px] font-bold tracking-wider text-transparent bg-clip-text mb-[20px] bg-gradient-to-b from-[#EFAF00]  to-yellow-800 animate-fade-in-up"
 //             // style={{ fontFamily: "'Black No.7', sans-serif" }}
 //           >
 //             {/* mt-[-90px]  */}
@@ -197,7 +197,7 @@ export default function LoadingScreen() {
       `}</style>
 
       <main
-        className={`fixed inset-0 z-50 flex flex-col items-center justify-center w-full h-screen overflow-hidden bg-black font-redhead transform transition-transform duration-1000 ${
+        className={`fixed inset-0 z-50 flex flex-col items-center justify-center w-full h-[100vh] overflow-hidden bg-black font-redhead transform transition-transform duration-1000 ${
           slideUp ? "-translate-y-full" : "translate-y-0"
         }`}
       >
@@ -233,7 +233,7 @@ export default function LoadingScreen() {
 
           <h1
             // Responsive font sizes for different breakpoints
-            className="font-redhead text-7xl sm:text-8xl lg:text-[180px] xl:text-[250px] font-bold tracking-wider text-transparent bg-clip-text my-4 bg-gradient-to-b from-yellow-400 to-yellow-800 animate-fade-in-up"
+            className="font-redhead text-7xl sm:text-8xl lg:text-[180px] xl:text-[250px] font-bold tracking-wider text-transparent bg-clip-text my-4 bg-gradient-to-b from-[#EFAF00] to-yellow-800 animate-fade-in-up"
           >
             RAAMYA
           </h1>

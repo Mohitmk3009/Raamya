@@ -10,7 +10,7 @@ const Subscribe = () => {
             <div className="relative z-10 w-full h-full flex items-center justify-center text-center flex-col p-5 sm:p-6 bg-black/70 ">
 
                 {/* MODIFICATION: Removed <br /> and added max-w-* for graceful text wrapping */}
-                <h2 className="text-amber-400 font-bold text-2xl sm:text-4xl md:text-5xl mx-auto leading-tight max-w-2xl">
+                <h2 className="text-[#EFAF00] font-bold text-2xl sm:text-4xl md:text-5xl mx-auto leading-tight max-w-2xl">
                     STAY UPTO DATE ABOUT OUR LATEST OFFERS
                 </h2>
 
@@ -24,7 +24,7 @@ const Subscribe = () => {
                     }}
                 >
                     {/* MODIFICATION: Wrapper div is now full-width and input grows on larger screens */}
-                    <div className="flex items-center border border-amber-400 rounded-xl w-full sm:flex-grow">
+                    <div className="flex items-center border border-[#EFAF00] rounded-xl w-full sm:flex-grow">
                         <input
                             type="email"
                             name="email"
@@ -37,7 +37,7 @@ const Subscribe = () => {
                     <button
                         type="submit"
                         // MODIFICATION: Button is full-width on mobile and auto-width on larger screens
-                        className="bg-amber-400 text-gray-900 font-bold py-3 px-8 rounded-xl hover:bg-amber-500 transition-colors duration-300 w-full sm:w-auto"
+                        className="bg-[#EFAF00] text-gray-900 font-bold py-3 px-8 rounded-xl hover:bg-amber-500 transition-colors duration-300 w-full sm:w-auto"
                     >
                         SUBSCRIBE
                     </button>
