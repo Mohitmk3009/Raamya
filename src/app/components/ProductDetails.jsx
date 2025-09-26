@@ -3,7 +3,7 @@ import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useCart } from '../context/CartContext';
-import toast, { Toaster } from 'react-hot-toast'; 
+import toast, { Toaster } from 'react-hot-toast';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 import Lottie from 'lottie-react';
 import Loader from '../../../public/lottie/Loading.json';
@@ -95,7 +95,9 @@ export default function ProductPage() {
     const [quantity, setQuantity] = useState(1);
     const [activeTab, setActiveTab] = useState('reviews');
     const [isWishlisted, setIsWishlisted] = useState(false);
-
+    const selectedVariant = product?.variants?.find(v => v.size === selectedSize);
+    const isSelectedVariantOutOfStock = selectedVariant?.stock === 0;
+    
     useEffect(() => {
         const fetchProduct = async () => {
             if (!productId) return;
@@ -121,6 +123,9 @@ export default function ProductPage() {
                 const defaultSize = product.variants.find(v => v.stock > 0)?.size || product.variants[0].size;
                 setSelectedSize(defaultSize);
             }
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        const isAlreadyWishlisted = wishlist.some(item => item._id === product._id);
+        setIsWishlisted(isAlreadyWishlisted);
         }
     }, [product]);
 
@@ -129,44 +134,53 @@ export default function ProductPage() {
     };
 
     const handleAddToCart = async () => {
-    const token = localStorage.getItem('authToken'); // Check if user is logged in
-    if (!token) {
-        toast.error("Please login to add items to cart.");
-        router.push('/login');
-        return;
-    }
+        const token = localStorage.getItem('authToken'); // Check if user is logged in
+        if (!token) {
+            toast.error("Please login to add items to cart.");
+            router.push('/login');
+            return;
+        }
 
-    if (!selectedSize) {
-        toast.error("Please select a size.");
-        return;
-    }
+        if (!selectedSize) {
+            toast.error("Please select a size.");
+            return;
+        }
 
-    const selectedVariant = product.variants.find(v => v.size === selectedSize);
-    if (!selectedVariant) {
-        toast.error("Selected size is not available.");
-        return;
-    }
+        try {
+        const selectedVariant = product.variants.find(v => v.size === selectedSize);
+        if (!selectedVariant || selectedVariant.stock === 0) {
+            toast.error("This item is currently out of stock or not available.");
+            return;
+        }
+    
+        const itemToAdd = {
+            product: product._id,
+            name: product.name,
+            price: product.price,
+            image: product.images[0],
+            size: selectedSize,
+            sku: selectedVariant.sku,
+        };
+    
+        await addToCart(itemToAdd, quantity);
+    
+        // 🎯 Move the success toast inside the try block
+        toast.success(`${quantity} x ${product.name} (${selectedSize}) added to cart!`);
 
-    const itemToAdd = {
-        product: product._id,
-        name: product.name,
-        price: product.price,
-        image: product.images[0],
-        size: selectedSize,
-        sku: selectedVariant.sku,
+        } catch (error) {
+        // This will catch errors from the addToCart function
+        toast.error(`Error adding to cart: ${error.message}`);
+        console.error(error);
+    }
     };
-
-    await addToCart(itemToAdd, quantity);
-    toast.success(`${quantity} x ${product.name} (${selectedSize}) added to cart!`);
-};
 
     const handleBuyNow = () => {
         const token = localStorage.getItem('authToken');
         if (!token) {
-        toast.error("Please login to buy the product.");
-        router.push('/login');
-        return;
-    }
+            toast.error("Please login to buy the product.");
+            router.push('/login');
+            return;
+        }
         if (!selectedSize) {
             toast.error("Please select a size.");
             return;
@@ -196,23 +210,23 @@ export default function ProductPage() {
     };
 
     const handleSuggestedItemCartAction = async (action, item) => {
-    const token = localStorage.getItem('authToken'); // Check if user is logged in
-    if (!token) {
-        toast.error("Please login to add items to cart.");
-        router.push('/login');
-        return;
-    }
+        const token = localStorage.getItem('authToken'); // Check if user is logged in
+        if (!token) {
+            toast.error("Please login to add items to cart.");
+            router.push('/login');
+            return;
+        }
 
-    const size = item.variants?.[0]?.size || 'One Size';
-    if (action === 'add') {
-        const itemToAdd = { ...item, selectedSize: size };
-        await addToCart(itemToAdd, 1);
-        toast.success(`${item.name} added to cart!`);
-    } else {
-        await removeFromCart(item._id, size);
-        toast.success(`${item.name} removed from cart!`);
-    }
-};
+        const size = item.variants?.[0]?.size || 'One Size';
+        if (action === 'add') {
+            const itemToAdd = { ...item, selectedSize: size };
+            await addToCart(itemToAdd, 1);
+            toast.success(`${item.name} added to cart!`);
+        } else {
+            await removeFromCart(item._id, size);
+            toast.success(`${item.name} removed from cart!`);
+        }
+    };
 
     const handleReviewSubmit = async ({ rating, comment }) => {
         const token = localStorage.getItem('authToken');
@@ -236,14 +250,36 @@ export default function ProductPage() {
         }
     };
 
-    const handleAddToWishlist = () => {
-        // setIsWishlisted(!isWishlisted);
-        toast.error('Wishlist functionality will be built next!');
-    };
+   const handleAddToWishlist = () => {
+    const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    const isAlreadyWishlisted = wishlist.some(item => item._id === product._id);
 
+    if (isAlreadyWishlisted) {
+        const updatedWishlist = wishlist.filter(item => item._id !== product._id);
+        localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+        setIsWishlisted(false);
+        toast.success("Item removed from wishlist!");
+    } else {
+        const itemToAdd = {
+            _id: product._id,
+            name: product.name,
+            price: product.price,
+            images: product.images,
+            variants: product.variants,
+            category: product.category,
+        };
+        wishlist.push(itemToAdd);
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+        setIsWishlisted(true);
+        toast.success("Item added to wishlist!");
+    }
+    
+    // 🎯 Dispatch a storage event to signal a change
+    window.dispatchEvent(new Event('storage'));
+};
     if (loading) return <div className="flex justify-center items-center min-h-[90vh]">
         <Lottie animationData={Loader} loop={true} className="lg:w-64 lg:h-64 w-40 h-40" />
-      </div>;
+    </div>;
     if (error) return <div className="text-center font-redhead text-red-500 py-20">Error: {error}</div>;
     if (!product) return null;
 
@@ -253,8 +289,15 @@ export default function ProductPage() {
             <div className="mx-auto max-w-[1400px]">
                 <main className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:mb-20 mb-5">
                     <div className="lg:col-span-6 max-h-[800px] border border-[#EFAF00] p-2 rounded-lg">
+                    {mainImage ? (
                         <Image width={1000} height={1200} src={mainImage} alt={product.name} className="w-full h-full object-cover rounded-md" />
-                    </div>
+                    ) : (
+                        // Optional: You can add a placeholder div or spinner here while the image is loading
+                        <div className="w-full h-full flex items-center justify-center bg-gray-900 text-gray-500">
+                            Loading Image...
+                        </div>
+                    )}
+                </div>
                     <div className="lg:col-span-1 flex lg:flex-col justify-center items-center gap-2">
                         {product.images.map((img, index) => (
                             <div key={index} className={`border p-1 rounded-md cursor-pointer ${mainImage === img ? 'border-[#EFAF00]' : 'border-gray-700'}`} onClick={() => setMainImage(img)}>
@@ -306,8 +349,12 @@ export default function ProductPage() {
                                 </button>
                             </div>
                         </div>
-                        <button onClick={handleBuyNow} className="bg-white text-black font-bold py-3 w-full mt-5 rounded-md hover:bg-gray-200 transition-colors">
-                            BUY NOW
+                        <button
+                            onClick={handleBuyNow}
+                            className={`w-full font-bold py-3 mt-5 rounded-md transition-colors ${isSelectedVariantOutOfStock ? 'bg-gray-700 text-gray-400 cursor-not-allowed' : 'bg-white text-black hover:bg-gray-200'}`}
+                            disabled={isSelectedVariantOutOfStock}
+                        >
+                            {isSelectedVariantOutOfStock ? 'OUT OF STOCK' : 'BUY NOW'}
                         </button>
                     </div>
                 </main>

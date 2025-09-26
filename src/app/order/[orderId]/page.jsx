@@ -4,8 +4,6 @@ import Footer from '@/app/components/Footer';
 import Header from '@/app/components/Header';
 import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-// Using standard <a> tags instead of Link from Next.js
-// using window.location.href instead of useRouter from Next.js
 import Lottie from 'lottie-react';
 import Loader from '../../../../public/lottie/Loading.json';
 
@@ -83,19 +81,26 @@ const CancelOrderModal = ({ onClose, onConfirm }) => {
 
 // --- MAIN ORDER DETAILS PAGE COMPONENT ---
 export default function OrderDetailsPage({ params }) {
-    const { orderId } = params;
+    // Moved accessing orderId into a useEffect
     const [order, setOrder] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
 
-    // Replaced useRouter with a simple navigation function for standalone use
     const navigateTo = (path) => {
         window.location.href = path;
     };
 
     useEffect(() => {
+        // Access orderId safely here
+        const orderId = params?.orderId;
+        if (!orderId) {
+            setLoading(false);
+            setError('No order ID provided.');
+            return;
+        }
+
         const fetchOrderDetails = async () => {
             const token = localStorage.getItem('authToken');
             if (!token) {
@@ -120,16 +125,14 @@ export default function OrderDetailsPage({ params }) {
             }
         };
 
-        if (orderId) {
-            fetchOrderDetails();
-        }
-    }, [orderId]);
+        fetchOrderDetails();
+    }, [params]); // Depend on the full params object
 
     const handleCancelOrder = async ({ reason, details }) => {
         const toastId = toast.loading('Cancelling order...');
         const token = localStorage.getItem('authToken');
         try {
-            const res = await fetch(`${API_BASE_URL}/orders/${orderId}/cancel`, {
+            const res = await fetch(`${API_BASE_URL}/orders/${params.orderId}/cancel`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
                 body: JSON.stringify({ reason, details })
@@ -181,7 +184,6 @@ export default function OrderDetailsPage({ params }) {
         const currentHoursSinceOrder = (new Date().getTime() - new Date(order.createdAt).getTime()) / (1000 * 60 * 60);
         if (currentHoursSinceOrder >= 24) {
             toast.error("Sorry, orders can only be cancelled within 24 hours of placement.");
-            // window.location.reload(); // Removed to avoid page refresh on toast
         } else {
             setIsCancelModalOpen(true);
         }
@@ -191,7 +193,7 @@ export default function OrderDetailsPage({ params }) {
         const toastId = toast.loading('Generating E-Bill...');
         setIsDownloading(true);
         try {
-            const res = await fetch(`${API_BASE_URL}/orders/${orderId}/generate-bill`);
+            const res = await fetch(`${API_BASE_URL}/orders/${params.orderId}/generate-bill`);
             
             if (!res.ok) {
                 const errData = await res.json();
@@ -203,7 +205,7 @@ export default function OrderDetailsPage({ params }) {
             
             const a = document.createElement('a');
             a.href = url;
-            a.download = `Raamya-E-Bill-${orderId}.pdf`;
+            a.download = `Raamya-E-Bill-${params.orderId}.pdf`;
             document.body.appendChild(a);
             a.click();
             
@@ -217,12 +219,13 @@ export default function OrderDetailsPage({ params }) {
             setIsDownloading(false);
         }
     };
-const subtotal = order?.orderItems?.reduce((acc, item) => acc + (item.price * item.qty), 0) || 0;
+    
+    const subtotal = order?.orderItems?.reduce((acc, item) => acc + (item.price * item.qty), 0) || 0;
+    
     if (loading) return <div className="flex justify-center items-center bg-black min-h-[90vh]">
         <Lottie animationData={Loader} loop={true} className="lg:w-64 lg:h-64 w-40 h-40" />
       </div>;
-    // Removed error message display here as toasts will handle it
-    // if (error) return <div className="text-center text-red-500 py-20 bg-black min-h-screen">{error}</div>;
+
     if (!order) return <div className="text-center text-gray-500 py-20 bg-black min-h-screen">Order not found.</div>;
 
     const orderStatusInfo = getOrderStatus(order);
@@ -231,7 +234,7 @@ const subtotal = order?.orderItems?.reduce((acc, item) => acc + (item.price * it
     return (
         <div className="bg-black text-white min-h-screen pt-12 font-redhead">
             <Toaster position="top-center" />
-           
+            
             <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
                 <div className="mb-8 flex justify-between items-center">
                     <div>
@@ -335,7 +338,7 @@ const subtotal = order?.orderItems?.reduce((acc, item) => acc + (item.price * it
                     </div>
                 </div>
             </div>
-<Footer/>
+            <Footer/>
             {isCancelModalOpen && <CancelOrderModal onClose={() => setIsCancelModalOpen(false)} onConfirm={handleCancelOrder} />}
         </div>
     );

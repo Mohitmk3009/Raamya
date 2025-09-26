@@ -15,7 +15,7 @@ const PrivacyPolicy = () => {
 
         <h1 className="text-4xl font-bold text-[#EFAF00] mb-8">Privacy Policy</h1>
 
-        <p className="lg:mb-10 mb-5 leading-relaxed text-justify">
+        <p className="lg:mb-10 mb-5 leading-relaxed ">
           This Privacy Policy describes how RAAMYA collects, uses, and protects your personal information when you use our services. We are committed to protecting your privacy and ensuring the security of your data.
         </p>
 
@@ -57,7 +57,7 @@ const PrivacyPolicy = () => {
         {/* Section 3: Sharing Your Information */}
         <div className="lg:mb-10 mb-5">
           <h2 className="text-2xl font-semibold text-[#EFAF00] mb-4">3. Sharing Your Information</h2>
-          <p className="mb-4 leading-relaxed text-justify">
+          <p className="mb-4 leading-relaxed ">
             We do not sell, trade, or rent your personal identification information to others. We may share your information with trusted third-party service providers who assist us in operating our business and providing our services, such as:
           </p>
           <ul className="list-disc list-inside space-y-3 pl-2 ">
@@ -65,7 +65,7 @@ const PrivacyPolicy = () => {
             <li><strong>Payment Processors:</strong> To securely process your payments.</li>
             <li><strong>Analytics Providers:</strong> To help us understand how our website is used.</li>
           </ul>
-          <p className="mt-4 leading-relaxed text-justify">
+          <p className="mt-4 leading-relaxed ">
             These third parties are contractually obligated to keep your information confidential and are prohibited from using your data for any other purpose. We may also disclose your information if required by law or to protect our rights or the safety of others.
           </p>
         </div>
@@ -73,7 +73,7 @@ const PrivacyPolicy = () => {
         {/* Section 4: Data Security */}
         <div className="lg:mb-10 mb-5">
           <h2 className="text-2xl font-semibold text-[#EFAF00] mb-4">4. Data Security</h2>
-          <p className="leading-relaxed text-justify">
+          <p className="leading-relaxed ">
             We implement a variety of security measures to maintain the safety of your personal information. Your data is stored on secure servers, and we use encryption to protect sensitive data transmitted online. While we strive to use commercially acceptable means to protect your data, no method of transmission over the Internet or electronic storage is 100% secure.
           </p>
         </div>
@@ -112,7 +112,7 @@ const PrivacyPolicy = () => {
         {/* Section 8: Contact Us */}
         <div>
           <h2 className="text-2xl font-semibold text-[#EFAF00] mb-4">8. Contact Us</h2>
-          <p className="leading-relaxed text-justify">
+          <p className="leading-relaxed ">
             If you have any questions about this Privacy Policy, please contact us at <a href="mailto:support@raamya.net.in" className="text-[#EFAF00] underline hover:text-yellow-300">support@raamya.net.in</a>.
           </p>
         </div>

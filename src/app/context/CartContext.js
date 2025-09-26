@@ -29,7 +29,9 @@ export const CartProvider = ({ children }) => {
                         setCartItems([]);
                     }
                 } catch (error) {
-                    console.error("Failed to fetch cart:", error);
+                    cconsole.error("Failed to fetch cart:", response.status, response.statusText);
+                    const errorText = await response.text(); // Read the non-JSON body
+                    console.error("Server response:", errorText);
                     setCartItems([]);
                 } finally {
                     setLoading(false);
@@ -62,12 +64,12 @@ export const CartProvider = ({ children }) => {
         }
     };
 
-    const addToCart = async (item, quantity) => {
-        if (!isAuthenticated) {
-            alert("Please log in to add items to your cart.");
-            return;
-        }
+    const addToCart = async (item, qty) => {
         const token = localStorage.getItem('authToken');
+        if (!token) {
+            throw new Error('User not authenticated.');
+        }
+
         try {
             const response = await fetch(`${API_BASE_URL}/cart`, {
                 method: 'POST',
@@ -77,30 +79,35 @@ export const CartProvider = ({ children }) => {
                 },
                 body: JSON.stringify({
                     productId: item.product,
+                    name: item.name,
+                    image: item.image,
+                    price: item.price,
                     size: item.size,
-                    qty: quantity
-                })
+                    sku: item.sku,
+                    qty,
+                }),
             });
-            const data = await response.json();
-            if (!response.ok) throw new Error(data.message || "Failed to add item.");
 
-            // --- VITAL FIX: Check if item already exists in cart and update quantity ---
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Failed to add item to cart');
+            }
+
             setCartItems(prevCartItems => {
                 const existingItemIndex = prevCartItems.findIndex(
                     cartItem => cartItem.product === item.product && cartItem.size === item.size
                 );
 
                 if (existingItemIndex > -1) {
-                    // Item exists, create a new array with the updated item
                     const newCart = [...prevCartItems];
                     newCart[existingItemIndex] = {
                         ...newCart[existingItemIndex],
-                        qty: newCart[existingItemIndex].qty + quantity
+                        qty: newCart[existingItemIndex].qty + qty // <-- Corrected variable name
                     };
                     return newCart;
                 } else {
-                    // Item is new, add it to the array with the correct quantity
-                    return [...prevCartItems, { ...item, qty: quantity }];
+                    return [...prevCartItems, { ...item, qty: qty }]; // <-- Corrected variable name
                 }
             });
 

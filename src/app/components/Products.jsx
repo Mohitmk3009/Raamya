@@ -1,7 +1,7 @@
 'use client';
-import React, { useState, useEffect, Suspense } from 'react';
-import Lottie from 'lottie-react';
-import Loader from '../../../public/lottie/Loading.json';
+import React, { useState, useEffect, Suspense, useRef } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation'; 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // --- ICONS ---
@@ -56,7 +56,7 @@ const ProductCard = ({ product }) => {
     const [isHovered, setIsHovered] = useState(false);
     return (
         <div className="text-gray-300 group font-redhead" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-            <a href={`/product/${product._id}`} className="block overflow-hidden mb-4 border border-gray-800">
+            <a href={`/product/${product._id}`} className="relative block overflow-hidden mb-4 border border-gray-800">
                 <img
                     width={1000}
                     height={1000}
@@ -64,6 +64,11 @@ const ProductCard = ({ product }) => {
                     alt={product.name}
                     className="w-full h-auto max-h-[500px] object-cover transform transition-transform duration-500 ease-in-out group-hover:scale-110"
                 />
+                {product.isOutOfStock && (
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                        <span className="text-white text-lg font-bold">Out of Stock</span>
+                    </div>
+                )}
             </a>
             <p className="text-sm text-[#FFBB00]">{product.category}</p>
             <div className='flex justify-between items-center text-lg'>
@@ -94,7 +99,16 @@ const Sidebar = ({ filters, setFilters, maxProductPrice }) => {
     const CATEGORIES = ['IT girl', 'Girly Pop', 'bloom girl', 'desi diva', 'street chic'];
 
     const handleSizeSelect = (size) => setFilters(prev => ({ ...prev, selectedSize: prev.selectedSize === size ? null : size }));
-    const handleAvailabilityChange = (e) => setFilters(prev => ({ ...prev, availability: { ...prev.availability, [e.target.name]: e.target.checked } }));
+    const handleAvailabilityChange = (e) => {
+    const { name, checked } = e.target;
+    setFilters(prev => ({
+        ...prev,
+        availability: {
+            ...prev.availability,
+            [name]: checked
+        }
+    }));
+};
     const handleCategoryChange = (e) => {
         const { value, checked } = e.target;
         setFilters(prev => {
@@ -115,8 +129,24 @@ const Sidebar = ({ filters, setFilters, maxProductPrice }) => {
                 <FilterAccordion title="Availability" defaultOpen={true}>
                     <div className="space-y-2">
                         <label className="flex items-center space-x-2 text-sm cursor-pointer">
-                            <input type="checkbox" name="inStock" checked={filters.availability.inStock} onChange={handleAvailabilityChange} className="bg-transparent border-gray-600 rounded-sm" />
+                            <input
+                                type="checkbox"
+                                name="inStock"
+                                checked={filters.availability.inStock}
+                                onChange={handleAvailabilityChange}
+                                className="bg-transparent border-gray-600 rounded-sm"
+                            />
                             <span>In Stock</span>
+                        </label>
+                        <label className="flex items-center space-x-2 text-sm cursor-pointer">
+                            <input
+                                type="checkbox"
+                                name="outOfStock"
+                                checked={filters.availability.outOfStock}
+                                onChange={handleAvailabilityChange}
+                                className="bg-transparent border-gray-600 rounded-sm"
+                            />
+                            <span>Out of Stock</span>
                         </label>
                     </div>
                 </FilterAccordion>
@@ -134,8 +164,48 @@ const Sidebar = ({ filters, setFilters, maxProductPrice }) => {
     );
 };
 
+// --- SEARCH POPUP COMPONENT ---
+const SearchPopup = ({ searchQuery, searchResults, isSearching, onResultClick, onClose }) => {
+    if (!searchQuery) return null;
+
+    return (
+        <div className="absolute top-16 left-0 right-0 z-50 bg-black/80 backdrop-blur-md p-4 rounded-md shadow-lg border border-[#EFAF00]">
+            <div className="flex justify-between items-center mb-4">
+                <h3 className="text-xl font-bold text-[#EFAF00]">Search Results</h3>
+                <button onClick={onClose} className="p-1 text-gray-400 hover:text-white">
+                    <XIcon size={24} />
+                </button>
+            </div>
+            {isSearching ? (
+                <div className="flex justify-center items-center py-8">
+                    {/* Simple CSS spinner for loading */}
+                    <div className="w-10 h-10 rounded-full border-4 border-gray-700 border-t-[#EFAF00] animate-spin"></div>
+                </div>
+            ) : searchResults.length > 0 ? (
+                <ul className="space-y-3 max-h-80 overflow-y-auto">
+                    {searchResults.map(product => (
+                        <li key={product._id} onClick={() => onResultClick(product._id)} className="cursor-pointer hover:bg-gray-800 rounded-md p-2 transition">
+                            <div className="flex items-center space-x-4">
+                                <img src={product.images[0]} alt={product.name} className="w-16 h-20 object-cover rounded" />
+                                <div>
+                                    <p className="text-sm font-bold text-white">{product.name}</p>
+                                    <p className="text-sm font-bold text-[#FFBB00]">{product.category}</p>
+                                    <p className="text-xs text-gray-400">₹{product.price}</p>
+                                </div>
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <div className="text-center py-8 text-gray-500">No products found.</div>
+            )}
+        </div>
+    );
+};
+
 // --- Inner component that contains the page logic ---
 function ProductsContent() {
+     const searchParams = useSearchParams(); 
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState(1);
@@ -145,8 +215,18 @@ function ProductsContent() {
     const [gridCols, setGridCols] = useState(3);
     const [mobileGridCols, setMobileGridCols] = useState(1);
 
+    // Search state
+    const [searchTerm, setSearchTerm] = useState('');
+    const [isSearching, setIsSearching] = useState(false);
+    const [searchResults, setSearchResults] = useState([]);
+    const [showSearchPopup, setShowSearchPopup] = useState(false);
+
+    // Ref to detect clicks outside the search area
+    const searchRef = useRef(null);
+
     const [filters, setFilters] = useState({
         keyword: '',
+        filter: '', 
         sortBy: 'default',
         selectedSize: null,
         availability: { inStock: false, outOfStock: false },
@@ -154,19 +234,39 @@ function ProductsContent() {
         maxPrice: maxProductPrice,
     });
 
+
+    useEffect(() => {
+        const keyword = searchParams.get('keyword') || '';
+        const filter = searchParams.get('filter') || '';
+        const category = searchParams.get('category') ? searchParams.get('category').split(',') : [];
+
+        setFilters(prev => ({
+            ...prev,
+            keyword: keyword,
+            filter: filter,
+            selectedCategories: category,
+        }));
+        setPage(1); // Reset to page 1 for new search/filter
+    }, [searchParams]);
+
+    // Debounce function for search input
     useEffect(() => {
         const fetchProducts = async () => {
             setLoading(true);
             const params = new URLSearchParams();
 
             if (filters.keyword) params.append('keyword', filters.keyword);
+             if (filters.filter) params.append('filter', filters.filter);
             if (filters.sortBy !== 'default') params.append('sortBy', filters.sortBy);
 
             if (filters.selectedSize) params.append('size', filters.selectedSize);
 
-            const { inStock } = filters.availability;
+            const { inStock, outOfStock } = filters.availability;
             if (inStock) {
                 params.append('inStock', 'true');
+            }
+            if (outOfStock) {
+                params.append('outOfStock', 'true');
             }
 
             if (filters.selectedCategories.length > 0) params.append('category', filters.selectedCategories.join(','));
@@ -176,7 +276,14 @@ function ProductsContent() {
             try {
                 const response = await fetch(`${API_BASE_URL}/products?${params.toString()}`);
                 const data = await response.json();
-                setProducts(data.products);
+                const productsWithStockStatus = data.products.map(product => {
+                    const isOutOfStock = product.variants.every(variant => variant.stock === 0);
+                    return {
+                        ...product,
+                        isOutOfStock: isOutOfStock
+                    };
+                });
+                setProducts(productsWithStockStatus);
                 setPage(data.page);
                 setPages(data.pages);
             } catch (error) {
@@ -186,7 +293,12 @@ function ProductsContent() {
             }
         };
 
-        fetchProducts();
+        
+        const timer = setTimeout(() => {
+            fetchProducts();
+        }, 300); // Debounce to prevent multiple fetches on rapid state changes
+
+        return () => clearTimeout(timer);
     }, [filters, page]);
 
     useEffect(() => {
@@ -204,10 +316,58 @@ function ProductsContent() {
         };
     }, [isFilterOpen]);
 
+    // Debounced search logic
+    useEffect(() => {
+        if (!searchTerm.trim()) {
+            setSearchResults([]);
+            setShowSearchPopup(false);
+            return;
+        }
+
+        setIsSearching(true);
+        setShowSearchPopup(true);
+
+        const timer = setTimeout(async () => {
+            try {
+                const response = await fetch(`${API_BASE_URL}/products?keyword=${searchTerm}`);
+                const data = await response.json();
+                setSearchResults(data.products || []);
+            } catch (error) {
+                console.error("Search failed:", error);
+                setSearchResults([]);
+            } finally {
+                setIsSearching(false);
+            }
+        }, 500); // 500ms debounce time
+
+        return () => clearTimeout(timer);
+    }, [searchTerm]);
+
+    // Hook to handle clicks outside the search popup
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (searchRef.current && !searchRef.current.contains(event.target)) {
+                setShowSearchPopup(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [searchRef]);
 
     const handleGoToPage = (pageNumber) => {
         setPage(pageNumber);
         window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+    
+    const handleResultClick = (productId) => {
+        // Redirect to product page or filter products
+        // For this example, we'll just close the popup
+        setShowSearchPopup(false);
+        setSearchTerm('');
+        // You could also use useRouter to navigate:
+        // router.push(`/product/${productId}`);
     };
 
     const gridLayoutClasses = {
@@ -233,9 +393,9 @@ function ProductsContent() {
                         <div className="lg:text-lg text-sm font-bold mb-6 lg:hidden text-[#EFAF00]"><span className="font-normal hover:text-white cursor-pointer">Home /</span> Products</div>
 
                         <div className="flex justify-between items-center mb-6">
-                            <div className="lg:text-lg text-sm font-bold  hidden lg:block text-[#EFAF00]"><span className="font-normal hover:text-white cursor-pointer">Home /</span> Products</div>
+                            <div className="lg:text-lg text-sm font-bold hidden lg:block text-[#EFAF00]"><span className="font-normal hover:text-white cursor-pointer">Home /</span> Products</div>
 
-                            <div className="lg:flex items-center gap-4 hidden  ">
+                            <div className="lg:flex items-center gap-4 hidden">
                                 <div className="hidden lg:flex items-center gap-1 border border-gray-700 p-1 rounded-md">
                                     <button onClick={() => setGridCols(3)} className={`p-1 rounded transition-colors ${gridCols === 3 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
                                         <Grid3Icon />
@@ -255,7 +415,6 @@ function ProductsContent() {
                                         <option value="price-desc">Price: High to Low</option>
                                     </select>
                                 </div>
-
                             </div>
                             <div className="flex items-center justify-between lg:hidden w-full">
                                 <div className="lg:hidden flex items-center gap-1 border border-gray-700 p-1 rounded-md">
@@ -277,20 +436,37 @@ function ProductsContent() {
                             </div>
                         </div>
 
-                        <div className="flex flex-col md:flex-row gap-4 mb-8">
-                            <div className="relative flex-grow">
-                                <input type="text" placeholder="Search Products..." value={filters.keyword} onChange={e => setFilters(prev => ({ ...prev, keyword: e.target.value }))} className="w-full bg-black border border-gray-700 text-white p-3 pl-12 focus:outline-none focus:bg-gray-900 focus:border-[#EFAF00] rounded-md" />
-                                <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+                        {/* Search Input for ProductsPage */}
+                        <div ref={searchRef} className="relative flex flex-col md:flex-row gap-4 mb-8">
+                            <div className="flex-grow">
+                                <input
+                                    type="text"
+                                    placeholder="Search Products..."
+                                    value={searchTerm}
+                                    onChange={e => setSearchTerm(e.target.value)}
+                                    className="w-full bg-black border border-gray-700 text-white p-3 pl-12 focus:outline-none focus:bg-gray-900 focus:border-[#EFAF00] rounded-md"
+                                />
+                                <SearchIcon className="absolute left-3 top-3 lg:top-1/2 lg:-translate-y-1/2 text-gray-500" size={20} />
                             </div>
                             <button onClick={() => setIsFilterOpen(true)} className="lg:hidden flex items-center justify-center gap-2 p-3 bg-black border border-[#EFAF00] text-[#EFAF00] rounded-md font-semibold">
                                 <FilterIcon size={18} />
                                 FILTERS
                             </button>
+                            {showSearchPopup && (
+                                <SearchPopup 
+                                    searchQuery={searchTerm}
+                                    searchResults={searchResults}
+                                    isSearching={isSearching}
+                                    onResultClick={handleResultClick}
+                                    onClose={() => setShowSearchPopup(false)}
+                                />
+                            )}
                         </div>
 
                         {loading ? (
                             <div className="flex justify-center items-center min-h-[90vh]">
-                                <Lottie animationData={Loader} loop={true} className="lg:w-64 lg:h-64 w-40 h-40" />
+                                {/* Simple CSS spinner for loading */}
+                                <div className="w-16 h-16 rounded-full border-4 border-gray-700 border-t-[#EFAF00] animate-spin"></div>
                             </div>
                         ) : products.length > 0 ? (
                             <div className={`grid ${mobileGridLayoutClasses[mobileGridCols]} md:grid-cols-2 ${gridLayoutClasses[gridCols]} gap-6 md:gap-8`}>
@@ -350,13 +526,6 @@ function ProductsContent() {
 // --- MAIN PRODUCTS PAGE COMPONENT ---
 export default function ProductsPage() {
     return (
-        <Suspense fallback={
-            <div className="flex justify-center items-center min-h-[90vh]">
-                <Lottie animationData={Loader} loop={true} className="lg:w-64 lg:h-64 w-40 h-40" />
-            </div>
-        }>
-
-            <ProductsContent />
-        </Suspense>
+        <ProductsContent />
     );
 }
