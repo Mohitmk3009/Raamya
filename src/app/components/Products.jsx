@@ -1,9 +1,10 @@
 'use client';
 import React, { useState, useEffect, Suspense, useRef } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation'; 
+import { useSearchParams } from 'next/navigation';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
+import Lottie from 'lottie-react';
+import Loader from '../../../public/lottie/Loading.json';
 // --- ICONS ---
 const SearchIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -100,15 +101,15 @@ const Sidebar = ({ filters, setFilters, maxProductPrice }) => {
 
     const handleSizeSelect = (size) => setFilters(prev => ({ ...prev, selectedSize: prev.selectedSize === size ? null : size }));
     const handleAvailabilityChange = (e) => {
-    const { name, checked } = e.target;
-    setFilters(prev => ({
-        ...prev,
-        availability: {
-            ...prev.availability,
-            [name]: checked
-        }
-    }));
-};
+        const { name, checked } = e.target;
+        setFilters(prev => ({
+            ...prev,
+            availability: {
+                ...prev.availability,
+                [name]: checked
+            }
+        }));
+    };
     const handleCategoryChange = (e) => {
         const { value, checked } = e.target;
         setFilters(prev => {
@@ -178,8 +179,7 @@ const SearchPopup = ({ searchQuery, searchResults, isSearching, onResultClick, o
             </div>
             {isSearching ? (
                 <div className="flex justify-center items-center py-8">
-                    {/* Simple CSS spinner for loading */}
-                    <div className="w-10 h-10 rounded-full border-4 border-gray-700 border-t-[#EFAF00] animate-spin"></div>
+                    <Lottie animationData={Loader} loop={true} className="w-20 h-20" />
                 </div>
             ) : searchResults.length > 0 ? (
                 <ul className="space-y-3 max-h-80 overflow-y-auto">
@@ -205,7 +205,7 @@ const SearchPopup = ({ searchQuery, searchResults, isSearching, onResultClick, o
 
 // --- Inner component that contains the page logic ---
 function ProductsContent() {
-     const searchParams = useSearchParams(); 
+    const searchParams = useSearchParams();
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(1);
     const [pages, setPages] = useState(1);
@@ -226,7 +226,7 @@ function ProductsContent() {
 
     const [filters, setFilters] = useState({
         keyword: '',
-        filter: '', 
+        filter: '',
         sortBy: 'default',
         selectedSize: null,
         availability: { inStock: false, outOfStock: false },
@@ -256,7 +256,7 @@ function ProductsContent() {
             const params = new URLSearchParams();
 
             if (filters.keyword) params.append('keyword', filters.keyword);
-             if (filters.filter) params.append('filter', filters.filter);
+            if (filters.filter) params.append('filter', filters.filter);
             if (filters.sortBy !== 'default') params.append('sortBy', filters.sortBy);
 
             if (filters.selectedSize) params.append('size', filters.selectedSize);
@@ -293,7 +293,7 @@ function ProductsContent() {
             }
         };
 
-        
+
         const timer = setTimeout(() => {
             fetchProducts();
         }, 300); // Debounce to prevent multiple fetches on rapid state changes
@@ -360,7 +360,7 @@ function ProductsContent() {
         setPage(pageNumber);
         window.scrollTo({ top: 0, behavior: 'smooth' });
     };
-    
+
     const handleResultClick = (productId) => {
         // Redirect to product page or filter products
         // For this example, we'll just close the popup
@@ -453,7 +453,7 @@ function ProductsContent() {
                                 FILTERS
                             </button>
                             {showSearchPopup && (
-                                <SearchPopup 
+                                <SearchPopup
                                     searchQuery={searchTerm}
                                     searchResults={searchResults}
                                     isSearching={isSearching}
@@ -465,15 +465,14 @@ function ProductsContent() {
 
                         {loading ? (
                             <div className="flex justify-center items-center min-h-[90vh]">
-                                {/* Simple CSS spinner for loading */}
-                                <div className="w-16 h-16 rounded-full border-4 border-gray-700 border-t-[#EFAF00] animate-spin"></div>
+                                <Lottie animationData={Loader} loop={true} className="lg:w-54 lg:h-54 w-40 h-40" />
                             </div>
                         ) : products.length > 0 ? (
-                            <div className={`grid ${mobileGridLayoutClasses[mobileGridCols]} md:grid-cols-2 ${gridLayoutClasses[gridCols]} gap-6 md:gap-8`}>
-                                {products.map(product => <ProductCard key={product._id} product={product} />)}
-                            </div>
+                        <div className={`grid ${mobileGridLayoutClasses[mobileGridCols]} md:grid-cols-2 ${gridLayoutClasses[gridCols]} gap-6 md:gap-8`}>
+                            {products.map(product => <ProductCard key={product._id} product={product} />)}
+                        </div>
                         ) : (
-                            <div className="text-center py-20 text-gray-500">No products found matching your criteria.</div>
+                        <div className="text-center py-20 text-gray-500">No products found matching your criteria.</div>
                         )}
 
                         <div className="flex justify-center items-center lg:mt-12 lg:pb-12 mt-5 space-x-2">
@@ -525,7 +524,11 @@ function ProductsContent() {
 
 // --- MAIN PRODUCTS PAGE COMPONENT ---
 export default function ProductsPage() {
+   
     return (
+         <Suspense>
         <ProductsContent />
+
+         </Suspense>
     );
 }

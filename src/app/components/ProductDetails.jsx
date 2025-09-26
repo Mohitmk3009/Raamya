@@ -293,9 +293,9 @@ export default function ProductPage() {
                         <Image width={1000} height={1200} src={mainImage} alt={product.name} className="w-full h-full object-cover rounded-md" />
                     ) : (
                         // Optional: You can add a placeholder div or spinner here while the image is loading
-                        <div className="w-full h-full flex items-center justify-center bg-gray-900 text-gray-500">
-                            Loading Image...
-                        </div>
+                        <div className="flex justify-center items-center py-8">
+                    <Lottie animationData={Loader} loop={true} className="w-20 h-20" />
+                </div>
                     )}
                 </div>
                     <div className="lg:col-span-1 flex lg:flex-col justify-center items-center gap-2">
