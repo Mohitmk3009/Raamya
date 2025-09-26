@@ -172,7 +172,7 @@ export default function WishlistPage() {
                     {wishlistItems.length > 0 && (
                         <button 
                             onClick={handleMoveAllToCart}
-                            className="bg-transparent border border-[#FFBB00] text-[#FFBB00] font-bold py-3 px-8 rounded-md hover:bg-[#FFBB00] hover:text-black transition-colors duration-300 uppercase"
+                            className="bg-transparent border cursor-pointer border-[#FFBB00] text-[#FFBB00] font-bold py-3 px-8 rounded-md hover:bg-[#FFBB00] hover:text-black transition-colors duration-300 uppercase"
                         >
                             MOVE ALL TO CART
                         </button>
@@ -182,7 +182,7 @@ export default function WishlistPage() {
                 {wishlistItems.length === 0 ? (
                     <div className="text-center text-gray-400 py-20">
                         <p className="text-xl">Your wishlist is empty. Start adding some products!</p>
-                        <Link href="/products" className="mt-4 inline-block bg-[#EFAF00] text-black font-bold py-3 px-6 rounded-md hover:bg-yellow-300 transition-colors">
+                        <Link href="/products" className="mt-4 inline-block bg-[#EFAF00] cursor-pointer text-black font-bold py-3 px-6 rounded-md hover:bg-yellow-300 transition-colors">
                             Explore Products
                         </Link>
                     </div>

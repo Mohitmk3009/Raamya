@@ -150,7 +150,7 @@ export default function ContactUs() {
 
             {/* Privacy Policy Checkbox */}
             <div className="flex items-center">
-              <input id="agreed" name="agreed" type="checkbox" checked={formData.agreed} onChange={handleChange} required className="h-5 w-5 bg-gray-900 border-gray-700 rounded text-[#EFAF00] focus:ring-amber-500 accent-amber-500" />
+              <input id="agreed" name="agreed" type="checkbox" checked={formData.agreed} onChange={handleChange} required className="h-5 cursor-pointer w-5 bg-gray-900 border-gray-700 rounded text-[#EFAF00] focus:ring-amber-500 accent-amber-500" />
               <label htmlFor="agreed" className="ml-3 text-sm text-gray-400">I agree that my personal data will be processed in accordance with the privacy policy</label>
             </div>
 
@@ -158,7 +158,7 @@ export default function ContactUs() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full sm:w-auto bg-[#EFAF00] text-black font-bold py-4 px-10 rounded-xl hover:bg-white transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full sm:w-auto bg-[#EFAF00] cursor-pointer text-black font-bold py-4 px-10 rounded-xl hover:bg-white transition duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? 'Sending...' : 'Send Message'}
             </button>

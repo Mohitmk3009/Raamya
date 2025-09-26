@@ -56,7 +56,7 @@ const FaqItem = ({ item, isOpen, onClick }) => {
         onClick={onClick}
       >
         <h3 className="text-md sm:text-lg font-semibold text-amber-400">{item.question}</h3>
-        <div className="text-amber-400 text-2xl font-light">
+        <div className="text-amber-400 cursor-pointer text-2xl font-light">
           {isOpen ? '−' : '+'}
         </div>
       </div>

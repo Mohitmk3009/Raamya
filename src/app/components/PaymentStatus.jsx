@@ -237,7 +237,7 @@ const PaymentFailed = ({ onRetry }) => (
     <ErrorIcon />
     <h1 className="text-4xl font-bold text-red-500 mb-4">Sorry, Payment Failed</h1>
     <div className="mt-12 flex flex-col items-center space-y-4">
-      <button onClick={onRetry} className="bg-[#EFAF00] text-black font-bold py-3 px-16 rounded-lg text-lg hover:bg-yellow-600">Try Payment Again</button>
+      <button onClick={onRetry} className="bg-[#EFAF00] text-black font-bold py-3 px-16 rounded-lg text-lg cursor-pointer hover:bg-yellow-600">Try Payment Again</button>
     </div>
   </div>
 );
@@ -310,7 +310,7 @@ const OrderModal = ({ order }) => {
       </div>
 
       <a href="/allproducts">
-        <button className="mt-8 bg-[#EFAF00] hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg text-lg w-full">
+        <button className="mt-8 cursor-pointer bg-[#EFAF00] hover:bg-yellow-600 text-black font-bold py-3 px-6 rounded-lg text-lg w-full">
           Continue Shopping
         </button>
       </a>

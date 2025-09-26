@@ -28,8 +28,8 @@ const OrderSummaryItem = ({ item }) => (
 );
 
 const PaymentOption = ({ title, children, isActive, onClick }) => (
-    <div className="border border-[#EFAF00] rounded-md font-redhead">
-        <button type="button" onClick={onClick} className="w-full flex justify-between items-center p-4 text-left">
+    <div className="border border-[#EFAF00]  rounded-md font-redhead">
+        <button type="button" onClick={onClick} className="w-full cursor-pointer flex justify-between items-center p-4 text-left">
             <div className="flex items-center">
                 <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center mr-4 ${isActive ? 'border-[#EFAF00]' : 'border-gray-500'}`}>{isActive && <span className="w-2.5 h-2.5 rounded-full bg-[#EFAF00]"></span>}</span>
                 <span>{title}</span>
@@ -58,7 +58,7 @@ const AddressModal = ({ onClose, onSave }) => {
                     <input type="text" name="postalCode" placeholder="Postal Code" value={formData.postalCode} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
                     <input type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
                     <div className="pt-4">
-                        <button type="submit" className="w-full bg-[#EFAF00] text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">SAVE ADDRESS</button>
+                        <button type="submit" className="w-full bg-[#EFAF00] cursor-pointer text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">SAVE ADDRESS</button>
                     </div>
                 </form>
             </div>
@@ -74,7 +74,7 @@ const ComingSoonDialog = ({ onClose }) => (
             <h3 className="text-2xl font-bold text-[#EFAF00] mb-4 font-redhead">UPI Payments</h3>
             <p className="text-gray-300 mb-6">We're sorry, UPI payments are currently unavailable.</p>
             <p className="text-gray-300">This feature will be coming in 7 days!</p>
-            <button onClick={onClose} className="mt-6 bg-[#EFAF00] text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">OK</button>
+            <button onClick={onClose} className="mt-6 bg-[#EFAF00] text-black font-bold py-2 px-6 cursor-pointer rounded-lg hover:bg-yellow-500">OK</button>
         </div>
     </div>
 );
@@ -267,7 +267,7 @@ export default function CheckoutPage() {
                                 <h2 className="text-lg font-semibold mb-4 tracking-wide">SHIPPING ADDRESS</h2>
                                 <div className="space-y-4">
                                     {savedAddresses.map(addr => (
-                                        <div key={addr._id} onClick={() => setSelectedAddressId(addr._id)} className={`p-4 rounded-md border-2 cursor-pointer ${selectedAddressId === addr._id ? 'border-[#EFAF00] bg-[#EFAF00]/10' : 'border-gray-700'}`}>
+                                        <div key={addr._id} onClick={() => setSelectedAddressId(addr._id)} className={`p-4  rounded-md border-2 cursor-pointer ${selectedAddressId === addr._id ? 'border-[#EFAF00] bg-[#EFAF00]/10' : 'border-gray-700'}`}>
                                             <p className="font-bold">{addr.label}</p>
                                             <p className="text-sm text-gray-300">{`${addr.name}, ${addr.street}, ${addr.city}, ${addr.state} - ${addr.postalCode}`}</p>
                                         </div>

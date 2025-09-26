@@ -60,7 +60,7 @@ const Footer = () => {
                         </p>
                         <div className="flex space-x-4">
                             {/* Social Icons with hover effect */}
-                            <a href="#" className="w-9 h-9 bg-white rounded-full flex hover:scale-110 items-center transition-all duration-300 justify-center group">
+                            {/* <a href="#" className="w-9 h-9 bg-white rounded-full flex hover:scale-110 items-center transition-all duration-300 justify-center group">
                                 <div className="filter grayscale  group-hover:grayscale-0 transition duration-300">
                                     <TwitterIcon />
                                 </div>
@@ -74,7 +74,7 @@ const Footer = () => {
                                 <div className="filter grayscale group-hover:grayscale-0 transition duration-300">
                                     <MailIcon />
                                 </div>
-                            </a>
+                            </a> */}
                             <Link href={'https://www.instagram.com/raamya___?igsh=MWpiNTFoa2NuM29maQ=='} target='_blank' className="w-9 h-9 bg-white rounded-full flex hover:scale-110 items-center transition-all duration-300 justify-center group">
                                 <div className="filter grayscale group-hover:grayscale-0 transition duration-300">
                                     <InstagramIcon />

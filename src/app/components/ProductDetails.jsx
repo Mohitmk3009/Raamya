@@ -26,7 +26,7 @@ const SuggestedItem = ({ item, onCartAction, isInCart }) => {
             </div>
             <button
                 onClick={() => onCartAction(isInCart ? 'remove' : 'add', item)}
-                className={`font-bold py-2 px-4 rounded-md transition-colors text-sm ${isInCart ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-[#EFAF00] text-black hover:bg-yellow-300'}`}
+                className={`font-bold py-2 px-4 rounded-md cursor-pointer transition-colors text-sm ${isInCart ? 'bg-red-600 text-white hover:bg-red-700' : 'bg-[#EFAF00] text-black hover:bg-yellow-300'}`}
             >
                 {isInCart ? 'REMOVE' : 'ADD'}
             </button>
@@ -40,7 +40,7 @@ const ReviewCard = ({ review }) => (
     <div className="border border-[#EFAF00]/30 rounded-lg lg:p-6 p-4 flex flex-col font-redhead">
         <div className="flex justify-between items-start mb-3">
             <div className="flex items-center gap-2"><p className="font-bold text-white">{review.name}</p><VerifiedIcon className="text-green-500" /></div>
-            <button className="text-gray-500 hover:text-white"><MoreHorizontalIcon /></button>
+            <button className="text-gray-500 cursor-pointer hover:text-white"><MoreHorizontalIcon /></button>
         </div>
         <div className="flex items-center gap-1 mb-4 text-[#EFAF00]">{[...Array(5)].map((_, i) => <StarIcon key={i} filled={i < review.rating} />)}</div>
         <p className="text-gray-400 text-sm leading-relaxed">{review.comment}</p>
@@ -65,10 +65,10 @@ const Reviews = ({ product, onReviewSubmit }) => {
     };
     return (
         <div className="p-4 md:p-6 font-redhead">
-            <div className="flex justify-between items-center lg:mb-6 gap-4"><h3 className="font-bold lg:text-xl text-white">ALL REVIEWS ({product.reviews.length})</h3><div className="flex items-center gap-4"><select className="bg-black border border-[#EFAF00]/30 rounded-md py-2 px-3 text-white focus:outline-none focus:border-[#EFAF00]"><option>Latest</option><option>Highest Rated</option></select></div></div>
+            <div className="flex justify-between items-center lg:mb-6 gap-4"><h3 className="font-bold lg:text-xl text-white">ALL REVIEWS ({product.reviews.length})</h3><div className="flex items-center gap-4 "><select className="bg-black border border-[#EFAF00]/30 rounded-md py-2 px-3 text-white focus:outline-none cursor-pointer focus:border-[#EFAF00]"><option>Latest</option><option>Highest Rated</option></select></div></div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">{product.reviews.slice(0, visibleReviewCount).map(review => <ReviewCard key={review._id} review={review} />)}</div>
             {product.reviews.length > visibleReviewCount && (<div className="text-center mb-12"><button onClick={() => setVisibleReviewCount(prev => prev + 4)} className="bg-white text-black font-bold py-3 px-8 rounded-full hover:bg-[#FFBB00] hover:text-white transition-colors">Load More Reviews</button></div>)}
-            <div className="w-full mt-8"><h3 className="font-bold text-xl text-white mb-4">Write a Customer Review</h3>{error && <p className="text-red-500 mb-4">{error}</p>}<form onSubmit={handleSubmit} className="border border-[#EFAF00]/30 rounded-lg p-6"><div className="mb-4"><label className="block text-[#EFAF00] mb-2">Your Rating</label><div className="flex" onMouseLeave={() => setHoverRating(0)}>{[...Array(5)].map((_, i) => (<StarIcon key={i} onClick={() => setRating(i + 1)} onMouseEnter={() => setHoverRating(i + 1)} className={`cursor-pointer ${(hoverRating || rating) > i ? 'text-[#EFAF00]' : 'text-gray-600'}`} />))}</div></div><textarea placeholder="Write your review here" value={comment} onChange={(e) => setComment(e.target.value)} className="w-full bg-transparent text-white placeholder-gray-500 border-b border-gray-700 focus:border-[#EFAF00] focus:outline-none h-24 resize-none mb-4"></textarea><button type="submit" className="bg-white text-black font-bold py-3 px-8 rounded-lg hover:bg-[#FFBB00] w-full">Submit Your Review</button></form></div>
+            <div className="w-full mt-8"><h3 className="font-bold text-xl text-white mb-4">Write a Customer Review</h3>{error && <p className="text-red-500 mb-4">{error}</p>}<form onSubmit={handleSubmit} className="border border-[#EFAF00]/30 rounded-lg p-6"><div className="mb-4"><label className="block text-[#EFAF00] mb-2">Your Rating</label><div className="flex" onMouseLeave={() => setHoverRating(0)}>{[...Array(5)].map((_, i) => (<StarIcon key={i} onClick={() => setRating(i + 1)} onMouseEnter={() => setHoverRating(i + 1)} className={`cursor-pointer ${(hoverRating || rating) > i ? 'text-[#EFAF00]' : 'text-gray-600'}`} />))}</div></div><textarea placeholder="Write your review here" value={comment} onChange={(e) => setComment(e.target.value)} className="w-full bg-transparent text-white placeholder-gray-500 border-b border-gray-700 focus:border-[#EFAF00] focus:outline-none h-24 resize-none mb-4"></textarea><button type="submit" className="bg-white text-black font-bold py-3 px-8 rounded-lg hover:bg-[#FFBB00] cursor-pointer w-full">Submit Your Review</button></form></div>
         </div>
     );
 };
@@ -308,7 +308,7 @@ export default function ProductPage() {
                     <div className="lg:col-span-4 border border-[#EFAF00] lg:p-6 p-4 lg:min-w-[500px] h-fit lg:ml-12 rounded-lg flex flex-col">
                         <div className="flex justify-between items-start mb-4">
                             <h1 className="text-3xl font-bold text-yellow-300 tracking-wider">{product.name}</h1>
-                            <button onClick={handleAddToWishlist} className={`p-2 border rounded-md transition-colors ${isWishlisted ? 'bg-[#EFAF00] border-[#EFAF00]' : 'border-gray-600 hover:border-[#EFAF00]'}`}>
+                            <button onClick={handleAddToWishlist} className={`p-2 cursor-pointer border rounded-md transition-colors ${isWishlisted ? 'bg-[#EFAF00] border-[#EFAF00]' : 'border-gray-600 hover:border-[#EFAF00]'}`}>
                                 <HeartIcon filled={isWishlisted} className={`${isWishlisted ? 'text-white' : 'text-[#EFAF00]'}`} />
                             </button>
                         </div>
@@ -330,7 +330,7 @@ export default function ProductPage() {
                             <label className="block text-sm font-medium text-gray-300 mb-2">Size</label>
                             <div className="flex gap-2 flex-wrap">
                                 {product.variants.map((variant) => (
-                                    <button key={variant.size} onClick={() => setSelectedSize(variant.size)} disabled={variant.stock === 0} className={`w-12 h-12 border rounded-md font-bold transition-colors ${selectedSize === variant.size ? 'bg-[#EFAF00] text-black border-[#EFAF00]' : 'border-gray-600 hover:border-[#EFAF00] disabled:opacity-50 disabled:cursor-not-allowed'}`}>
+                                    <button key={variant.size} onClick={() => setSelectedSize(variant.size)} disabled={variant.stock === 0} className={`w-12 cursor-pointer h-12 border rounded-md font-bold transition-colors ${selectedSize === variant.size ? 'bg-[#EFAF00] text-black border-[#EFAF00]' : 'border-gray-600 hover:border-[#EFAF00] disabled:opacity-50 disabled:cursor-not-allowed'}`}>
                                         {variant.size}
                                     </button>
                                 ))}
@@ -339,19 +339,19 @@ export default function ProductPage() {
 
                         <div className="flex items-center gap-4 mt-auto">
                             <div className="flex items-center border border-gray-600 rounded-md">
-                                <button onClick={() => handleQuantityChange(-1)} className="px-4 py-3 hover:bg-gray-800 rounded-l-md">-</button>
+                                <button onClick={() => handleQuantityChange(-1)} className="px-4 py-3 hover:bg-gray-800 cursor-pointer rounded-l-md">-</button>
                                 <span className="px-5 py-2 font-bold">{quantity}</span>
-                                <button onClick={() => handleQuantityChange(1)} className="px-4 py-3 hover:bg-gray-800 rounded-r-md">+</button>
+                                <button onClick={() => handleQuantityChange(1)} className="px-4 py-3 hover:bg-gray-800 cursor-pointer rounded-r-md">+</button>
                             </div>
                             <div className="flex flex-col gap-2 w-full">
-                                <button onClick={handleAddToCart} className="bg-[#EFAF00] text-black font-bold py-3 w-full rounded-md hover:bg-yellow-300 transition-colors">
+                                <button onClick={handleAddToCart} className="bg-[#EFAF00] text-black font-bold py-3 w-full cursor-pointer rounded-md hover:bg-yellow-300 transition-colors">
                                     ADD TO CART
                                 </button>
                             </div>
                         </div>
                         <button
                             onClick={handleBuyNow}
-                            className={`w-full font-bold py-3 mt-5 rounded-md transition-colors ${isSelectedVariantOutOfStock ? 'bg-gray-700 text-gray-400 cursor-not-allowed' : 'bg-white text-black hover:bg-gray-200'}`}
+                            className={`w-full font-bold py-3 mt-5 rounded-md  transition-colors ${isSelectedVariantOutOfStock ? 'bg-gray-700  text-gray-400 cursor-not-allowed' : 'bg-white cursor-pointer text-black hover:bg-gray-200'}`}
                             disabled={isSelectedVariantOutOfStock}
                         >
                             {isSelectedVariantOutOfStock ? 'OUT OF STOCK' : 'BUY NOW'}
@@ -361,9 +361,9 @@ export default function ProductPage() {
 
                 <section>
                     <div className="flex justify-center items-center whitespace-nowrap gap-4 md:gap-8 border-b border-gray-800 lg:mb-8 mb-4">
-                        <button onClick={() => setActiveTab('details')} className={`font-bold py-2 px-4 font-redhead transition-colors duration-300 ${activeTab === 'details' ? 'text-[#EFAF00] border-b-2 border-[#EFAF00]' : 'text-gray-500 hover:text-yellow-300'}`}>DETAILS</button>
-                        <button onClick={() => setActiveTab('reviews')} className={`font-bold py-2 px-4 font-redhead transition-colors duration-300 ${activeTab === 'reviews' ? 'text-[#EFAF00] border-b-2 border-[#EFAF00]' : 'text-gray-500 hover:text-yellow-300'}`}>REVIEWS</button>
-                        <button onClick={() => setActiveTab('faq')} className={`font-bold py-2 px-4 font-redhead transition-colors duration-300 ${activeTab === 'faq' ? 'text-[#EFAF00] border-b-2 border-[#EFAF00]' : 'text-gray-500 hover:text-yellow-300'}`}>FAQs</button>
+                        <button onClick={() => setActiveTab('details')} className={`font-bold py-2 px-4 cursor-pointer font-redhead transition-colors duration-300 ${activeTab === 'details' ? 'text-[#EFAF00] border-b-2 border-[#EFAF00]' : 'text-gray-500 hover:text-yellow-300'}`}>DETAILS</button>
+                        <button onClick={() => setActiveTab('reviews')} className={`font-bold py-2 px-4 cursor-pointer font-redhead transition-colors duration-300 ${activeTab === 'reviews' ? 'text-[#EFAF00] border-b-2 border-[#EFAF00]' : 'text-gray-500 hover:text-yellow-300'}`}>REVIEWS</button>
+                        <button onClick={() => setActiveTab('faq')} className={`font-bold py-2 px-4 font-redhead cursor-pointer transition-colors duration-300 ${activeTab === 'faq' ? 'text-[#EFAF00] border-b-2 border-[#EFAF00]' : 'text-gray-500 hover:text-yellow-300'}`}>FAQs</button>
                     </div>
                     <div>
                         {activeTab === 'details' && <ProductDetails product={product} />}

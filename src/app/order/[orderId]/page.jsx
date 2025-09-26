@@ -48,7 +48,7 @@ const CancelOrderModal = ({ onClose, onConfirm }) => {
                             id="cancelReason"
                             value={reason}
                             onChange={(e) => setReason(e.target.value)}
-                            className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white"
+                            className="w-full bg-gray-800 border cursor-pointer border-gray-600 rounded-lg px-4 py-2 text-white"
                         >
                             <option value="" disabled>-- Select a reason --</option>
                             {reasons.map(r => <option key={r} value={r}>{r}</option>)}
@@ -245,7 +245,7 @@ export default function OrderDetailsPage({ params }) {
                     </div>
                     <button
                         onClick={handleDownloadEBill}
-                        className="bg-gray-800 hover:bg-[#EFAF00] hover:text-black text-[#EFAF00] p-3 rounded-full transition-colors border border-gray-700"
+                        className="bg-gray-800 hover:bg-[#EFAF00] cursor-pointer hover:text-black text-[#EFAF00] p-3 rounded-full transition-colors border border-gray-700"
                         title="Print E-Bill"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -310,7 +310,7 @@ export default function OrderDetailsPage({ params }) {
                         {order.status !== 'Delivered' && order.status !== 'Cancelled' && (
                             <div className="mt-8">
                                 {isCancellable ? (
-                                    <button onClick={handleCancelClick} className="w-full bg-red-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-700 transition-colors">
+                                    <button onClick={handleCancelClick} className="w-full cursor-pointer bg-red-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-red-700 transition-colors">
                                         CANCEL ORDER
                                     </button>
                                 ) : (
@@ -329,7 +329,7 @@ export default function OrderDetailsPage({ params }) {
                                         <p className="text-xs text-gray-400 mt-1">Status: {order.exchangeRequest.status}</p>
                                     </div>
                                 ) : (
-                                    <a href={`/exchangemyorder?orderId=${order._id}`} className="block w-full text-center bg-[#EFAF00] text-black font-bold py-3 px-6 rounded-lg hover:bg-yellow-500 transition-colors">
+                                    <a href={`/exchangemyorder?orderId=${order._id}`} className="block cursor-pointer w-full text-center bg-[#EFAF00] text-black font-bold py-3 px-6 rounded-lg hover:bg-yellow-500 transition-colors">
                                         EXCHANGE ORDER
                                     </a>
                                 )}

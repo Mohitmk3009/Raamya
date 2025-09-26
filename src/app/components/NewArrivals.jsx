@@ -154,7 +154,7 @@ const NewArrivals = () => {
     <div className="bg-black text-[#EFAF00] lg:pt-12 pt-6 lg:pb-8 overflow-hidden font-redhead">
       <div className="flex flex-col justify-between relative mb-10">
         <div className="bg-[#EFAF00] h-2 w-full blur-lg"></div>
-        <h2 className="text-center text-3xl md:text-5xl font-bold tracking-widest text-[#EFAF00] my-5 px-4">
+        <h2 className="text-center text-2xl md:text-5xl font-bold tracking-widest text-[#EFAF00] lg:my-5 my-4 px-4">
           NEW ARRIVALS
         </h2>
         <div className="bg-[#EFAF00] h-2 w-full blur-lg"></div>
@@ -163,7 +163,7 @@ const NewArrivals = () => {
       <div className="relative flex items-center justify-center">
         <button
           onClick={prevSlide}
-          className="absolute left-2 md:left-10 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/50 hover:bg-gray-800/90 rounded-full disabled:opacity-50"
+          className="absolute left-2 md:left-10 top-1/2 -translate-y-1/2 cursor-pointer z-20 p-2 bg-black/50 hover:bg-gray-800/90 rounded-full disabled:opacity-50"
           disabled={newArrivalProducts.length === 0}
         >
           <ChevronLeft className="h-6 w-6 text-[#EFAF00]" />
@@ -198,7 +198,7 @@ const NewArrivals = () => {
                   height={600}
                   src={product.images[0] || '/placeholder.png'}
                   alt={product.name}
-                  className={`w-full ${itemsToShow === 1 ? "h-[60vh]" : "h-[70vh] sm:h-[80vh]"} object-cover`}
+                  className={`w-full ${itemsToShow === 1 ? "h-[60vh]" : "h-[70vh] sm:h-[80vh]"} object-cover cursor-pointer`}
                 />
 
                 {itemsToShow === 1 ? (
@@ -227,7 +227,7 @@ const NewArrivals = () => {
 
         <button
           onClick={nextSlide}
-          className="absolute right-2 md:right-10 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/50 hover:bg-gray-800/90 rounded-full disabled:opacity-50"
+          className="absolute right-2 md:right-10 top-1/2 -translate-y-1/2 z-20 p-2 bg-black/50 cursor-pointer hover:bg-gray-800/90 rounded-full disabled:opacity-50"
           disabled={newArrivalProducts.length === 0}
         >
           <ChevronRight className="h-6 w-6 text-[#EFAF00]" />
@@ -236,7 +236,7 @@ const NewArrivals = () => {
 
       <div className="text-center my-8">
         <Link href={'/allproducts?filter=newArrivals'}>
-          <button className="bg-transparent border border-[#EFAF00] text-[#EFAF00] py-3 px-10 hover:bg-[#EFAF00] hover:text-black transition-colors duration-300 tracking-widest">
+          <button className="bg-transparent border cursor-pointer border-[#EFAF00] text-[#EFAF00] py-3 px-10 hover:bg-[#EFAF00] hover:text-black transition-colors duration-300 tracking-widest">
             VIEW MORE
           </button>
         </Link>

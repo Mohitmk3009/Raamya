@@ -20,8 +20,8 @@ const ExchangeOrderForm = () => {
     selectedReason: '',
     otherReasonDetails: '',
   });
-  const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState('');
+  const [imageFiles, setImageFiles] = useState([]);
+  const [imagePreviews, setImagePreviews] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const exchangeReasons = [
@@ -35,15 +35,20 @@ const ExchangeOrderForm = () => {
     const { id, value } = e.target;
     setFormData(prev => ({ ...prev, [id]: value }));
   };
-
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImageFile(file);
-      setImagePreview(URL.createObjectURL(file));
+    const files = Array.from(e.target.files); // Convert FileList to array
+    if (files.length > 0) {
+      if (files.length > 5) {
+        toast.error("You can upload a maximum of 5 images.");
+        return;
+      }
+      setImageFiles(files);
+      // Clean up old previews before creating new ones
+      imagePreviews.forEach(preview => URL.revokeObjectURL(preview));
+      const newPreviews = files.map(file => URL.createObjectURL(file));
+      setImagePreviews(newPreviews);
     }
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -55,14 +60,17 @@ const ExchangeOrderForm = () => {
       toast.error('Please provide a reason for the exchange.');
       return;
     }
-
+    if (imageFiles.length === 0) {
+      toast.error('Please upload at least one image.');
+      return;
+    }
     const submissionData = new FormData();
     submissionData.append('orderNumber', formData.orderNumber);
     submissionData.append('email', formData.email);
     submissionData.append('reason', finalReason);
-    if (imageFile) {
-      submissionData.append('image', imageFile);
-    }
+    imageFiles.forEach(file => {
+      submissionData.append('images', file);
+    });
 
     setLoading(true);
 
@@ -80,8 +88,9 @@ const ExchangeOrderForm = () => {
 
       toast.success(data.message);
       setFormData({ orderNumber: '', email: '', selectedReason: '', otherReasonDetails: '' });
-      setImageFile(null);
-      setImagePreview('');
+      setImageFiles([]);
+      setImagePreviews([]);
+
       e.target.reset();
     } catch (error) {
       toast.error(error.message);
@@ -141,6 +150,7 @@ const ExchangeOrderForm = () => {
                 id="image"
                 accept="image/png, image/jpeg, image/jpg"
                 onChange={handleFileChange}
+                multiple
                 className="w-full bg-gray-800 border border-gray-600 rounded-md text-sm text-gray-400
                                            file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0
                                            file:text-sm file:font-semibold file:bg-[#EFAF00] file:text-gray-900
@@ -148,14 +158,18 @@ const ExchangeOrderForm = () => {
               />
             </div>
 
-            {imagePreview && (
+            {imagePreviews.length > 0 && (
               <div className="mb-6">
-                <p className="block mb-2 text-sm font-medium text-gray-300">Image Preview</p>
-                <div className="border border-gray-600 rounded-md p-2">
-                  <img src={imagePreview} alt="Selected preview" width={100} height={100} className="rounded-md object-cover" />
+                <p className="block mb-2 text-sm font-medium text-gray-300">Image Previews</p>
+                <div className="flex flex-wrap gap-4 border border-gray-600 rounded-md p-2">
+                  {imagePreviews.map((preview, index) => (
+                    <img key={index} src={preview} alt={`Preview ${index + 1}`} className="w-24 h-24 rounded-md object-cover" />
+                  ))}
                 </div>
               </div>
             )}
+
+
             <div className="mb-6">
               <label htmlFor="selectedReason" className="block mb-2 text-sm font-medium text-gray-300">Reason for Exchange</label>
               <select
@@ -173,8 +187,8 @@ const ExchangeOrderForm = () => {
             </div>
 
             {formData.selectedReason === 'Other' && (
-              <div className="mb-8">
-                <label htmlFor="otherReasonDetails" className="block mb-2 text-sm font-medium text-gray-300">Please provide more details</label>
+              <div className="mb-8 cursor-pointer">
+                <label htmlFor="otherReasonDetails" className="block mb-2  text-sm font-medium text-gray-300">Please provide more details</label>
                 <textarea
                   id="otherReasonDetails"
                   rows="4"
@@ -212,11 +226,11 @@ const ExchangeOrderForm = () => {
             <ul className="space-y-3">
               <li className="flex items-start">
                 <BulletIcon />
-                <span>Exchanges are accepted within **3 days of the delivery date**.</span>
+                <span>Exchanges are accepted within 3 days of the delivery date.</span>
               </li>
               <li className="flex items-start">
                 <BulletIcon />
-                <span>Items must be **unused, unwashed**, and in their **original condition with all tags and packaging intact**.</span>
+                <span>Items must be unused, unwashed, and in their original condition with all tags and packaging intact.</span>
               </li>
               <li className="flex items-start">
                 <BulletIcon />
@@ -224,7 +238,7 @@ const ExchangeOrderForm = () => {
               </li>
               <li className="flex items-start">
                 <BulletIcon />
-                <span>Only **one exchange request** can be made per order.</span>
+                <span>Only one exchange request can be made per order.</span>
               </li>
             </ul>
           </div>
@@ -235,11 +249,11 @@ const ExchangeOrderForm = () => {
             <ul className="space-y-3">
               <li className="flex items-start">
                 <BulletIcon />
-                <span>Items purchased **on sale or clearance** cannot be exchanged.</span>
+                <span>Items purchased on sale or clearance cannot be exchanged.</span>
               </li>
               <li className="flex items-start">
                 <BulletIcon />
-                <span>**Accessories and intimate wear** are non-exchangeable for hygiene reasons.</span>
+                <span>Accessories and intimate wear are non-exchangeable for hygiene reasons.</span>
               </li>
             </ul>
           </div>
@@ -250,7 +264,7 @@ const ExchangeOrderForm = () => {
             <ul className="space-y-3">
               <li className="flex items-start">
                 <BulletIcon />
-                <span>You may cancel your order for a **full refund** within **24 hours of placing the order**.</span>
+                <span>You may cancel your order for a full refund within 24 hours of placing the order.</span>
               </li>
               <li className="flex items-start">
                 <BulletIcon />

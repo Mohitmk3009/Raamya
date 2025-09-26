@@ -676,7 +676,7 @@ export default function Header() {
                             </form>
                             <button
                                 onClick={() => setIsDesktopSearchOpen(!isDesktopSearchOpen)}
-                                className={`text-[#EFAF00] hover:text-white transition-colors duration-300 ${isDesktopSearchOpen ? 'pl-2' : ''}`}
+                                className={`text-[#EFAF00] hover:text-white cursor-pointer hover:scale-110 transition-colors duration-300 ${isDesktopSearchOpen ? 'pl-2' : ''}`}
                                 aria-label="Toggle search bar"
                             >
                                 {isDesktopSearchOpen ? <CloseIcon /> : <SearchIcon />}

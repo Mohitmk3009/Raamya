@@ -11,7 +11,7 @@ const mediaPosts = [
         type: 'video',
         mediaSrc: "/videos/video-1.mp4",
         poster: "https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        username: "nishorama",
+        username: "raamya___",
         caption: "This Navratri, no repeats, no excuses. 🪞 9 looks. Infinite Nazar.\nWhich one's most wanted for you? 🫶🏼\n\nTag your Garba +1 and let them pick your outfit.💃",
         date: "21 September"
     },
@@ -19,7 +19,7 @@ const mediaPosts = [
         id: 2,
         type: 'image',
         mediaSrc: "https://images.unsplash.com/photo-1601762603339-fd61e28b698a?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Make sure this path is correct and the image exists
-        username: "nishorama",
+        username: "raamya___",
         caption: "A beautiful day in pink and white.",
         date: "25 September"
     },
@@ -45,7 +45,7 @@ const mediaPosts = [
         type: 'video',
         mediaSrc: "/videos/video-1.mp4",
         poster: "https://plus.unsplash.com/premium_photo-1707932497939-bca3196336f3?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        username: "nishorama",
+        username: "raamya___",
         caption: "Feeling the festive vibes.",
         date: "20 September"
     },
@@ -84,8 +84,8 @@ export default function VideoGallery() {
         <>
             <div className='flex flex-col justify-between relative pb-10 bg-black font-redhead'>
                 <div className="bg-[#EFAF00] h-2 w-full blur-lg"></div>
-                <h2 className="text-center text-3xl md:text-5xl font-bold tracking-widest text-[#EFAF00] my-5 px-4">
-                    FOLLOW US ON INSTAGRAM <Link href={'https://www.instagram.com/raamya___?igsh=MWpiNTFoa2NuM29maQ=='} target="_blank"> @Raamya</Link>
+                <h2 className="text-center text-2xl md:text-5xl font-bold tracking-widest text-[#EFAF00] lg:my-5 my-2 lg:px-4 px-4">
+                    FOLLOW US ON INSTAGRAM <Link href={'https://www.instagram.com/raamya___?igsh=MWpiNTFoa2NuM29maQ=='} target="_blank"> @Raamya___</Link>
                 </h2>
                 <div className="bg-[#EFAF00] h-2 w-full blur-lg"></div>
             </div>

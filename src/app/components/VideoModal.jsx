@@ -98,7 +98,7 @@ export default function VideoModal({ isOpen, onClose, post, allPosts, currentInd
             <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 mr-3">
               <Image src="https://res.cloudinary.com/daby6uvkv/image/upload/v1758717128/exchange_requests/nebse2dpotri9iwj1x2o.png" alt="Profile" width={40} height={40} />
             </div>
-            <span className="font-bold text-gray-800">{post.username}</span>
+            <span className="font-bold text-gray-800 ">{post.username}</span>
           </div>
 
           {/* Caption - scrollable if too long */}

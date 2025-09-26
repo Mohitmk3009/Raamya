@@ -88,7 +88,7 @@ const SignInForm = ({ setAuthMode }) => {
           <button
             type="button"
             onClick={() => setPasswordVisible(!passwordVisible)}
-            className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-gray-400"
+            className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-gray-400 cursor-pointer"
           >
             {passwordVisible ? <EyeOffIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
           </button>
@@ -111,7 +111,7 @@ const SignInForm = ({ setAuthMode }) => {
         <div className="space-y-3">
           <a
             href={`${API_BASE_URL}/auth/google`}
-            className="w-full flex items-center justify-center bg-white text-black font-medium py-2 px-4 rounded-md hover:bg-gray-200"
+            className="w-full flex items-center justify-center bg-white text-black font-medium py-2 px-4 rounded-md hover:bg-gray-200 cursor-pointer"
           >
             <GoogleIcon /> Sign in with Gmail
           </a>
@@ -210,7 +210,7 @@ const SignUpForm = ({ setAuthMode }) => {
           <button
             type="button"
             onClick={() => setPasswordVisible(!passwordVisible)}
-            className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-gray-400"
+            className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center cursor-pointer text-gray-400"
           >
             {passwordVisible ? <EyeOffIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
           </button>
@@ -229,7 +229,7 @@ const SignUpForm = ({ setAuthMode }) => {
           <button
             type="button"
             onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
-            className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-gray-400"
+            className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center cursor-pointer text-gray-400"
           >
             {confirmPasswordVisible ? <EyeOffIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
           </button>
@@ -238,7 +238,7 @@ const SignUpForm = ({ setAuthMode }) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-[#EFAF00] cursor-pointer text-black font-bold py-3 px-4 rounded-md disabled:bg-gray-500"
+            className="w-full bg-[#EFAF00] cursor-pointer text-black font-bold py-3 px-4 rounded-md disabled:bg-gray-500 "
           >
             {loading ? 'Creating Account...' : 'Create Account'}
           </button>
@@ -246,7 +246,7 @@ const SignUpForm = ({ setAuthMode }) => {
         <div className="space-y-3">
           <a
             href={`${API_BASE_URL}/auth/google`}
-            className="w-full flex items-center justify-center bg-white text-black font-medium py-2 px-4 rounded-md hover:bg-gray-200"
+            className="w-full flex items-center justify-center bg-white text-black font-medium py-2 px-4 rounded-md hover:bg-gray-200 cursor-pointer"
           >
             <GoogleIcon /> Sign up with Gmail
           </a>
@@ -305,7 +305,7 @@ const ForgotPasswordEmailForm = ({ setForgotPasswordStep, setEmail }) => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-[#EFAF00] text-black font-bold py-3 rounded disabled:bg-gray-500"
+          className="w-full bg-[#EFAF00] text-black font-bold py-3 rounded disabled:bg-gray-500 cursor-pointer"
         >
           {loading ? 'Sending...' : 'Send OTP'}
         </button>
@@ -392,7 +392,7 @@ const VerifyOTPForm = ({ setForgotPasswordStep, email, setOtp }) => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-[#EFAF00] text-black font-bold py-3 rounded disabled:bg-gray-500"
+          className="w-full bg-[#EFAF00] text-black font-bold cursor-pointer py-3 rounded disabled:bg-gray-500"
         >
           {loading ? 'Verifying...' : 'Verify OTP'}
         </button>
@@ -404,7 +404,7 @@ const VerifyOTPForm = ({ setForgotPasswordStep, email, setOtp }) => {
           <button
             onClick={handleResend}
             disabled={isResending}
-            className="font-medium text-[#EFAF00] hover:text-yellow-300 disabled:text-gray-500 disabled:cursor-not-allowed"
+            className="font-medium text-[#EFAF00] hover:text-yellow-300 cursor-pointer disabled:text-gray-500 disabled:cursor-not-allowed"
           >
             {isResending ? 'Sending...' : 'Resend Code'}
           </button>
@@ -464,7 +464,7 @@ const ResetPasswordForm = ({ email, otp }) => {
           <button
             type="button"
             onClick={() => setPasswordVisible(!passwordVisible)}
-            className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-gray-400"
+            className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center cursor-pointer text-gray-400"
           >
             {passwordVisible ? <EyeOffIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
           </button>
@@ -483,7 +483,7 @@ const ResetPasswordForm = ({ email, otp }) => {
           <button
             type="button"
             onClick={() => setConfirmPasswordVisible(!confirmPasswordVisible)}
-            className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center text-gray-400"
+            className="absolute inset-y-0 right-0 top-6 pr-3 flex items-center cursor-pointer text-gray-400"
           >
             {confirmPasswordVisible ? <EyeOffIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
           </button>
@@ -491,7 +491,7 @@ const ResetPasswordForm = ({ email, otp }) => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full bg-[#EFAF00] text-black font-bold py-3 rounded disabled:bg-gray-500"
+          className="w-full bg-[#EFAF00] text-black font-bold py-3 cursor-pointer rounded disabled:bg-gray-500"
         >
           {loading ? 'Setting Password...' : 'Reset Password'}
         </button>
@@ -545,13 +545,13 @@ export default function AuthForm() {
             />
             <button
               onClick={() => { setAuthMode('signin'); setForgotPasswordStep('email'); }}
-              className={`relative z-10 w-1/2 py-2 text-center font-bold transition-colors ${authMode === 'signin' || authMode === 'forgot' ? 'text-black' : 'text-white'}`}
+              className={`relative z-10 w-1/2 py-2 text-center font-bold transition-colors cursor-pointer ${authMode === 'signin' || authMode === 'forgot' ? 'text-black' : 'text-white'}`}
             >
               SIGN IN
             </button>
             <button
               onClick={() => { setAuthMode('signup'); setForgotPasswordStep('email'); }}
-              className={`relative z-10 w-1/2 py-2 text-center font-bold transition-colors ${authMode === 'signup' ? 'text-black' : 'text-white'}`}
+              className={`relative z-10 w-1/2 py-2 text-center font-bold transition-colors cursor-pointer ${authMode === 'signup' ? 'text-black' : 'text-white'}`}
             >
               SIGN UP
             </button>

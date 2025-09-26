@@ -96,7 +96,7 @@ const AccountDetails = ({ user }) => {
                     <label className="block text-white mb-2" htmlFor="phone">Mobile Number</label>
                     <input type="tel" id="phone" name="phone" placeholder="Your Mobile Number" value={profileData.phone} onChange={handleProfileChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
                 </div>
-                <button type="submit" className="bg-[#EFAF00] text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">SAVE CHANGES</button>
+                <button type="submit" className="bg-[#EFAF00] text-black font-bold py-2 px-6 rounded-lg cursor-pointer hover:bg-yellow-500">SAVE CHANGES</button>
             </form>
             <form onSubmit={handlePasswordSubmit} className="space-y-6 bg-gray-900 p-6 rounded-lg border border-gray-700">
                 <h3 className="text-xl font-bold text-[#EFAF00]">CHANGE PASSWORD</h3>
@@ -104,7 +104,7 @@ const AccountDetails = ({ user }) => {
                 <input type="password" name="oldPassword" placeholder="Current Password" value={passwordData.oldPassword} onChange={handlePasswordChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" required />
                 <input type="password" name="newPassword" placeholder="New Password" value={passwordData.newPassword} onChange={handlePasswordChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" required />
                 <input type="password" name="confirmPassword" placeholder="Confirm New Password" value={passwordData.confirmPassword} onChange={handlePasswordChange} className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" required />
-                <button type="submit" className="bg-[#EFAF00] text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500">CHANGE PASSWORD</button>
+                <button type="submit" className="bg-[#EFAF00] text-black font-bold py-2 px-6 rounded-lg cursor-pointer hover:bg-yellow-500">CHANGE PASSWORD</button>
             </form>
         </div>
     );
@@ -128,7 +128,7 @@ const AddressModal = ({ onClose, onSave }) => {
                     <input type="text" name="state" placeholder="State" value={formData.state} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
                     <input type="text" name="postalCode" placeholder="Postal Code" value={formData.postalCode} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
                     <input type="text" name="country" placeholder="Country" value={formData.country} onChange={handleChange} required className="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-2 text-white" />
-                    <div className="pt-4"><button type="submit" className="w-full bg-[#EFAF00] text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500 transition-colors">SAVE ADDRESS</button></div>
+                    <div className="pt-4"><button type="submit" className="w-full cursor-pointer bg-[#EFAF00] text-black font-bold py-2 px-6 rounded-lg hover:bg-yellow-500 transition-colors">SAVE ADDRESS</button></div>
                 </form>
             </div>
         </div>
@@ -217,7 +217,7 @@ const Orders = ({ orders }) => {
                                         <span className={`px-2 py-1 whitespace-nowrap text-xs rounded-full ${status.className}`}>{status.text}</span>
                                     </td>
                                     <td className="py-4 pr-4">
-                                        <a href={`/order/${order._id}`} className="text-amber-400 hover:underline text-sm">View Details</a>
+                                        <a href={`/order/${order._id}`} className="text-amber-400 cursor-pointer hover:underline text-sm">View Details</a>
                                     </td>
                                 </tr>
                             );
@@ -257,7 +257,7 @@ const Orders = ({ orders }) => {
                             </div>
 
                             <div className="mt-4 pt-3 text-right">
-                                <a href={`/order/${order._id}`} className="text-amber-400 hover:underline text-sm font-semibold">View Details</a>
+                                <a href={`/order/${order._id}`} className="text-amber-400 hover:underline cursor-pointer text-sm font-semibold">View Details</a>
                             </div>
                         </div>
                     );
@@ -266,9 +266,9 @@ const Orders = ({ orders }) => {
 
             {totalPages > 1 && (
                 <div className="flex justify-end items-center mt-6 gap-2">
-                    <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1} className="p-2 border border-yellow-500 text-yellow-500 rounded-full disabled:opacity-50"><ChevronLeftIcon size={20} /></button>
+                    <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1} className="p-2 border cursor-pointer border-yellow-500 text-yellow-500 rounded-full disabled:opacity-50"><ChevronLeftIcon size={20} /></button>
                     <span className="text-sm">Page {currentPage} of {totalPages}</span>
-                    <button onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} className="p-2 border border-yellow-500 text-yellow-500 rounded-full disabled:opacity-50"><ChevronRightIcon size={20} /></button>
+                    <button onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))} disabled={currentPage === totalPages} className="p-2 border cursor-pointer border-yellow-500 text-yellow-500 rounded-full disabled:opacity-50"><ChevronRightIcon size={20} /></button>
                 </div>
             )}
         </div>
@@ -375,7 +375,7 @@ export default function MyAccountPage() {
                             <nav className="w-full mt-4">
                                 <ul className="space-y-2">
                                     {menuItems.map(item => (
-                                        <li key={item}><button onClick={() => handleMenuClick(item.toLowerCase())} className={`w-full text-left p-3 rounded-lg text-base font-medium transition-colors ${activeSection === item.toLowerCase() ? 'text-yellow-500' : 'text-gray-700 hover:bg-gray-300'}`}>{item}</button>{item !== 'Log Out' && <hr className="border-gray-300" />}</li>
+                                        <li key={item}><button onClick={() => handleMenuClick(item.toLowerCase())} className={`w-full text-left p-3 rounded-lg cursor-pointer text-base font-medium transition-colors ${activeSection === item.toLowerCase() ? 'text-yellow-500' : 'text-gray-700 hover:bg-gray-300'}`}>{item}</button>{item !== 'Log Out' && <hr className="border-gray-300" />}</li>
                                     ))}
                                 </ul>
                             </nav>

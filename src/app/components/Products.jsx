@@ -125,7 +125,7 @@ const Sidebar = ({ filters, setFilters, maxProductPrice }) => {
                 <h3 className="font-bold mb-4 text-2xl text-[#FFBB00]">FILTERS</h3>
                 <div className="mb-6">
                     <h4 className="font-medium mb-3 text-[#FFBB00]">SIZE</h4>
-                    <div className="flex flex-wrap gap-2">{SIZES.map(size => <button key={size} onClick={() => handleSizeSelect(size)} className={`w-10 h-10 border text-sm transition ${filters.selectedSize === size ? 'bg-[#EFAF00] border-[#EFAF00] text-black' : 'border-gray-700 hover:bg-gray-700'}`}>{size}</button>)}</div>
+                    <div className="flex flex-wrap gap-2">{SIZES.map(size => <button key={size} onClick={() => handleSizeSelect(size)} className={`w-10 h-10 border cursor-pointer text-sm transition ${filters.selectedSize === size ? 'bg-[#EFAF00] border-[#EFAF00] text-black' : 'border-gray-700 hover:bg-gray-700'}`}>{size}</button>)}</div>
                 </div>
                 <FilterAccordion title="Availability" defaultOpen={true}>
                     <div className="space-y-2">
@@ -135,7 +135,7 @@ const Sidebar = ({ filters, setFilters, maxProductPrice }) => {
                                 name="inStock"
                                 checked={filters.availability.inStock}
                                 onChange={handleAvailabilityChange}
-                                className="bg-transparent border-gray-600 rounded-sm"
+                                className="bg-transparent cursor-pointer border-gray-600 rounded-sm"
                             />
                             <span>In Stock</span>
                         </label>
@@ -145,18 +145,18 @@ const Sidebar = ({ filters, setFilters, maxProductPrice }) => {
                                 name="outOfStock"
                                 checked={filters.availability.outOfStock}
                                 onChange={handleAvailabilityChange}
-                                className="bg-transparent border-gray-600 rounded-sm"
+                                className="bg-transparent cursor-pointer border-gray-600 rounded-sm"
                             />
                             <span>Out of Stock</span>
                         </label>
                     </div>
                 </FilterAccordion>
                 <FilterAccordion title="Category" defaultOpen={true}>
-                    <div className="space-y-2">{CATEGORIES.map(cat => <label key={cat} className="flex items-center space-x-2 text-sm cursor-pointer"><input type="checkbox" value={cat} checked={filters.selectedCategories.includes(cat)} onChange={handleCategoryChange} className="bg-transparent border-gray-600 rounded-sm" /><span>{cat}</span></label>)}</div>
+                    <div className="space-y-2">{CATEGORIES.map(cat => <label key={cat} className="flex items-center space-x-2 text-sm cursor-pointer"><input type="checkbox" value={cat} checked={filters.selectedCategories.includes(cat)} onChange={handleCategoryChange} className="bg-transparent cursor-pointer border-gray-600 rounded-sm" /><span>{cat}</span></label>)}</div>
                 </FilterAccordion>
                 <FilterAccordion title="Price Range" defaultOpen={true}>
                     <div className="px-1 pt-2">
-                        <input type="range" min="0" max={maxProductPrice} value={filters.maxPrice} onChange={handlePriceChange} className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#EFAF00]" />
+                        <input type="range" min="0" max={maxProductPrice} value={filters.maxPrice} onChange={handlePriceChange} className="w-full h-2 bg-gray-700 cursor-pointer rounded-lg appearance-none cursor-pointer accent-[#EFAF00]" />
                         <div className="flex justify-between text-xs text-gray-400 mt-2"><span>₹0</span><span>₹{filters.maxPrice}</span></div>
                     </div>
                 </FilterAccordion>
@@ -185,7 +185,7 @@ const SearchPopup = ({ searchQuery, searchResults, isSearching, onResultClick, o
                 <ul className="space-y-3 max-h-80 overflow-y-auto">
                     {searchResults.map(product => (
                         <li key={product._id} onClick={() => onResultClick(product._id)} className="cursor-pointer hover:bg-gray-800 rounded-md p-2 transition">
-                            <div className="flex items-center space-x-4">
+                            <div className="flex items-center space-x-4 cursor-pointer">
                                 <img src={product.images[0]} alt={product.name} className="w-16 h-20 object-cover rounded" />
                                 <div>
                                     <p className="text-sm font-bold text-white">{product.name}</p>
@@ -397,17 +397,17 @@ function ProductsContent() {
 
                             <div className="lg:flex items-center gap-4 hidden">
                                 <div className="hidden lg:flex items-center gap-1 border border-gray-700 p-1 rounded-md">
-                                    <button onClick={() => setGridCols(3)} className={`p-1 rounded transition-colors ${gridCols === 3 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
+                                    <button onClick={() => setGridCols(3)} className={`p-1 rounded cursor-pointer transition-colors ${gridCols === 3 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
                                         <Grid3Icon />
                                     </button>
-                                    <button onClick={() => setGridCols(4)} className={`p-1 rounded transition-colors ${gridCols === 4 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
+                                    <button onClick={() => setGridCols(4)} className={`p-1 rounded cursor-pointer transition-colors ${gridCols === 4 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
                                         <Grid4Icon />
                                     </button>
-                                    <button onClick={() => setGridCols(6)} className={`p-1 rounded transition-colors ${gridCols === 6 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
+                                    <button onClick={() => setGridCols(6)} className={`p-1 rounded cursor-pointer transition-colors ${gridCols === 6 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
                                         <Grid6Icon />
                                     </button>
                                 </div>
-                                <div className="flex items-center border text-[#FFBB00] border-gray-700 p-2 rounded-md">
+                                <div className="flex items-center border text-[#FFBB00] border-gray-700 p-2 cursor-pointer rounded-md">
                                     <label htmlFor="sort" className="mr-2 lg:text-sm text-xs">SORT BY</label>
                                     <select id="sort" value={filters.sortBy} onChange={e => setFilters(prev => ({ ...prev, sortBy: e.target.value }))} className="bg-black text-sm outline-none">
                                         <option value="default">Default</option>
@@ -418,14 +418,14 @@ function ProductsContent() {
                             </div>
                             <div className="flex items-center justify-between lg:hidden w-full">
                                 <div className="lg:hidden flex items-center gap-1 border border-gray-700 p-1 rounded-md">
-                                    <button onClick={() => setMobileGridCols(1)} className={`p-1 rounded transition-colors ${mobileGridCols === 1 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
+                                    <button onClick={() => setMobileGridCols(1)} className={`p-1 rounded cursor-pointer transition-colors ${mobileGridCols === 1 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
                                         <Grid3Icon />
                                     </button>
-                                    <button onClick={() => setMobileGridCols(2)} className={`p-1 rounded transition-colors ${mobileGridCols === 2 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
+                                    <button onClick={() => setMobileGridCols(2)} className={`p-1 rounded cursor-pointer transition-colors ${mobileGridCols === 2 ? 'bg-gray-700 text-[#EFAF00]' : 'text-gray-500 hover:text-white'}`}>
                                         <Grid4Icon />
                                     </button>
                                 </div>
-                                <div className="flex items-center border text-[#FFBB00] border-gray-700 p-2 rounded-md">
+                                <div className="flex items-center border text-[#FFBB00] border-gray-700 p-2 cursor-pointer rounded-md">
                                     <label htmlFor="sort" className="mr-2 lg:text-sm text-xs">SORT BY</label>
                                     <select id="sort" value={filters.sortBy} onChange={e => setFilters(prev => ({ ...prev, sortBy: e.target.value }))} className="bg-black text-sm outline-none">
                                         <option value="default">Default</option>
@@ -444,7 +444,7 @@ function ProductsContent() {
                                     placeholder="Search Products..."
                                     value={searchTerm}
                                     onChange={e => setSearchTerm(e.target.value)}
-                                    className="w-full bg-black border border-gray-700 text-white p-3 pl-12 focus:outline-none focus:bg-gray-900 focus:border-[#EFAF00] rounded-md"
+                                    className="w-full bg-black border border-gray-700  text-white p-3 pl-12 focus:outline-none focus:bg-gray-900 focus:border-[#EFAF00] rounded-md"
                                 />
                                 <SearchIcon className="absolute left-3 top-3 lg:top-1/2 lg:-translate-y-1/2 text-gray-500" size={20} />
                             </div>
@@ -476,11 +476,11 @@ function ProductsContent() {
                         )}
 
                         <div className="flex justify-center items-center lg:mt-12 lg:pb-12 mt-5 space-x-2">
-                            <button onClick={() => handleGoToPage(page - 1)} disabled={page === 1} className="p-2 border border-[#EFAF00] text-[#EFAF00] rounded-full hover:bg-[#EFAF00] hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed"><ChevronLeftIcon size={20} /></button>
+                            <button onClick={() => handleGoToPage(page - 1)} disabled={page === 1} className="p-2 border cursor-pointer border-[#EFAF00] text-[#EFAF00] rounded-full hover:bg-[#EFAF00] hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed"><ChevronLeftIcon size={20} /></button>
                             {pages > 1 && Array.from({ length: pages }, (_, i) => i + 1).map(pageNum => (
                                 <button key={pageNum} onClick={() => handleGoToPage(pageNum)} className={`w-10 h-10 flex items-center justify-center rounded-full text-sm font-medium transition ${page === pageNum ? 'bg-[#EFAF00] text-black' : 'bg-gray-800 text-gray-300 hover:bg-[#EFAF00] hover:text-black'}`}>{pageNum}</button>
                             ))}
-                            <button onClick={() => handleGoToPage(page + 1)} disabled={page === pages || pages === 0} className="p-2 border border-[#EFAF00] text-[#EFAF00] rounded-full hover:bg-[#EFAF00] hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed"><ChevronRightIcon size={20} /></button>
+                            <button onClick={() => handleGoToPage(page + 1)} disabled={page === pages || pages === 0} className="p-2 border cursor-pointer border-[#EFAF00] text-[#EFAF00] rounded-full hover:bg-[#EFAF00] hover:text-black transition disabled:opacity-50 disabled:cursor-not-allowed"><ChevronRightIcon size={20} /></button>
                         </div>
                     </main>
                 </div>
@@ -528,7 +528,6 @@ export default function ProductsPage() {
     return (
          <Suspense>
         <ProductsContent />
-
          </Suspense>
     );
 }

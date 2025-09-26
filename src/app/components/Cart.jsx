@@ -37,7 +37,7 @@ const CartItem = ({ item, onQuantityChange, onRemove, isSelected, onToggleSelect
         type="checkbox"
         checked={isSelected}
         onChange={onToggleSelect}
-        className="h-5 w-5 bg-gray-900 border-gray-700 rounded text-[#EFAF00] focus:ring-amber-500 accent-amber-500 mx-4"
+        className="h-5 w-5 bg-gray-900 border-gray-700 rounded text-[#EFAF00] cursor-pointer focus:ring-amber-500 accent-amber-500 mx-4"
       />
       <Image
         width={100}
@@ -51,7 +51,7 @@ const CartItem = ({ item, onQuantityChange, onRemove, isSelected, onToggleSelect
         <p className="text-sm text-gray-400">Size: {item.size}</p>
         <button
           onClick={onRemove}
-          className="text-xs text-red-500 hover:text-red-400 mt-2"
+          className="text-xs text-red-500 cursor-pointer hover:text-red-400 mt-2"
         >
           Remove
         </button>
@@ -160,7 +160,7 @@ export default function ShoppingCart() {
                   type="checkbox"
                   checked={cartItems.length > 0 && selectedItems.length === cartItems.length}
                   onChange={toggleSelectAll}
-                  className="h-5 w-5 bg-gray-900 border-gray-700 rounded text-[#EFAF00] focus:ring-amber-500 accent-white mr-4"
+                  className="h-5 w-5 bg-gray-900 border-gray-700 cursor-pointer rounded text-[#EFAF00] focus:ring-amber-500 accent-white mr-4"
                 />
                 Product
               </div>
@@ -209,7 +209,7 @@ export default function ShoppingCart() {
               </div>
               <button
                 onClick={handleProceedToCheckout}
-                className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-bold py-4 rounded-md mt-6 transition-colors"
+                className="w-full bg-yellow-500 cursor-pointer hover:bg-yellow-600 text-black font-bold py-4 rounded-md mt-6 transition-colors"
               >
                 Proceed to checkout ({totalSelectedItems})
               </button>
