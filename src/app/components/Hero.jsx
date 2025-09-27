@@ -14,10 +14,10 @@ import STREETCHIC from '../../assets/street_chic.png';
 
 // --- MOBILE IMAGES (Make sure you have these image files in your assets folder) ---
 import ITGIRL_MOBILE from '../../assets/it_girl_mobile.jpg';
-import DESIDIVA_MOBILE from '../../assets/desi_diva.png';
-import BLOOMGIRL_MOBILE from '../../assets/bloom_girl.png';
+import DESIDIVA_MOBILE from '../../assets/desi_diva_mobile.png';
+import BLOOMGIRL_MOBILE from '../../assets/bloom_girl_mobile.png';
 import GIRLYPOP_MOBILE from '../../assets/Girly pop2.png';
-import STREETCHIC_MOBILE from '../../assets/street_chic.png';
+import STREETCHIC_MOBILE from '../../assets/street_chic_mobile.png';
 
 // A reusable card component for each image box
 const ImageCard = ({ src, mobileSrc, title, containerClassName }) => {
