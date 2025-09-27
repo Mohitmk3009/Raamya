@@ -54,7 +54,7 @@ const Grid6Icon = (props) => (
 
 
 // --- PRODUCT CARD COMPONENT ---
-const ProductCard = ({ product,gridCols, mobileGridCols }) => {
+const ProductCard = ({ product, gridCols, mobileGridCols }) => {
     const [isHovered, setIsHovered] = useState(false);
     const mobileHeightClasses = {
         1: 'h-[500px]', // 1 column layout
@@ -68,16 +68,18 @@ const ProductCard = ({ product,gridCols, mobileGridCols }) => {
         6: 'lg:h-[250px]', // 6 column layout
     };
     const containerHeightClass = `${mobileHeightClasses[mobileGridCols]} ${desktopHeightClasses[gridCols]}`;
+
+    
     return (
-        <div 
-            className="text-gray-300 group font-redhead" 
-            onMouseEnter={() => setIsHovered(true)} 
+        <div
+            className="text-gray-300 group font-redhead"
+            onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
             {/* 1. THE CONTAINER: Must be 'relative' and have 'overflow-hidden' */}
-            <a 
-              href={`/product/${product._id}`} 
-              className={`relative block w-full overflow-hidden mb-4 border border-gray-800 ${containerHeightClass}`}
+            <a
+                href={`/product/${product._id}`}
+                className={`relative block w-full overflow-hidden mb-4 border border-gray-800 ${containerHeightClass}`}
             >
                 {/* 2. THE IMAGE: Positioned 'absolute' to fill the container */}
                 <Image
@@ -87,7 +89,7 @@ const ProductCard = ({ product,gridCols, mobileGridCols }) => {
                     alt={product.name}
                     className="absolute top-0 left-0 w-full pointer-events-none  h-full object-cover transform transition-transform duration-500 ease-in-out group-hover:scale-110"
                 />
-                
+
                 {product.isOutOfStock && (
                     <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
                         <span className="text-white text-lg font-bold">Out of Stock</span>
@@ -181,7 +183,7 @@ const Sidebar = ({ filters, setFilters, maxProductPrice }) => {
                 </FilterAccordion>
                 <FilterAccordion title="Price Range" defaultOpen={true}>
                     <div className="px-1 pt-2">
-                        <input type="range" min="0" max={maxProductPrice} value={filters.maxPrice} onChange={handlePriceChange} className="w-full h-2 bg-gray-700 cursor-pointer rounded-lg appearance-none cursor-pointer accent-[#EFAF00]" />
+                        <input type="range" min="0" max={maxProductPrice} value={filters.maxPrice} onChange={handlePriceChange} className="w-full h-2 bg-gray-700  rounded-lg appearance-none cursor-pointer accent-[#EFAF00]" />
                         <div className="flex justify-between text-xs text-gray-400 mt-2"><span>₹0</span><span>₹{filters.maxPrice}</span></div>
                     </div>
                 </FilterAccordion>
@@ -239,7 +241,7 @@ function ProductsContent() {
     const [isFilterOpen, setIsFilterOpen] = useState(false);
     const [gridCols, setGridCols] = useState(3);
     const [mobileGridCols, setMobileGridCols] = useState(1);
-
+    const [pageSize, setPageSize] = useState(9);
     // Search state
     const [searchTerm, setSearchTerm] = useState('');
     const [isSearching, setIsSearching] = useState(false);
@@ -274,12 +276,35 @@ function ProductsContent() {
         setPage(1); // Reset to page 1 for new search/filter
     }, [searchParams]);
 
+
+    useEffect(() => {
+        const handleResize = () => {
+            const isDesktop = window.innerWidth >= 1024; // Tailwind's 'lg' breakpoint
+
+            if (isDesktop) {
+                if (gridCols === 3) setPageSize(9);
+                else if (gridCols === 4) setPageSize(12);
+                else if (gridCols === 6) setPageSize(18);
+            } else {
+                // For mobile, it's always 10 products per page
+                setPageSize(10);
+            }
+        };
+
+        handleResize(); // Set initial size
+        window.addEventListener('resize', handleResize); // Add listener for screen changes
+
+        // Cleanup the listener
+        return () => window.removeEventListener('resize', handleResize);
+    }, [gridCols]); // Re-run this logic whenever the desktop grid layout changes
+
+
     // Debounce function for search input
     useEffect(() => {
         const fetchProducts = async () => {
             setLoading(true);
             const params = new URLSearchParams();
-params.append('exclude', 'New shirt');
+            params.append('exclude', 'New shirt');
             if (filters.keyword) params.append('keyword', filters.keyword);
             if (filters.filter) params.append('filter', filters.filter);
             if (filters.sortBy !== 'default') params.append('sortBy', filters.sortBy);
@@ -296,12 +321,13 @@ params.append('exclude', 'New shirt');
 
             if (filters.selectedCategories.length > 0) params.append('category', filters.selectedCategories.join(','));
             if (filters.maxPrice < maxProductPrice) params.append('maxPrice', filters.maxPrice);
-            params.append('pageNumber', page);
 
+            params.append('pageSize', pageSize);
+            params.append('pageNumber', page);
             try {
                 const response = await fetch(`${API_BASE_URL}/products?${params.toString()}`);
                 const data = await response.json();
-                
+
                 const productsWithStockStatus = data.products.map(product => {
                     const isOutOfStock = product.variants.every(variant => variant.stock === 0);
                     return {
@@ -311,10 +337,10 @@ params.append('exclude', 'New shirt');
                 });
 
                 const filteredProducts = productsWithStockStatus.filter(
-        product => product.name !== 'New shirt'
-    );
-    setProducts(filteredProducts);
-               
+                    product => product.name !== 'New shirt'
+                );
+                setProducts(filteredProducts);
+
                 setPage(data.page);
                 setPages(data.pages);
             } catch (error) {
@@ -330,11 +356,11 @@ params.append('exclude', 'New shirt');
         }, 300); // Debounce to prevent multiple fetches on rapid state changes
 
         return () => clearTimeout(timer);
-    }, [filters, page]);
+    }, [filters, page, pageSize]);
 
     useEffect(() => {
         setPage(1);
-    }, [filters]);
+    }, [filters, pageSize]);
 
     useEffect(() => {
         if (isFilterOpen) {
@@ -500,7 +526,7 @@ params.append('exclude', 'New shirt');
                             </div>
                         ) : products.length > 0 ? (
                             <div className={`grid ${mobileGridLayoutClasses[mobileGridCols]} md:grid-cols-2 ${gridLayoutClasses[gridCols]} gap-6 md:gap-8`}>
-                                {products.map(product => <ProductCard key={product._id} product={product} gridCols={gridCols} mobileGridCols={mobileGridCols}  />)}
+                                {products.map(product => <ProductCard key={product._id} product={product} gridCols={gridCols} mobileGridCols={mobileGridCols} />)}
                             </div>
                         ) : (
                             <div className="text-center py-20 text-gray-500">No products found matching your criteria.</div>
