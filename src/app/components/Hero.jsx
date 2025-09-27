@@ -16,7 +16,7 @@ import STREETCHIC from '../../assets/street_chic.png';
 import ITGIRL_MOBILE from '../../assets/it_girl_mobile.jpg';
 import DESIDIVA_MOBILE from '../../assets/desi_diva_mobile.png';
 import BLOOMGIRL_MOBILE from '../../assets/bloom_girl_mobile.png';
-import GIRLYPOP_MOBILE from '../../assets/Girly pop2.png';
+import GIRLYPOP_MOBILE from '../../assets/girly_pop_mobile.png';
 import STREETCHIC_MOBILE from '../../assets/street_chic_mobile.png';
 
 // A reusable card component for each image box
