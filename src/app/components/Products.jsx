@@ -54,25 +54,49 @@ const Grid6Icon = (props) => (
 
 
 // --- PRODUCT CARD COMPONENT ---
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product,gridCols, mobileGridCols }) => {
     const [isHovered, setIsHovered] = useState(false);
+    const mobileHeightClasses = {
+        1: 'max-h-[500px]', // 1 column layout
+        2: 'max-h-[300px]', // 2 column layout
+    };
+
+    // Define height classes for desktop view (note the 'lg:' prefix)
+    const desktopHeightClasses = {
+        3: 'lg:h-[500px]', // 3 column layout
+        4: 'lg:h-[400px]', // 4 column layout
+        6: 'lg:h-[250px]', // 6 column layout
+    };
+    const containerHeightClass = `${mobileHeightClasses[mobileGridCols]} ${desktopHeightClasses[gridCols]}`;
     return (
-        <div className="text-gray-300 group font-redhead" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-            <a href={`/product/${product._id}`} className="relative block overflow-hidden mb-4 border border-gray-800">
+        <div 
+            className="text-gray-300 group font-redhead" 
+            onMouseEnter={() => setIsHovered(true)} 
+            onMouseLeave={() => setIsHovered(false)}
+        >
+            {/* 1. THE CONTAINER: Must be 'relative' and have 'overflow-hidden' */}
+            <a 
+              href={`/product/${product._id}`} 
+              className={`relative block w-full overflow-hidden mb-4 border border-gray-800 ${containerHeightClass}`}
+            >
+                {/* 2. THE IMAGE: Positioned 'absolute' to fill the container */}
                 <Image
                     width={1000}
                     height={1000}
                     src={isHovered && product.images[1] ? product.images[1] : product.images[0]}
                     alt={product.name}
-                    className="w-full h-auto max-h-[500px] object-cover transform transition-transform duration-500 ease-in-out group-hover:scale-110"
+                    className="absolute top-0 left-0 w-full pointer-events-none  h-full object-cover transform transition-transform duration-500 ease-in-out group-hover:scale-110"
                 />
+                
                 {product.isOutOfStock && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-10">
                         <span className="text-white text-lg font-bold">Out of Stock</span>
                     </div>
                 )}
             </a>
-            <p className="text-sm text-[#FFBB00]">{product.category}</p>
+
+            {/* Product Details */}
+            <p className="text-sm text-[#FFBB00] uppercase">{product.category}</p>
             <div className='flex justify-between items-center text-lg'>
                 <h3 className="font-medium mb-1">{product.name}</h3>
                 <p className="font-semibold text-[#EFAF00]">₹{product.price}</p>
@@ -476,7 +500,7 @@ params.append('exclude', 'New shirt');
                             </div>
                         ) : products.length > 0 ? (
                             <div className={`grid ${mobileGridLayoutClasses[mobileGridCols]} md:grid-cols-2 ${gridLayoutClasses[gridCols]} gap-6 md:gap-8`}>
-                                {products.map(product => <ProductCard key={product._id} product={product} />)}
+                                {products.map(product => <ProductCard key={product._id} product={product} gridCols={gridCols} mobileGridCols={mobileGridCols}  />)}
                             </div>
                         ) : (
                             <div className="text-center py-20 text-gray-500">No products found matching your criteria.</div>

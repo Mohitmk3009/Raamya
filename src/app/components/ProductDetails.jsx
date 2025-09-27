@@ -288,7 +288,7 @@ export default function ProductPage() {
             <Toaster position="top-center" />
             <div className="mx-auto max-w-[1400px]">
                 <main className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:mb-20 mb-5">
-                    <div className="lg:col-span-6 max-h-[800px] border border-[#EFAF00] p-2 rounded-lg">
+                    <div className="lg:col-span-6 h-auto border border-[#EFAF00] p-2 rounded-lg">
                     {mainImage ? (
                         <Image width={1000} height={1200} src={mainImage} alt={product.name} className="w-full h-full object-cover rounded-md" />
                     ) : (

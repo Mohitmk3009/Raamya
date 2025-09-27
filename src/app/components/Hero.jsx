@@ -33,7 +33,7 @@ const ImageCard = ({ src, mobileSrc, title, containerClassName }) => {
         priority // Add priority for images loading "above the fold"
         // --- THIS IS THE CRITICAL FIX ---
         sizes="(max-width: 768px) 100vw, 100vw"
-        className="w-full h-full object-cover transition-all duration-500 ease-in-out filter grayscale group-hover:grayscale-0 group-hover:scale-110"
+        className="w-full h-full object-cover transition-all duration-500 ease-in-out filter  group-hover:grayscale-0 group-hover:scale-110"
       />
 
       {/* Overlay to darken the image slightly for better text visibility */}
