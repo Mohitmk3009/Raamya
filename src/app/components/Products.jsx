@@ -57,8 +57,8 @@ const Grid6Icon = (props) => (
 const ProductCard = ({ product,gridCols, mobileGridCols }) => {
     const [isHovered, setIsHovered] = useState(false);
     const mobileHeightClasses = {
-        1: 'max-h-[500px]', // 1 column layout
-        2: 'max-h-[300px]', // 2 column layout
+        1: 'h-[500px]', // 1 column layout
+        2: 'h-[300px]', // 2 column layout
     };
 
     // Define height classes for desktop view (note the 'lg:' prefix)
