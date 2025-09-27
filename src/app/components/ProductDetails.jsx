@@ -34,7 +34,39 @@ const SuggestedItem = ({ item, onCartAction, isInCart }) => {
     );
 };
 
-const ProductDetails = ({ product }) => (<div className="text-gray-300 leading-relaxed p-4 md:p-6 font-redhead"><h3 className="font-bold text-xl text-yellow-300 mb-4">Product Description</h3><p className="mb-4">{product.description}</p></div>);
+const ProductDetails = ({ product }) => {
+    // Check if the description exists and follows the expected format
+    const isFeatureList = product.description && product.description.includes('KEY FEATURES');
+
+    return (
+        <div className="text-gray-300 leading-relaxed p-4 md:p-6 font-redhead">
+            <h3 className="font-bold text-xl text-yellow-300 mb-4">Product Description</h3>
+            
+            {isFeatureList ? (
+                (() => {
+                    const parts = product.description.split('*').map(p => p.trim()).filter(Boolean);
+                    const title = parts[0];
+                    const features = parts.slice(1);
+
+                    return (
+                        <div>
+                            <h4 className="font-semibold text-lg text-white mb-3">{title}</h4>
+                            <ul className="list-disc list-inside space-y-2">
+                                {features.map((feature, index) => (
+                                    <li key={index}>{feature}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    );
+                })()
+            ) : (
+                // Fallback for descriptions that don't follow the point-wise format
+                <p className="mb-4">{product.description}</p>
+            )}
+        </div>
+    );
+};
+
 
 const ReviewCard = ({ review }) => (
     <div className="border border-[#EFAF00]/30 rounded-lg lg:p-6 p-4 flex flex-col font-redhead">
@@ -97,7 +129,7 @@ export default function ProductPage() {
     const [isWishlisted, setIsWishlisted] = useState(false);
     const selectedVariant = product?.variants?.find(v => v.size === selectedSize);
     const isSelectedVariantOutOfStock = selectedVariant?.stock === 0;
-    
+
     useEffect(() => {
         const fetchProduct = async () => {
             if (!productId) return;
@@ -124,8 +156,8 @@ export default function ProductPage() {
                 setSelectedSize(defaultSize);
             }
             const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-        const isAlreadyWishlisted = wishlist.some(item => item._id === product._id);
-        setIsWishlisted(isAlreadyWishlisted);
+            const isAlreadyWishlisted = wishlist.some(item => item._id === product._id);
+            setIsWishlisted(isAlreadyWishlisted);
         }
     }, [product]);
 
@@ -147,31 +179,31 @@ export default function ProductPage() {
         }
 
         try {
-        const selectedVariant = product.variants.find(v => v.size === selectedSize);
-        if (!selectedVariant || selectedVariant.stock === 0) {
-            toast.error("This item is currently out of stock or not available.");
-            return;
-        }
-    
-        const itemToAdd = {
-            product: product._id,
-            name: product.name,
-            price: product.price,
-            image: product.images[0],
-            size: selectedSize,
-            sku: selectedVariant.sku,
-        };
-    
-        await addToCart(itemToAdd, quantity);
-    
-        // 🎯 Move the success toast inside the try block
-        toast.success(`${quantity} x ${product.name} (${selectedSize}) added to cart!`);
+            const selectedVariant = product.variants.find(v => v.size === selectedSize);
+            if (!selectedVariant || selectedVariant.stock === 0) {
+                toast.error("This item is currently out of stock or not available.");
+                return;
+            }
+
+            const itemToAdd = {
+                product: product._id,
+                name: product.name,
+                price: product.price,
+                image: product.images[0],
+                size: selectedSize,
+                sku: selectedVariant.sku,
+            };
+
+            await addToCart(itemToAdd, quantity);
+
+            // 🎯 Move the success toast inside the try block
+            toast.success(`${quantity} x ${product.name} (${selectedSize}) added to cart!`);
 
         } catch (error) {
-        // This will catch errors from the addToCart function
-        toast.error(`Error adding to cart: ${error.message}`);
-        console.error(error);
-    }
+            // This will catch errors from the addToCart function
+            toast.error(`Error adding to cart: ${error.message}`);
+            console.error(error);
+        }
     };
 
     const handleBuyNow = () => {
@@ -250,33 +282,33 @@ export default function ProductPage() {
         }
     };
 
-   const handleAddToWishlist = () => {
-    const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
-    const isAlreadyWishlisted = wishlist.some(item => item._id === product._id);
+    const handleAddToWishlist = () => {
+        const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+        const isAlreadyWishlisted = wishlist.some(item => item._id === product._id);
 
-    if (isAlreadyWishlisted) {
-        const updatedWishlist = wishlist.filter(item => item._id !== product._id);
-        localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
-        setIsWishlisted(false);
-        toast.success("Item removed from wishlist!");
-    } else {
-        const itemToAdd = {
-            _id: product._id,
-            name: product.name,
-            price: product.price,
-            images: product.images,
-            variants: product.variants,
-            category: product.category,
-        };
-        wishlist.push(itemToAdd);
-        localStorage.setItem('wishlist', JSON.stringify(wishlist));
-        setIsWishlisted(true);
-        toast.success("Item added to wishlist!");
-    }
-    
-    // 🎯 Dispatch a storage event to signal a change
-    window.dispatchEvent(new Event('storage'));
-};
+        if (isAlreadyWishlisted) {
+            const updatedWishlist = wishlist.filter(item => item._id !== product._id);
+            localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
+            setIsWishlisted(false);
+            toast.success("Item removed from wishlist!");
+        } else {
+            const itemToAdd = {
+                _id: product._id,
+                name: product.name,
+                price: product.price,
+                images: product.images,
+                variants: product.variants,
+                category: product.category,
+            };
+            wishlist.push(itemToAdd);
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            setIsWishlisted(true);
+            toast.success("Item added to wishlist!");
+        }
+
+        // 🎯 Dispatch a storage event to signal a change
+        window.dispatchEvent(new Event('storage'));
+    };
     if (loading) return <div className="flex justify-center items-center min-h-[90vh]">
         <Lottie animationData={Loader} loop={true} className="lg:w-64 lg:h-64 w-40 h-40" />
     </div>;
@@ -289,15 +321,15 @@ export default function ProductPage() {
             <div className="mx-auto max-w-[1400px]">
                 <main className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:mb-20 mb-5">
                     <div className="lg:col-span-6 h-auto border border-[#EFAF00] p-2 rounded-lg">
-                    {mainImage ? (
-                        <Image width={1000} height={1200} src={mainImage} alt={product.name} className="w-full h-full object-cover rounded-md" />
-                    ) : (
-                        // Optional: You can add a placeholder div or spinner here while the image is loading
-                        <div className="flex justify-center items-center py-8">
-                    <Lottie animationData={Loader} loop={true} className="w-20 h-20" />
-                </div>
-                    )}
-                </div>
+                        {mainImage ? (
+                            <Image width={1000} height={1200} src={mainImage} alt={product.name} className="w-full h-full object-cover rounded-md" />
+                        ) : (
+                            // Optional: You can add a placeholder div or spinner here while the image is loading
+                            <div className="flex justify-center items-center py-8">
+                                <Lottie animationData={Loader} loop={true} className="w-20 h-20" />
+                            </div>
+                        )}
+                    </div>
                     <div className="lg:col-span-1 flex lg:flex-col justify-center items-center gap-2">
                         {product.images.map((img, index) => (
                             <div key={index} className={`border p-1 rounded-md cursor-pointer ${mainImage === img ? 'border-[#EFAF00]' : 'border-gray-700'}`} onClick={() => setMainImage(img)}>
