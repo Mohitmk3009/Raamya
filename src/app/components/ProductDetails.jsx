@@ -35,32 +35,66 @@ const SuggestedItem = ({ item, onCartAction, isInCart }) => {
 };
 
 const ProductDetails = ({ product }) => {
-    // Check if the description exists and follows the expected format
-    const isFeatureList = product.description && product.description.includes('KEY FEATURES');
+    // Check if the description is valid and contains the keywords for parsing
+    if (!product || !product.description) {
+        return null; // Don't render anything if there's no description
+    }
+
+    const shouldParse = product.description.includes('KEY FEATURES') && product.description.includes('SIZING CHART');
+
+    // This function will render the parsed description with two sections
+    const renderParsedDescription = () => {
+        const allParts = product.description.split('*').map(p => p.trim()).filter(Boolean);
+
+        // Find the point where the sizing chart begins
+        const sizingChartStartIndex = allParts.findIndex(part => part.startsWith('SIZING CHART'));
+        
+        const keyFeaturesTitle = allParts[0];
+        let features = [];
+        let sizingChartItems = [];
+
+        if (sizingChartStartIndex !== -1) {
+            // If "Sizing Chart" is found, split the list into two parts
+            features = allParts.slice(1, sizingChartStartIndex);
+            sizingChartItems = allParts.slice(sizingChartStartIndex + 1);
+        } else {
+            // Fallback: if "Sizing Chart" isn't found, treat everything as a feature
+            features = allParts.slice(1);
+        }
+
+        return (
+            <>
+                {/* --- KEY FEATURES SECTION --- */}
+                <div>
+                    <h4 className="font-semibold text-lg text-white mb-3">{keyFeaturesTitle}</h4>
+                    <ul className="list-disc list-inside space-y-2">
+                        {features.map((feature, index) => (
+                            <li key={`feature-${index}`}>{feature}</li>
+                        ))}
+                    </ul>
+                </div>
+
+                {/* --- SIZING CHART SECTION (only renders if items exist) --- */}
+                {sizingChartItems.length > 0 && (
+                    <div className="mt-6"> {/* Adds space between the two sections */}
+                        <h4 className="font-semibold text-lg text-white mb-3">SIZING CHART</h4>
+                        <ul className="list-disc list-inside space-y-2">
+                            {sizingChartItems.map((item, index) => (
+                                <li key={`size-${index}`}>{item}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </>
+        );
+    };
 
     return (
         <div className="text-gray-300 leading-relaxed p-4 md:p-6 font-redhead">
             <h3 className="font-bold text-xl text-yellow-300 mb-4">Product Description</h3>
             
-            {isFeatureList ? (
-                (() => {
-                    const parts = product.description.split('*').map(p => p.trim()).filter(Boolean);
-                    const title = parts[0];
-                    const features = parts.slice(1);
-
-                    return (
-                        <div>
-                            <h4 className="font-semibold text-lg text-white mb-3">{title}</h4>
-                            <ul className="list-disc list-inside space-y-2">
-                                {features.map((feature, index) => (
-                                    <li key={index}>{feature}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    );
-                })()
-            ) : (
-                // Fallback for descriptions that don't follow the point-wise format
+            {shouldParse ? renderParsedDescription() : (
+                // Fallback for simple descriptions that are just a paragraph
                 <p className="mb-4">{product.description}</p>
             )}
         </div>

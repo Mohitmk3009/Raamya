@@ -10,54 +10,55 @@ const mediaPosts = [
         id: 1,
         type: 'video',
         mediaSrc: "/videos/video-1.mp4",
-        poster: "https://images.unsplash.com/photo-1488161628813-04466f872be2?q=80&w=764&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        poster: "https://res.cloudinary.com/daby6uvkv/image/upload/v1758717128/exchange_requests/nebse2dpotri9iwj1x2o.png",
         username: "raamya___",
-        caption: "This Navratri, no repeats, no excuses. 🪞 9 looks. Infinite Nazar.\nWhich one's most wanted for you? 🫶🏼\n\nTag your Garba +1 and let them pick your outfit.💃",
+        // caption: "This Navratri, no repeats, no excuses. 🪞 9 looks. Infinite Nazar.\nWhich one's most wanted for you? 🫶🏼\n\nTag your Garba +1 and let them pick your outfit.💃",
         date: "21 September"
     },
     {
         id: 2,
-        type: 'image',
-        mediaSrc: "https://images.unsplash.com/photo-1601762603339-fd61e28b698a?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Make sure this path is correct and the image exists
+        type: 'video',
+        mediaSrc: "/videos/2.mov", // Make sure this path is correct and the image exists
+        poster: "https://res.cloudinary.com/daby6uvkv/image/upload/v1758717128/exchange_requests/nebse2dpotri9iwj1x2o.png",
         username: "raamya___",
-        caption: "A beautiful day in pink and white.",
+        // caption: "A beautiful day in pink and white.",
         date: "25 September"
     },
-    {
-        id: 3,
-        type: 'video',
-        mediaSrc: "/videos/video-1.mp4",
-        poster: "https://plus.unsplash.com/premium_photo-1669703777695-f8052a432411?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        username: "raamya___",
-        caption: "Ready for the festivities! 🎉",
-        date: "26 September"
-    },
-    {
-        id: 4,
-        type: 'image',
-        mediaSrc: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Make sure this path is correct and the image exists
-        username: "raamya___",
-        caption: "And just like that... Navratri mode is ON! 💥",
-        date: "22 September"
-    },
-    {
-        id: 5,
-        type: 'video',
-        mediaSrc: "/videos/video-1.mp4",
-        poster: "https://plus.unsplash.com/premium_photo-1707932497939-bca3196336f3?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-        username: "raamya___",
-        caption: "Feeling the festive vibes.",
-        date: "20 September"
-    },
-    {
-        id: 6,
-        type: 'video',
-        mediaSrc: "/videos/video-1.mp4",
-        poster: "https://images.unsplash.com/photo-1526510747491-58f928ec870f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fG1vZGVsfGVufDB8fDB8fHww",
-        username: "raamya___",
-        caption: "Spinning into the new season.",
-        date: "19 September"
-    },
+    // {
+    //     id: 3,
+    //     type: 'video',
+    //     mediaSrc: "/videos/video-1.mp4",
+    //     poster: "https://plus.unsplash.com/premium_photo-1669703777695-f8052a432411?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    //     username: "raamya___",
+    //     caption: "Ready for the festivities! 🎉",
+    //     date: "26 September"
+    // },
+    // {
+    //     id: 4,
+    //     type: 'image',
+    //     mediaSrc: "https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D", // Make sure this path is correct and the image exists
+    //     username: "raamya___",
+    //     caption: "And just like that... Navratri mode is ON! 💥",
+    //     date: "22 September"
+    // },
+    // {
+    //     id: 5,
+    //     type: 'video',
+    //     mediaSrc: "/videos/video-1.mp4",
+    //     poster: "https://plus.unsplash.com/premium_photo-1707932497939-bca3196336f3?q=80&w=735&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+    //     username: "raamya___",
+    //     caption: "Feeling the festive vibes.",
+    //     date: "20 September"
+    // },
+    // {
+    //     id: 6,
+    //     type: 'video',
+    //     mediaSrc: "/videos/video-1.mp4",
+    //     poster: "https://images.unsplash.com/photo-1526510747491-58f928ec870f?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTV8fG1vZGVsfGVufDB8fDB8fHww",
+    //     username: "raamya___",
+    //     caption: "Spinning into the new season.",
+    //     date: "19 September"
+    // },
 ];
 
 export default function VideoGallery() {

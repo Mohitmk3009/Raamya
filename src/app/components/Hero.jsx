@@ -76,7 +76,7 @@ export default function Hero() {
     },
     {
       title: 'GIRLY POP',
-      queryValue: 'girly pop',
+      queryValue: 'Girly Pop',
       src: GIRLYPOP,
       mobileSrc: GIRLYPOP_MOBILE,
       placementClassName: 'lg:row-start-2 lg:col-start-1',

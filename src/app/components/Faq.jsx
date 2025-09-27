@@ -24,24 +24,21 @@ const faqData = [
     question: '4. What Type Of Payment Methods Do You Offer?',
     answer: 'We accept a variety of payment methods, including major credit cards (Visa, MasterCard, American Express), debit cards, and other secure online payment gateways.',
   },
+  
   {
-    question: '5. Which Size Will Fit Me Best?',
-    answer: 'We Offer Product And Body Measurements On Each Of Our Products Pages, Just Click On "Size Guide" To Find Your Best Fit. Measuring Guides Are Included.',
-  },
-  {
-    question: '6. How Can I Contact Customer Support?',
+    question: '5. How Can I Contact Customer Support?',
     answer: 'You can contact our customer support team via the contact form on our website, by emailing support@raamya.com, or by using the live chat feature during business hours.',
   },
   {
-    question: '7. Where Are RAAMYA Products Made?',
+    question: '6. Where Are RAAMYA Products Made?',
     answer: 'Our products are proudly made in India. We collaborate with skilled artisans and weavers from various regions to bring you authentic and high-quality garments.',
   },
   {
-    question: '8. How Do You Find And Evaluate Your Suppliers?',
+    question: '7. How Do You Find And Evaluate Your Suppliers?',
     answer: 'We have a rigorous process for selecting suppliers that aligns with our commitment to ethical and sustainable practices. We prioritize partners who share our values of quality craftsmanship and fair labor.',
   },
   {
-    question: '9. Why Choose RAAMYA?',
+    question: '8. Why Choose RAAMYA?',
     answer: 'Choose RAAMYA for a unique blend of tradition and modernity, exceptional quality, and a commitment to ethical fashion. Every piece tells a story and is crafted to make you feel beautiful and confident.',
   },
 ];
