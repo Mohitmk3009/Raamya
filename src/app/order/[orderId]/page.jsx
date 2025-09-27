@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import Lottie from 'lottie-react';
 import Loader from '../../../../public/lottie/Loading.json';
+import Image from 'next/image';
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
@@ -260,7 +261,7 @@ export default function OrderDetailsPage({ params }) {
                         <div className="space-y-4">
                             {order.orderItems.map(item => (
                                 <div key={item._id} className="flex items-center gap-4 border-b border-gray-700 pb-4 last:border-b-0 last:pb-0">
-                                    <img src={item.image} alt={item.name} width={80} height={80} className="rounded-md object-cover" />
+                                    <Image src={item.image} alt={item.name} width={200} height={200} className="rounded-md object-cover" />
                                     <div className="flex-grow">
                                         <p className="font-bold text-white">{item.name}</p>
                                         <p className="text-sm text-gray-400">Qty: {item.qty}</p>

@@ -3,6 +3,7 @@ import React, { useState, useMemo, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast'; // Import toast and Toaster component
 import Lottie from 'lottie-react';
 import Loader from '../../../public/lottie/Loading.json';
+import Image from 'next/image';
 /**
  * To use toast notifications, you need to install the library first:
  *
@@ -17,7 +18,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const OrderSummaryItem = ({ item }) => (
     <div className="flex items-center space-x-4 mb-6 font-redhead">
         <div className="w-20 h-24 bg-gray-700 rounded-md">
-            <img src={item.image} alt={item.name} className="w-full h-full object-cover rounded-md" />
+            <Image width={} src={item.image} alt={item.name} className="w-full h-full object-cover rounded-md" />
         </div>
         <div className="flex-1">
             <p className="text-[#EFAF00]">{item.name}</p>

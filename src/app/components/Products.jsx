@@ -211,7 +211,7 @@ const SearchPopup = ({ searchQuery, searchResults, isSearching, onResultClick, o
                     {searchResults.map(product => (
                         <li key={product._id} onClick={() => onResultClick(product._id)} className="cursor-pointer hover:bg-gray-800 rounded-md p-2 transition">
                             <div className="flex items-center space-x-4 cursor-pointer">
-                                <img src={product.images[0]} alt={product.name} className="w-16 h-20 object-cover rounded" />
+                                <Image width={200} height={200} src={product.images[0]} alt={product.name} className="w-16 h-20 object-cover rounded" />
                                 <div>
                                     <p className="text-sm font-bold text-white">{product.name}</p>
                                     <p className="text-sm font-bold text-[#FFBB00]">{product.category}</p>

@@ -211,6 +211,7 @@ import Lottie from 'lottie-react';
 import successAnimation from '../../../public/lottie/Success.json'; // Adjust path if needed
 import errorAnimation from '../../../public/lottie/Error.json'; // Adjust path if needed
 import toast, { Toaster } from 'react-hot-toast';
+import Image from 'next/image';
 // import Image from 'next/image';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // --- SUB-COMPONENTS ---
@@ -293,7 +294,9 @@ const OrderModal = ({ order }) => {
             key={idx}
             className="flex items-center gap-4 border border-[#EFAF00]/20 rounded-lg p-3"
           >
-            <img
+            <Image
+            width={100}
+            height={100}
               src={item.image}
               alt={item.name}
               className="w-20 h-20 object-cover rounded-lg"
