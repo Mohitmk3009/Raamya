@@ -138,12 +138,12 @@ export default function CheckoutPage() {
 
         loadPageData();
     }, []); // Removed router from dependencies, as it's no longer a dependency
-    
+
     const handleContactChange = (e) => setContactDetails({ ...contactDetails, [e.target.name]: e.target.value });
 
     const { subtotal, shipping, total } = useMemo(() => {
         const sub = orderItems.reduce((sum, item) => sum + item.price * item.qty, 0);
-        const ship = sub > 2000 ? 0 : 150;
+        const ship = sub > 1600 ? 0 : 99;
         return { subtotal: sub, shipping: ship, total: sub + ship };
     }, [orderItems]);
 
@@ -235,7 +235,7 @@ export default function CheckoutPage() {
 
     if (loading) return <div className="flex justify-center items-center min-h-[90vh]">
         <Lottie animationData={Loader} loop={true} className="lg:w-64 lg:h-64 w-40 h-40" />
-      </div>;
+    </div>;
     if (error) return <div className="text-center text-red-500 py-20">Error: {error}</div>;
 
     return (
@@ -294,7 +294,11 @@ export default function CheckoutPage() {
                                 {orderItems.map((item) => <OrderSummaryItem key={`${item.product || item._id}-${item.size}`} item={item} />)}
                             </div>
                             <div className="mt-8 space-y-3 text-sm">
-                                <div className="flex justify-between"><span>SUBTOTAL</span><span>Rs {subtotal.toLocaleString()}</span></div>
+                                <div>
+                                    <div className="flex justify-between"><span>SUBTOTAL</span><span>Rs {subtotal.toLocaleString()}</span></div>
+                                    <div className="flex justify-between text-gray-500 text-xs">Including GST</div>
+                                </div>
+
                                 <div className="flex justify-between"><span>SHIPPING</span><span>{shipping === 0 ? 'FREE' : `Rs ${shipping}`}</span></div>
                                 <div className="flex justify-between text-xl font-bold border-t border-[#EFAF00] pt-3 mt-3"><span>TOTAL</span><span>Rs {total.toLocaleString()}</span></div>
                             </div>

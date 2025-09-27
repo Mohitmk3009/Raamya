@@ -1,4 +1,5 @@
 'use client'
+import Image from 'next/image';
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 // Removed next/link and next/image imports for a standalone component
@@ -163,7 +164,7 @@ const ExchangeOrderForm = () => {
                 <p className="block mb-2 text-sm font-medium text-gray-300">Image Previews</p>
                 <div className="flex flex-wrap gap-4 border border-gray-600 rounded-md p-2">
                   {imagePreviews.map((preview, index) => (
-                    <img key={index} src={preview} alt={`Preview ${index + 1}`} className="w-24 h-24 rounded-md object-cover" />
+                    <Image width={200} key={index} src={preview} alt={`Preview ${index + 1}`} className="w-24 h-24 rounded-md object-cover" />
                   ))}
                 </div>
               </div>

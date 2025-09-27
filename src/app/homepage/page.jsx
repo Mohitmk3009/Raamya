@@ -12,7 +12,7 @@ const page = () => {
       {/* <Header /> */}
       <Hero/>
       <NewArrivals/>
-      <VideoGallery/>
+      {/* <VideoGallery/> */}
       <Subsribe/>
       <Footer/>
     </div>

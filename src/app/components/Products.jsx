@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 import Lottie from 'lottie-react';
 import Loader from '../../../public/lottie/Loading.json';
+import Image from 'next/image';
 // --- ICONS ---
 const SearchIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -58,7 +59,7 @@ const ProductCard = ({ product }) => {
     return (
         <div className="text-gray-300 group font-redhead" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
             <a href={`/product/${product._id}`} className="relative block overflow-hidden mb-4 border border-gray-800">
-                <img
+                <Image
                     width={1000}
                     height={1000}
                     src={isHovered && product.images[1] ? product.images[1] : product.images[0]}
@@ -254,7 +255,7 @@ function ProductsContent() {
         const fetchProducts = async () => {
             setLoading(true);
             const params = new URLSearchParams();
-
+params.append('exclude', 'New shirt');
             if (filters.keyword) params.append('keyword', filters.keyword);
             if (filters.filter) params.append('filter', filters.filter);
             if (filters.sortBy !== 'default') params.append('sortBy', filters.sortBy);
@@ -276,6 +277,7 @@ function ProductsContent() {
             try {
                 const response = await fetch(`${API_BASE_URL}/products?${params.toString()}`);
                 const data = await response.json();
+                
                 const productsWithStockStatus = data.products.map(product => {
                     const isOutOfStock = product.variants.every(variant => variant.stock === 0);
                     return {
@@ -283,7 +285,12 @@ function ProductsContent() {
                         isOutOfStock: isOutOfStock
                     };
                 });
-                setProducts(productsWithStockStatus);
+
+                const filteredProducts = productsWithStockStatus.filter(
+        product => product.name !== 'New shirt'
+    );
+    setProducts(filteredProducts);
+               
                 setPage(data.page);
                 setPages(data.pages);
             } catch (error) {
@@ -468,11 +475,11 @@ function ProductsContent() {
                                 <Lottie animationData={Loader} loop={true} className="lg:w-54 lg:h-54 w-40 h-40" />
                             </div>
                         ) : products.length > 0 ? (
-                        <div className={`grid ${mobileGridLayoutClasses[mobileGridCols]} md:grid-cols-2 ${gridLayoutClasses[gridCols]} gap-6 md:gap-8`}>
-                            {products.map(product => <ProductCard key={product._id} product={product} />)}
-                        </div>
+                            <div className={`grid ${mobileGridLayoutClasses[mobileGridCols]} md:grid-cols-2 ${gridLayoutClasses[gridCols]} gap-6 md:gap-8`}>
+                                {products.map(product => <ProductCard key={product._id} product={product} />)}
+                            </div>
                         ) : (
-                        <div className="text-center py-20 text-gray-500">No products found matching your criteria.</div>
+                            <div className="text-center py-20 text-gray-500">No products found matching your criteria.</div>
                         )}
 
                         <div className="flex justify-center items-center lg:mt-12 lg:pb-12 mt-5 space-x-2">
@@ -524,10 +531,10 @@ function ProductsContent() {
 
 // --- MAIN PRODUCTS PAGE COMPONENT ---
 export default function ProductsPage() {
-   
+
     return (
-         <Suspense>
-        <ProductsContent />
-         </Suspense>
+        <Suspense>
+            <ProductsContent />
+        </Suspense>
     );
 }
