@@ -18,7 +18,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const OrderSummaryItem = ({ item }) => (
     <div className="flex items-center space-x-4 mb-6 font-redhead">
         <div className="w-20 h-24 bg-gray-700 rounded-md">
-            <Image width={} src={item.image} alt={item.name} className="w-full h-full object-cover rounded-md" />
+            <Image width={100} height={100} src={item.image} alt={item.name} className="w-full h-full object-cover rounded-md" />
         </div>
         <div className="flex-1">
             <p className="text-[#EFAF00]">{item.name}</p>
