@@ -5,7 +5,7 @@ import { Play } from "lucide-react";
 import Link from "next/link";
 import Image from 'next/image';
 import pic1 from '../../../public/videos/pic1.png';
-import pic2 from '../../../public/videos/pic2.png';
+import pic2 from '../../../public/videos/Pic2.png';
 
 const mediaPosts = [
     {
