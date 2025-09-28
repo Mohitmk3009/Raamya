@@ -9,7 +9,7 @@ const mediaPosts = [
     {
         id: 1,
         type: 'video',
-        mediaSrc: "/videos/video-1.mp4",
+        mediaSrc: "/videos/vid1.mp4",
         poster: "https://res.cloudinary.com/daby6uvkv/image/upload/v1758717128/exchange_requests/nebse2dpotri9iwj1x2o.png",
         username: "raamya___",
         // caption: "This Navratri, no repeats, no excuses. 🪞 9 looks. Infinite Nazar.\nWhich one's most wanted for you? 🫶🏼\n\nTag your Garba +1 and let them pick your outfit.💃",
@@ -18,7 +18,7 @@ const mediaPosts = [
     {
         id: 2,
         type: 'video',
-        mediaSrc: "/videos/2.mov", // Make sure this path is correct and the image exists
+        mediaSrc: "/videos/vid2.mp4", // Make sure this path is correct and the image exists
         poster: "https://res.cloudinary.com/daby6uvkv/image/upload/v1758717128/exchange_requests/nebse2dpotri9iwj1x2o.png",
         username: "raamya___",
         // caption: "A beautiful day in pink and white.",
