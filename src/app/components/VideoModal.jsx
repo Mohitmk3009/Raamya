@@ -69,27 +69,26 @@ export default function VideoModal({ isOpen, onClose, post, allPosts, currentInd
         </button>
 
         {/* Left Side: Media (Image or Video) */}
-        <div className="relative flex-1 md:w-1/2  md:min-h-full flex items-center justify-center bg-black">
-          {post.type === 'video' ? (
-            <video
-              key={post.id} // Added key to re-mount video on change
-              src={post.mediaSrc}
-              controls
-              autoPlay
-              playsInline
-              className="w-full lg:h-full h-[300px] lg:object-cover object-contain"
-            />
-          ) : (
-            <Image
-              key={post.id} // Added key to force image reload
-              src={post.mediaSrc}
-              alt="Instagram Post"
-              layout="fill"
-              
-              className="w-full h-full lg:object-cover object-contain"
-            />
-          )}
-        </div>
+        <div className="relative flex-1 md:w-1/2 md:min-h-full flex items-center justify-center bg-black">
+                    {post.type === 'video' ? (
+                        <video
+                            key={post.id}
+                            src={post.mediaSrc}
+                            controls
+                            autoPlay
+                            playsInline
+                            className="w-full lg:h-full h-[300px] lg:object-cover object-contain"
+                        />
+                    ) : (
+                        <Image
+                            key={post.id}
+                            src={post.mediaSrc}
+                            alt="Instagram Post"
+                            layout="fill"
+                            className="w-full h-full lg:object-cover object-contain"
+                        />
+                    )}
+                </div>
 
         {/* Right Side: Details */}
         <div className="flex-1 md:w-1/2 p-4 flex flex-col border-l border-gray-200">

@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from "react";
+import React, { useState,useRef ,useEffect} from "react";
 import VideoModal from "./VideoModal";
 import { Play } from "lucide-react";
 import Link from "next/link";
@@ -115,6 +115,46 @@ export default function VideoGallery() {
 }
 
 function VideoCard({ post, onClick, className }) {
+    // 1. Create a ref to get direct access to the <video> element
+    const videoRef = useRef(null);
+
+    // 2. Set up the Intersection Observer
+    useEffect(() => {
+        const videoElement = videoRef.current;
+        if (!videoElement) return;
+
+        // The observer callback function
+        const handleIntersection = (entries) => {
+            const [entry] = entries;
+            if (entry.isIntersecting) {
+                // If the video is on screen, play it
+                videoElement.play().catch(error => {
+                    // Autoplay was prevented.
+                    console.log("Autoplay prevented for video card:", error);
+                });
+            } else {
+                // If the video is off screen, pause it and reset
+                videoElement.pause();
+                videoElement.currentTime = 0;
+            }
+        };
+
+        const observer = new IntersectionObserver(handleIntersection, {
+            root: null, // observes intersections relative to the viewport
+            threshold: 0.5 // Triggers when 50% of the video is visible
+        });
+
+        // Start observing the video element
+        observer.observe(videoElement);
+
+        // 3. Cleanup function to stop observing when the component is unmounted
+        return () => {
+            if (videoElement) {
+                observer.unobserve(videoElement);
+            }
+        };
+    }, []); // Empty dependency array means this runs only once on mount
+
     return (
         <div
             className={`relative group cursor-pointer overflow-hidden rounded-lg shadow-lg ${className}`}
@@ -122,25 +162,23 @@ function VideoCard({ post, onClick, className }) {
         >
             {post.type === 'video' ? (
                 <video
+                    ref={videoRef} // Attach the ref here
                     src={post.mediaSrc}
                     poster={post.poster}
-                    muted
+                    muted      // Must be muted for autoplay to work reliably
                     loop
                     playsInline
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    onMouseOver={(e) => e.currentTarget.play()}
-                    onMouseOut={(e) => {
-                        e.currentTarget.pause();
-                        e.currentTarget.load();
-                    }}
+                    // 4. Removed onMouseOver and onMouseOut events
                 />
             ) : (
                 <Image
                     src={post.mediaSrc}
                     alt="Instagram Post"
-                    layout="fill"
-                    objectFit="cover"
-                    className="w-full h-full transition-transform duration-300 group-hover:scale-105"
+                    width={500} // Add explicit width and height
+                    height={800}
+                    style={{ objectFit: "cover", width: '100%', height: '100%' }}
+                    className="transition-transform duration-300 group-hover:scale-105"
                 />
             )}
             
