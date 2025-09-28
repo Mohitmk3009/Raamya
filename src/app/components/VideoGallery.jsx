@@ -4,13 +4,15 @@ import VideoModal from "./VideoModal";
 import { Play } from "lucide-react";
 import Link from "next/link";
 import Image from 'next/image';
+import pic1 from '../../../public/videos/pic1.png';
+import pic2 from '../../../public/videos/pic2.png';
 
 const mediaPosts = [
     {
         id: 1,
         type: 'video',
         mediaSrc: "/videos/vid1.mp4",
-        poster: " ",
+        poster: pic1,
         username: "raamya___",
         // caption: "This Navratri, no repeats, no excuses. 🪞 9 looks. Infinite Nazar.\nWhich one's most wanted for you? 🫶🏼\n\nTag your Garba +1 and let them pick your outfit.💃",
         date: "21 September"
@@ -19,7 +21,7 @@ const mediaPosts = [
         id: 2,
         type: 'video',
         mediaSrc: "/videos/vid2.mp4", // Make sure this path is correct and the image exists
-        poster: " ",
+        poster: pic2,
         username: "raamya___",
         // caption: "A beautiful day in pink and white.",
         date: "25 September"
