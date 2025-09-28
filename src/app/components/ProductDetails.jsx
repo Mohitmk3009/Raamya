@@ -35,12 +35,11 @@ const SuggestedItem = ({ item, onCartAction, isInCart }) => {
 };
 
 const ProductDetails = ({ product }) => {
-    // Return null if there's no product or description to avoid errors
+    // Return null if there's no product or description
     if (!product || !product.description) {
         return null;
     }
 
-    // The main condition is now just to check for a feature list format.
     const isFeatureList = product.description.includes('KEY FEATURES');
 
     return (
@@ -48,11 +47,15 @@ const ProductDetails = ({ product }) => {
             <h3 className="font-bold text-xl text-yellow-300 mb-4">Product Description</h3>
 
             {isFeatureList ? (
-                // If the description has "KEY FEATURES", we parse it.
                 (() => {
                     const allParts = product.description.split('*').map(p => p.trim()).filter(Boolean);
                     const sizingChartStartIndex = allParts.findIndex(part => part.toUpperCase().startsWith('SIZING CHART'));
-                    const keyFeaturesTitle = allParts[0];
+
+                    if (sizingChartStartIndex === -1 && allParts.length <= 1) {
+                        return <p className="mb-4">{product.description}</p>;
+                    }
+
+                    const keyFeaturesTitle = allParts[0] || 'Key Features';
                     let features = [];
                     let sizingChartItems = [];
 
@@ -63,22 +66,39 @@ const ProductDetails = ({ product }) => {
                         features = allParts.slice(1);
                     }
 
+                    // The flexible parsing logic remains the same
                     const parsedSizes = sizingChartItems.map(item => {
-                        // ✨ --- THIS IS THE ONLY LINE THAT HAS CHANGED --- ✨
-                        // We changed (?:Top\s*)? to (?:\w+\s*)? to allow any word (like "Dress") before "Length".
-                        const regex = /(\w+):\s*Bust ([\d.–]+)\s*in,\s*Waist ([\d.–]+)\s*in,\s*(?:\w+\s*)?Length ([\d.]+)\s*in/i;
-                        const match = item.match(regex);
-
-                        if (match) {
-                            return {
-                                size: match[1],   // e.g., "XS"
-                                bust: match[2],   // e.g., "25-26"
-                                waist: match[3],  // e.g., "22-23"
-                                length: match[4]  // e.g., "15"
-                            };
-                        }
-                        return null;
+                        const parts = item.split(/:\s*/);
+                        if (parts.length < 2) return null;
+                        const size = parts[0];
+                        const measurementsStr = parts.slice(1).join(': ');
+                        const result = { size: size };
+                        const measurementPairs = measurementsStr.split(/\s*,\s*/);
+                        measurementPairs.forEach(pair => {
+                            const match = pair.match(/([a-z\s]+)\s+([\d.–]+)/i);
+                            if (match) {
+                                let key = match[1].trim().toLowerCase();
+                                // Normalize all length variations into a single "length" key
+                                if (key.includes('length')) {
+                                    key = 'length';
+                                }
+                                result[key] = match[2];
+                            }
+                        });
+                        return result;
                     }).filter(Boolean);
+
+                    // --- ✨ 1. DYNAMICALLY FIND ALL HEADERS ---
+                    // Create a Set of all unique measurement keys (e.g., 'bust', 'waist', 'hips', 'length')
+                    const headerKeys = new Set();
+                    parsedSizes.forEach(sizeObject => {
+                        Object.keys(sizeObject).forEach(key => {
+                            if (key !== 'size') {
+                                headerKeys.add(key);
+                            }
+                        });
+                    });
+                    const dynamicHeaders = Array.from(headerKeys);
 
                     return (
                         <>
@@ -92,31 +112,37 @@ const ProductDetails = ({ product }) => {
                                 </ul>
                             </div>
 
-                            {/* Sizing Chart Section */}
+                            {/* DYNAMIC Sizing Chart Section */}
                             {parsedSizes.length > 0 && (
                                 <div className="mt-8 overflow-x-auto">
-                                     <h4 className="font-semibold text-lg text-white uppercase mb-3">Sizing Chart</h4>
+                                    <h4 className="font-semibold text-lg text-white uppercase mb-3">Sizing Chart</h4>
                                     <table className="min-w-full bg-[#1C1C1C] border border-[#3A3A3A] rounded-lg">
                                         <thead className="bg-[#FF9900] text-black">
                                             <tr>
                                                 <th className="p-3 text-left text-sm font-bold uppercase tracking-wider">Size</th>
-                                                <th className="p-3 text-left text-sm font-bold uppercase tracking-wider">Bust (in)</th>
-                                                <th className="p-3 text-left text-sm font-bold uppercase tracking-wider">Waist (in)</th>
-                                                <th className="p-3 text-left text-sm font-bold uppercase tracking-wider">Dress Length (in)</th>
+                                                {/* --- ✨ 2. RENDER DYNAMIC THEAD --- */}
+                                                {dynamicHeaders.map(header => (
+                                                    <th key={header} className="p-3 text-left text-sm font-bold uppercase tracking-wider">
+                                                        {header} (in)
+                                                    </th>
+                                                ))}
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            {/* --- ✨ 3. RENDER DYNAMIC TBODY --- */}
                                             {parsedSizes.map((item, index) => (
                                                 <tr key={`size-row-${index}`} className="border-b border-[#3A3A3A]">
-                                                    <td className="p-3 font-mono">{item.size}</td>
-                                                    <td className="p-3">{item.bust}</td>
-                                                    <td className="p-3">{item.waist}</td>
-                                                    <td className="p-3">{item.length}</td>
+                                                    <td className="p-3 font-mono">{item.size || 'N/A'}</td>
+                                                    {dynamicHeaders.map(header => (
+                                                        <td key={`${item.size}-${header}`} className="p-3">
+                                                            {item[header] || '–'}
+                                                        </td>
+                                                    ))}
                                                 </tr>
                                             ))}
                                         </tbody>
                                     </table>
-                                     <p className="text-xs text-gray-500 mt-2">All measurements are in inches. Please allow a 1-2$ inch tolerance.</p>
+                                    <p className="text-xs text-gray-500 mt-2">All measurements are in inches. Please allow a 1-2$ inch tolerance.</p>
                                 </div>
                             )}
                         </>
