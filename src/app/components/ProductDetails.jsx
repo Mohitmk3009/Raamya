@@ -71,6 +71,23 @@ const ProductDetails = ({ product }) => {
                         features = allParts.slice(1);
                     }
 
+                    const parsedSizes = sizingChartItems.map(item => {
+                        // Regex to capture: Size, Bust, Waist, and Length values
+                        const regex = /(\w+):\s*Bust ([\d.–]+)\s*in,\s*Waist ([\d.–]+)\s*in,\s*(?:Top\s*)?Length ([\d.]+)\s*in/i;
+                        const match = item.match(regex);
+
+                        if (match) {
+                            return {
+                                size: match[1],   // e.g., "XS"
+                                bust: match[2],   // e.g., "25-26"
+                                waist: match[3],  // e.g., "22-23"
+                                length: match[4]  // e.g., "15"
+                            };
+                        }
+                        return null; // Return null for items that don't match the format
+                    }).filter(Boolean); // Filter out any null entries
+
+                    
                     return (
                         <>
                             {/* --- KEY FEATURES SECTION (Always shows if format is correct) --- */}
@@ -84,14 +101,30 @@ const ProductDetails = ({ product }) => {
                             </div>
 
                             {/* --- SIZING CHART SECTION (Only shows if sizing chart was found) --- */}
-                            {sizingChartItems.length > 0 && (
-                                <div className="mt-6"> {/* Adds space between sections */}
-                                    <h4 className="font-semibold text-lg text-white mb-3">Sizing Chart</h4>
-                                    <ul className="list-disc list-inside space-y-2">
-                                        {sizingChartItems.map((item, index) => (
-                                            <li key={`size-${index}`}>{item}</li>
-                                        ))}
-                                    </ul>
+                            {parsedSizes.length > 0 && (
+                                <div className="mt-8 overflow-x-auto">
+                                    <h4 className="font-semibold text-lg text-white uppercase mb-3">Sizing Chart</h4>
+                                    <table className="min-w-full bg-[#1C1C1C] border border-[#3A3A3A] rounded-lg">
+                                        <thead className="bg-[#FF9900] text-black">
+                                            <tr>
+                                                <th className="p-3 text-left text-sm font-bold uppercase tracking-wider">Size</th>
+                                                <th className="p-3 text-left text-sm font-bold uppercase tracking-wider">Bust (in)</th>
+                                                <th className="p-3 text-left text-sm font-bold uppercase tracking-wider">Waist (in)</th>
+                                                <th className="p-3 text-left text-sm font-bold uppercase tracking-wider">Dress Length (in)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {parsedSizes.map((item, index) => (
+                                                <tr key={`size-row-${index}`} className="border-b border-[#3A3A3A]">
+                                                    <td className="p-3 font-mono">{item.size}</td>
+                                                    <td className="p-3">{item.bust}</td>
+                                                    <td className="p-3">{item.waist}</td>
+                                                    <td className="p-3">{item.length}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                     <p className="text-xs text-gray-500 mt-2">All measurements are in inches. Please allow a 1-2$ inch tolerance.</p>
                                 </div>
                             )}
                         </>

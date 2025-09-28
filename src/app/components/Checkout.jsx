@@ -144,7 +144,7 @@ export default function CheckoutPage() {
 
     const { subtotal, shipping, total } = useMemo(() => {
         const sub = orderItems.reduce((sum, item) => sum + item.price * item.qty, 0);
-        const ship = sub > 1600 ? 0 : 99;
+        const ship = sub > 2000 ? 0 : 99;
         return { subtotal: sub, shipping: ship, total: sub + ship };
     }, [orderItems]);
 
