@@ -37,7 +37,7 @@ const SuggestedItem = ({ item, onCartAction, isInCart }) => {
 const ProductDetails = ({ product }) => {
     // Return null if there's no product or description to avoid errors
     if (!product || !product.description) {
-        return null; 
+        return null;
     }
 
     // The main condition is now just to check for a feature list format.
@@ -46,15 +46,15 @@ const ProductDetails = ({ product }) => {
     return (
         <div className="text-gray-300 leading-relaxed p-4 md:p-6 font-redhead">
             <h3 className="font-bold text-xl text-yellow-300 mb-4">Product Description</h3>
-            
+
             {isFeatureList ? (
                 // If the description has "KEY FEATURES", we parse it.
                 (() => {
                     const allParts = product.description.split('*').map(p => p.trim()).filter(Boolean);
-                    
+
                     // We look for a sizing chart within the parts.
                     const sizingChartStartIndex = allParts.findIndex(part => part.startsWith('Sizing Chart'));
-                    
+
                     const keyFeaturesTitle = allParts[0];
                     let features = [];
                     let sizingChartItems = [];
@@ -382,7 +382,11 @@ export default function ProductPage() {
                                 <HeartIcon filled={isWishlisted} className={`${isWishlisted ? 'text-white' : 'text-[#EFAF00]'}`} />
                             </button>
                         </div>
-                        <p className="text-2xl mb-1 text-gray-200">₹{product.price.toLocaleString('en-IN')}</p>
+                        <div className="flex items-baseline gap-2">
+                            <p className="text-2xl mb-1 text-gray-200]">₹{product.price.toLocaleString('en-IN')}</p>
+
+                            <p className="text-sm text-gray-500 line-through">₹{product.price * 2}</p>
+                        </div>
                         <p className="text-xs text-gray-400 mb-6">MRP incl. of all taxes</p>
 
                         {product.suggestedItems?.length > 0 && (

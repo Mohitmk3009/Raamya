@@ -144,7 +144,7 @@ const Suggestions = () => {
   if (newArrivalProducts.length === 0) {
     return (
       <div className="bg-black py-12 flex items-center justify-center text-white font-redhead">
-        <p>No new Suggestions to show right now. Check back soon!</p>
+        {/* <p>No new Suggestions to show right now. Check back soon!</p> */}
       </div>
     );
   }

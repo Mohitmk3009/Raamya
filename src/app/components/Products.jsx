@@ -101,7 +101,10 @@ const ProductCard = ({ product, gridCols, mobileGridCols }) => {
             <p className="text-sm text-[#FFBB00] uppercase">{product.category}</p>
             <div className='flex justify-between items-center text-lg'>
                 <h3 className="font-medium mb-1">{product.name}</h3>
-                <p className="font-semibold text-[#EFAF00]">₹{product.price}</p>
+                <div className="flex items-baseline gap-2">
+                    <p className="font-semibold text-[#EFAF00]">₹{product.price}</p>
+                    <p className="text-sm text-gray-500 line-through">₹{product.price * 2}</p>
+                </div>
             </div>
         </div>
     );
