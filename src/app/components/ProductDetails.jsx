@@ -51,29 +51,22 @@ const ProductDetails = ({ product }) => {
                 // If the description has "KEY FEATURES", we parse it.
                 (() => {
                     const allParts = product.description.split('*').map(p => p.trim()).filter(Boolean);
-
-                    // We look for a sizing chart within the parts.
-                    const sizingChartStartIndex = allParts.findIndex(part => part.startsWith('Sizing Chart'));
-
+                    const sizingChartStartIndex = allParts.findIndex(part => part.toUpperCase().startsWith('SIZING CHART'));
                     const keyFeaturesTitle = allParts[0];
                     let features = [];
                     let sizingChartItems = [];
 
                     if (sizingChartStartIndex !== -1) {
-                        // --- Case 1: Sizing Chart IS found ---
-                        // Features are the items before "Sizing Chart"
                         features = allParts.slice(1, sizingChartStartIndex);
-                        // Sizing chart items are the items after "Sizing Chart"
                         sizingChartItems = allParts.slice(sizingChartStartIndex + 1);
                     } else {
-                        // --- Case 2: Sizing Chart is NOT found ---
-                        // All items after the title are considered features.
                         features = allParts.slice(1);
                     }
 
                     const parsedSizes = sizingChartItems.map(item => {
-                        // Regex to capture: Size, Bust, Waist, and Length values
-                        const regex = /(\w+):\s*Bust ([\d.–]+)\s*in,\s*Waist ([\d.–]+)\s*in,\s*(?:Top\s*)?Length ([\d.]+)\s*in/i;
+                        // ✨ --- THIS IS THE ONLY LINE THAT HAS CHANGED --- ✨
+                        // We changed (?:Top\s*)? to (?:\w+\s*)? to allow any word (like "Dress") before "Length".
+                        const regex = /(\w+):\s*Bust ([\d.–]+)\s*in,\s*Waist ([\d.–]+)\s*in,\s*(?:\w+\s*)?Length ([\d.]+)\s*in/i;
                         const match = item.match(regex);
 
                         if (match) {
@@ -84,13 +77,12 @@ const ProductDetails = ({ product }) => {
                                 length: match[4]  // e.g., "15"
                             };
                         }
-                        return null; // Return null for items that don't match the format
-                    }).filter(Boolean); // Filter out any null entries
+                        return null;
+                    }).filter(Boolean);
 
-                    
                     return (
                         <>
-                            {/* --- KEY FEATURES SECTION (Always shows if format is correct) --- */}
+                            {/* Key Features Section */}
                             <div>
                                 <h4 className="font-semibold text-lg text-white mb-3">{keyFeaturesTitle}</h4>
                                 <ul className="list-disc list-inside space-y-2">
@@ -100,10 +92,10 @@ const ProductDetails = ({ product }) => {
                                 </ul>
                             </div>
 
-                            {/* --- SIZING CHART SECTION (Only shows if sizing chart was found) --- */}
+                            {/* Sizing Chart Section */}
                             {parsedSizes.length > 0 && (
                                 <div className="mt-8 overflow-x-auto">
-                                    <h4 className="font-semibold text-lg text-white uppercase mb-3">Sizing Chart</h4>
+                                     <h4 className="font-semibold text-lg text-white uppercase mb-3">Sizing Chart</h4>
                                     <table className="min-w-full bg-[#1C1C1C] border border-[#3A3A3A] rounded-lg">
                                         <thead className="bg-[#FF9900] text-black">
                                             <tr>
@@ -131,7 +123,6 @@ const ProductDetails = ({ product }) => {
                     );
                 })()
             ) : (
-                // Fallback for simple descriptions that are just a single paragraph.
                 <p className="mb-4">{product.description}</p>
             )}
         </div>

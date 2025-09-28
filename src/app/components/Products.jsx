@@ -1,7 +1,7 @@
 'use client';
 import React, { useState, useEffect, Suspense, useRef } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
+import { useRouter,useSearchParams } from 'next/navigation';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 import Lottie from 'lottie-react';
 import Loader from '../../../public/lottie/Loading.json';
@@ -77,7 +77,7 @@ const ProductCard = ({ product, gridCols, mobileGridCols }) => {
             onMouseLeave={() => setIsHovered(false)}
         >
             {/* 1. THE CONTAINER: Must be 'relative' and have 'overflow-hidden' */}
-            <a
+            <Link
                 href={`/product/${product._id}`}
                 className={`relative block w-full overflow-hidden mb-4 border border-gray-800 ${containerHeightClass}`}
             >
@@ -95,7 +95,7 @@ const ProductCard = ({ product, gridCols, mobileGridCols }) => {
                         <span className="text-white text-lg font-bold">Out of Stock</span>
                     </div>
                 )}
-            </a>
+            </Link>
 
             {/* Product Details */}
             <p className="text-sm text-[#FFBB00] uppercase">{product.category}</p>
@@ -235,6 +235,7 @@ const SearchPopup = ({ searchQuery, searchResults, isSearching, onResultClick, o
 
 // --- Inner component that contains the page logic ---
 function ProductsContent() {
+    const router = useRouter();
     const searchParams = useSearchParams();
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(1);
@@ -422,12 +423,13 @@ function ProductsContent() {
     };
 
     const handleResultClick = (productId) => {
+        router.push(`/product/${productId}`);
         // Redirect to product page or filter products
         // For this example, we'll just close the popup
         setShowSearchPopup(false);
         setSearchTerm('');
         // You could also use useRouter to navigate:
-        // router.push(`/product/${productId}`);
+        
     };
 
     const gridLayoutClasses = {
