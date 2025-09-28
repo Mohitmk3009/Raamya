@@ -10,7 +10,7 @@ const mediaPosts = [
         id: 1,
         type: 'video',
         mediaSrc: "/videos/vid1.mp4",
-        poster: "https://res.cloudinary.com/daby6uvkv/image/upload/v1758717128/exchange_requests/nebse2dpotri9iwj1x2o.png",
+        poster: " ",
         username: "raamya___",
         // caption: "This Navratri, no repeats, no excuses. 🪞 9 looks. Infinite Nazar.\nWhich one's most wanted for you? 🫶🏼\n\nTag your Garba +1 and let them pick your outfit.💃",
         date: "21 September"
@@ -19,7 +19,7 @@ const mediaPosts = [
         id: 2,
         type: 'video',
         mediaSrc: "/videos/vid2.mp4", // Make sure this path is correct and the image exists
-        poster: "https://res.cloudinary.com/daby6uvkv/image/upload/v1758717128/exchange_requests/nebse2dpotri9iwj1x2o.png",
+        poster: " ",
         username: "raamya___",
         // caption: "A beautiful day in pink and white.",
         date: "25 September"
@@ -93,7 +93,7 @@ export default function VideoGallery() {
             <div className="p-6 bg-black lg:min-h-screen flex justify-center">
                 <div className="grid grid-cols-3 md:grid-cols-3 gap-6">
                     {mediaPosts.map((post, index) => (
-                        <div key={post.id} className={`${index % 3 === 1 ? 'lg:mt-5 mt-3' : ''}`}> {/* Apply margin to middle column */}
+                        <div key={post.id} className={`${index % 3 === 1 ? 'lg:mt-0 mt-0' : ''}`}> {/* Apply margin to middle column */}
                             <VideoCard post={post} onClick={() => openModal(index)} className="lg:h-[600px] h-[150px] w-full lg:w-[400px]" />
                         </div>
                     ))}
