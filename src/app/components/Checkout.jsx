@@ -294,7 +294,9 @@ export default function CheckoutPage() {
                             <div className="max-h-[350px] overflow-y-auto pr-2">
                                 {orderItems.map((item) => <OrderSummaryItem key={`${item.product || item._id}-${item.size}`} item={item} />)}
                             </div>
-                            <div className="mt-8 space-y-3 text-sm">
+<h1 className="text-sm font-bold text-[#EFAF00] tracking-wider ">Expected Delivery Time: 5 to 9 buisness days</h1>
+
+                            <div className="mt-4 space-y-3 text-sm">
                                 <div>
                                     <div className="flex justify-between"><span>SUBTOTAL</span><span>Rs {subtotal.toLocaleString()}</span></div>
                                     <div className="flex justify-between text-gray-500 text-xs">Including GST</div>
