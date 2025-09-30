@@ -4,7 +4,7 @@ import VideoModal from "./VideoModal";
 import { Play } from "lucide-react";
 import Link from "next/link";
 import Image from 'next/image';
-
+import { useContentProtection } from '../hooks/useContentProtection';
 const mediaPosts = [
     {
         id: 1,
@@ -64,7 +64,7 @@ const mediaPosts = [
 export default function VideoGallery() {
     // ✅ Change state to hold the index of the selected post
     const [selectedIndex, setSelectedIndex] = useState(null);
-
+useContentProtection();
     const openModal = (index) => {
         setSelectedIndex(index);
     };
@@ -83,7 +83,7 @@ export default function VideoGallery() {
 
     return (
         <>
-            <div className='flex flex-col justify-between relative pb-10 bg-black font-redhead'>
+            <div className='flex flex-col justify-between relative pb-10 bg-black font-redhead select-none touch-action-manipulation'>
                 <div className="bg-[#EFAF00] h-2 w-full blur-lg"></div>
                 <h2 className="text-center text-2xl md:text-5xl font-bold tracking-widest text-[#EFAF00] lg:my-5 my-2 lg:px-4 px-4">
                     FOLLOW US ON INSTAGRAM <Link href={'https://www.instagram.com/raamya___?igsh=MWpiNTFoa2NuM29maQ=='} target="_blank"> @Raamya___</Link>

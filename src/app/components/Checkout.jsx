@@ -4,6 +4,7 @@ import toast, { Toaster } from 'react-hot-toast'; // Import toast and Toaster co
 import Lottie from 'lottie-react';
 import Loader from '../../../public/lottie/Loading.json';
 import Image from 'next/image';
+import { useContentProtection } from '../hooks/useContentProtection';
 /**
  * To use toast notifications, you need to install the library first:
  *
@@ -89,6 +90,8 @@ export default function CheckoutPage() {
     const navigateTo = (path) => {
         window.location.href = path;
     };
+
+    useContentProtection();
     const [activePaymentMethod, setActivePaymentMethod] = useState('COD');
     const [contactDetails, setContactDetails] = useState({ firstName: '', lastName: '', phone: '', email: '' });
     const [savedAddresses, setSavedAddresses] = useState([]);
@@ -240,7 +243,7 @@ export default function CheckoutPage() {
     if (error) return <div className="text-center text-red-500 py-20">Error: {error}</div>;
 
     return (
-        <div className="bg-black text-[#EFAF00] min-h-screen pt-10 font-redhead">
+        <div className="bg-black text-[#EFAF00] min-h-screen pt-10 font-redhead select-none touch-action-manipulation">
             <Toaster position="top-center" />
             {isAddressModalOpen && <AddressModal onClose={() => setIsAddressModalOpen(false)} onSave={handleSaveNewAddress} />}
             {showUpiDialog && <ComingSoonDialog onClose={() => setShowUpiDialog(false)} />}

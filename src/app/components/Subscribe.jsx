@@ -1,11 +1,12 @@
 'use client'
 import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-
+import { useContentProtection } from '../hooks/useContentProtection';
 // It's good practice to define this in your .env file
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
 
 const Subscribe = () => {
+    useContentProtection();
     const [email, setEmail] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -47,7 +48,7 @@ const Subscribe = () => {
 
     return (
         <section
-            className="relative w-full h-[30vh] lg:min-h-[400px] my-12 md:my-20 bg-cover bg-center bg-no-repeat flex items-center bg-black font-redhead justify-center"
+            className="relative w-full h-[30vh] lg:min-h-[400px] my-12 md:my-20 bg-cover bg-center bg-no-repeat flex items-center bg-black font-redhead justify-center select-none touch-action-manipulation"
             style={{ backgroundImage: "url('https://images.unsplash.com/photo-1744526313164-57e293bf8033?q=80&w=2129&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')" }}
         >
             {/* Add Toaster component here to make notifications visible */}

@@ -6,7 +6,7 @@ import Image from 'next/image';
 import toast, { Toaster } from 'react-hot-toast';
 import Lottie from 'lottie-react';
 import Loader from '../../../public/lottie/Loading.json'; // adjust path to your file
-
+import { useContentProtection } from '../hooks/useContentProtection';
 // Quantity selector
 const QuantitySelector = ({ quantity, onDecrease, onIncrease }) => (
   <div className="flex items-center justify-center border text-[#EFAF00] w-24 rounded-md">
@@ -102,6 +102,7 @@ const CartItem = ({ item, onQuantityChange, onRemove, isSelected, onToggleSelect
 // Main ShoppingCart
 export default function ShoppingCart() {
   const router = useRouter();
+  useContentProtection();
   const {
     cartItems,
     updateQuantity,
@@ -147,7 +148,7 @@ export default function ShoppingCart() {
   }
 
   return (
-    <div className="bg-black text-[#EFAF00] min-h-screen py-10 font-redhead">
+    <div className="bg-black text-[#EFAF00] min-h-screen py-10 font-redhead select-none touch-action-manipulation">
       <Toaster position="top-center" />
       <div className="max-w-[1400px] mx-auto px-4">
         <h1 className="text-3xl font-bold text-[#EFAF00] mb-6">Shopping Cart</h1>

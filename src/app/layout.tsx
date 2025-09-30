@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from "./context/CartContext";
-import ConditionalHeader from "./components/ConditionalHeader"; // 1. Import the new component
+import ConditionalHeader from "./components/ConditionalHeader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,9 +15,16 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// 💡 MODIFIED METADATA OBJECT FOR ANTI-ZOOMING 💡
 export const metadata: Metadata = {
   title: "RAAMYA",
   description: "Your e-commerce clothing store",
+  viewport: { // ⬅️ Add this viewport object
+    width: 'device-width',
+    initialScale: 1.0,
+    maximumScale: 1.0, // This prevents zooming beyond 1x
+    userScalable: 'no',  // This explicitly disables pinch-to-zoom
+  },
 };
 
 export default function RootLayout({
@@ -28,16 +35,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-      suppressHydrationWarning={true}
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black`}
+        suppressHydrationWarning={true}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black overflo`}
       >
         <AuthProvider>
           <CartProvider>
-          {/* 2. Use the ConditionalHeader instead of the regular Header */}
-          <ConditionalHeader /> 
-          
-          {/* It's good practice to wrap your page content in a <main> tag */}
-          <main>{children}</main>
+            <ConditionalHeader />
+
+            {/* It's good practice to wrap your page content in a <main> tag */}
+            <main>{children}</main>
           </CartProvider>
         </AuthProvider>
       </body>

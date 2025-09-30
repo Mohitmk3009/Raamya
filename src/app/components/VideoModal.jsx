@@ -2,14 +2,14 @@
 import React, { useState, useRef } from "react";
 import Image from 'next/image';
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-
+import { useContentProtection } from '../hooks/useContentProtection';
 export default function VideoModal({ isOpen, onClose, post, allPosts, currentIndex, goToNext, goToPrevious }) {
   if (!isOpen || !post) return null;
 
   const [touchStart, setTouchStart] = useState(null);
   const [touchEnd, setTouchEnd] = useState(null);
   const minSwipeDistance = 50; // Minimum distance to register a swipe
-
+useContentProtection();
   const hasPrevious = currentIndex > 0;
   const hasNext = currentIndex < allPosts.length - 1;
 
@@ -34,7 +34,7 @@ export default function VideoModal({ isOpen, onClose, post, allPosts, currentInd
   };
 
   return (
-    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 font-sans">
+    <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 font-sans font-redhead select-none touch-action-manipulation">
       {/* Navigation Arrows */}
       {hasPrevious && (
         <button

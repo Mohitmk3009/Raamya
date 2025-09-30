@@ -6,7 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import Lottie from 'lottie-react';
 import Loader from '../../../public/lottie/Loading.json';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
+import { useContentProtection } from '../hooks/useContentProtection';
 // --- ICONS ---
 const ChevronRightIcon = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-5 -5 34 34" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="9 18 15 12 9 6"></polyline></svg>);
 const ChevronLeftIcon = (props) => (<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="-5 -5 34 34" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="15 18 9 12 15 6"></polyline></svg>);
@@ -278,6 +278,7 @@ const Orders = ({ orders }) => {
 
 // --- MAIN MyAccountPage COMPONENT ---
 export default function MyAccountPage() {
+    useContentProtection();
     const [activeSection, setActiveSection] = useState('account');
     const [user, setUser] = useState(null);
     const [orders, setOrders] = useState([]);
@@ -364,7 +365,7 @@ export default function MyAccountPage() {
     const menuItems = ['Account', 'Address', 'Orders', 'Log Out'];
 
     return (
-        <div className="bg-black text-white min-h-screen py-12 font-redhead">
+        <div className="bg-black text-white min-h-screen py-12 font-redhead select-none touch-action-manipulation">
             <Toaster position="top-center" />
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h1 className="text-4xl font-extrabold text-[#EFAF00] text-center mb-10">MY ACCOUNT</h1>

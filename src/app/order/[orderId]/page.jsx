@@ -7,7 +7,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import Lottie from 'lottie-react';
 import Loader from '../../../../public/lottie/Loading.json';
 import Image from 'next/image';
-
+import { useContentProtection } from '../hooks/useContentProtection';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // --- CANCEL ORDER MODAL COMPONENT ---
@@ -88,7 +88,7 @@ export default function OrderDetailsPage({ params }) {
     const [error, setError] = useState('');
     const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
     const [isDownloading, setIsDownloading] = useState(false);
-
+useContentProtection();
     const navigateTo = (path) => {
         window.location.href = path;
     };
@@ -233,7 +233,7 @@ export default function OrderDetailsPage({ params }) {
     const isCancellable = (new Date().getTime() - new Date(order.createdAt).getTime()) / (1000 * 60 * 60) < 24;
 
     return (
-        <div className="bg-black text-white min-h-screen pt-12 font-redhead">
+        <div className="bg-black text-white min-h-screen pt-12 font-redhead select-none touch-action-manipulation">
             <Toaster position="top-center" />
             
             <div className="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">

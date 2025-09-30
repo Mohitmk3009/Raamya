@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import React from 'react';
-
+import { useContentProtection } from '../hooks/useContentProtection';
 // A simple Icon component for the list items
 const ListItemCheck = () => (
   <svg
@@ -16,8 +16,9 @@ const ListItemCheck = () => (
 
 
 export default function AboutUs() {
+  useContentProtection(); 
   return (
-    <div className="bg-black text-[#EFAF00] lg:px-0 px-5 pt-10 font-redhead">
+    <div className="bg-black text-[#EFAF00] lg:px-0 px-5 pt-10 font-redhead select-none touch-action-manipulation">
       <div className="max-w-[1400px]  mx-auto">
         {/* Breadcrumbs */}
         <nav className="text-lg mb-8">

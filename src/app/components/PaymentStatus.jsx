@@ -212,7 +212,7 @@ import successAnimation from '../../../public/lottie/Success.json'; // Adjust pa
 import errorAnimation from '../../../public/lottie/Error.json'; // Adjust path if needed
 import toast, { Toaster } from 'react-hot-toast';
 import Image from 'next/image';
-// import Image from 'next/image';
+import { useContentProtection } from '../hooks/useContentProtection';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 // --- SUB-COMPONENTS ---
 const AnimatedCheckmark = () => (<div className="w-40 h-40 mx-auto"><Lottie animationData={successAnimation} loop={false} /></div>);
@@ -329,6 +329,7 @@ const OrderModal = ({ order }) => {
 export default function PaymentResultPage() {
   const params = useParams();
   const router = useRouter();
+  useContentProtection();
   const { orderId, status } = params;
   const [showModal, setShowModal] = useState(false);
   const [order, setOrder] = useState(null);
@@ -373,7 +374,7 @@ export default function PaymentResultPage() {
   };
 
   return (
-    <main className="bg-black lg:min-h-[90vh] min-h-screen flex items-center justify-center relative font-redhead">
+    <main className="bg-black lg:min-h-[90vh] min-h-screen flex items-center justify-center relative font-redhead select-none touch-action-manipulation">
       <Toaster position="top-center" />
       <div className="w-full max-w-4xl mx-auto">
         {status === 'success' ? <PaymentSuccess onAnimationEnd={handleAnimationEnd} /> : <PaymentFailed onRetry={handleRetry} />}
