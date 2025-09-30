@@ -19,12 +19,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "RAAMYA",
   description: "Your e-commerce clothing store",
-  viewport: { // ⬅️ Add this viewport object
-    width: 'device-width',
-    initialScale: 1.0,
-    maximumScale: 1.0, // This prevents zooming beyond 1x
-    userScalable: 'no',  // This explicitly disables pinch-to-zoom
-  },
+  
 };
 
 export default function RootLayout({

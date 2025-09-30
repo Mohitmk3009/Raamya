@@ -429,7 +429,7 @@ export default function ProductPage() {
                     </div>
                     <div className="lg:col-span-4 border border-[#EFAF00] lg:p-6 p-4 lg:min-w-[500px] h-fit lg:ml-12 rounded-lg flex flex-col">
                         <div className="flex justify-between items-start mb-4">
-                            <h1 className="text-3xl font-bold text-yellow-300 tracking-wider">{product.name}</h1>
+                            <h1 className="text-3xl font-bold text-[#EFAF00] tracking-wider">{product.name}</h1>
                             <button onClick={handleAddToWishlist} className={`p-2 cursor-pointer border rounded-md transition-colors ${isWishlisted ? 'bg-[#EFAF00] border-[#EFAF00]' : 'border-gray-600 hover:border-[#EFAF00]'}`}>
                                 <HeartIcon filled={isWishlisted} className={`${isWishlisted ? 'text-white' : 'text-[#EFAF00]'}`} />
                             </button>
@@ -451,8 +451,7 @@ export default function ProductPage() {
                                 })}
                             </div>
                         )}
-
-                        <div className="mb-8">
+                        <div className="mb-2">
                             <label className="block text-sm font-medium text-gray-300 mb-2">Size</label>
                             <div className="flex gap-2 flex-wrap">
                                 {product.variants.map((variant) => (
@@ -462,6 +461,7 @@ export default function ProductPage() {
                                 ))}
                             </div>
                         </div>
+<h1 className="text-sm font-bold text-[#EFAF00] tracking-wider mt-8 mb-2">Expected Delivery Time: 5 to 9 buisness days</h1>
 
                         <div className="flex items-center gap-4 mt-auto">
                             <div className="flex items-center border border-gray-600 rounded-md">
