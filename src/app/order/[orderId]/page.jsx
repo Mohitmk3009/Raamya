@@ -7,7 +7,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import Lottie from 'lottie-react';
 import Loader from '../../../../public/lottie/Loading.json';
 import Image from 'next/image';
-import { useContentProtection } from '../hooks/useContentProtection';
+import { useContentProtection } from '../../hooks/useContentProtection';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // --- CANCEL ORDER MODAL COMPONENT ---
