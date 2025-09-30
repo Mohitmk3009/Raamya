@@ -1,4 +1,5 @@
 // hooks/useContentProtection.js
+"use client"
 import { useEffect } from 'react';
 
 export function useContentProtection() {
