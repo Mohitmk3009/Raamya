@@ -8,8 +8,9 @@ import { useSwipeable } from 'react-swipeable'; // NEW: Import the swipe hook
 import Lottie from 'lottie-react';
 import Loader from '../../../public/lottie/Loading.json';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
-
+import { useContentProtection } from '../hooks/useContentProtection';
 const Suggestions = () => {
+  useContentProtection();
   const [newArrivalProducts, setNewArrivalProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -151,7 +152,7 @@ const Suggestions = () => {
 
   // --- MAIN RENDER ---
   return (
-    <div className="bg-black text-[#EFAF00] lg:pt-12 pt-6 lg:pb-8 overflow-hidden font-redhead">
+    <div className="bg-black text-[#EFAF00] lg:pt-12 pt-6 lg:pb-8 overflow-hidden font-redhead select-none touch-action-manipulation">
       <div className="flex flex-col justify-between relative mb-10">
         <div className="bg-[#EFAF00] h-2 w-full blur-lg"></div>
         <h2 className="text-center text-2xl md:text-5xl font-bold tracking-widest text-[#EFAF00] lg:my-5 my-4 px-4 uppercase">

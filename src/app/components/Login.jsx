@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 // Using standard <a> tags instead of Link from Next.js
 // using window.location.href instead of useRouter from Next.js
-
+import { useContentProtection } from '../hooks/useContentProtection';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ;
 
 const EyeIcon = ({ ...props }) => (
@@ -32,6 +32,7 @@ const GoogleIcon = () => (
 
 // --- SIGN IN FORM ---
 const SignInForm = ({ setAuthMode }) => {
+  
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [loading, setLoading] = useState(false);
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -507,7 +508,7 @@ export default function AuthForm() {
   const [email, setEmail] = useState('');
   const [otp, setOtp] = useState('');
   const [forgotPasswordStep, setForgotPasswordStep] = useState('email');
-
+useContentProtection();
   const renderForm = () => {
     switch (authMode) {
       case 'signin':
@@ -531,7 +532,7 @@ export default function AuthForm() {
   };
 
   return (
-    <div className="bg-black min-h-screen font-redhead flex items-center justify-center p-4">
+    <div className="bg-black min-h-screen font-redhead flex items-center justify-center p-4 select-none touch-action-manipulation">
       <Toaster position="top-center" />
       <div className="bg-gray-900 border border-gray-800 rounded-2xl shadow-2xl shadow-[#EFAF00]/10 max-w-3xl w-full">
         <div className="p-8 lg:p-12">

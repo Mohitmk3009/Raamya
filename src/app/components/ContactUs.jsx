@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 import toast, { Toaster } from 'react-hot-toast'; 
+import { useContentProtection } from '../hooks/useContentProtection';
 // --- SVG Icon Components ---
 const ChatIcon = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -28,6 +29,7 @@ const WriteIcon = () => (
 );
 
 export default function ContactUs() {
+  useContentProtection();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -82,7 +84,7 @@ export default function ContactUs() {
   };
 
   return (
-    <div className="bg-black text-white lg:p-10 p-5 pb-0 font-redhead">
+    <div className="bg-black text-white lg:p-10 p-5 pb-0 font-redhead select-none touch-action-manipulation">
       <Toaster position="top-center" />
       <div className="max-w-7xl mx-auto">
         {/* Breadcrumbs */}

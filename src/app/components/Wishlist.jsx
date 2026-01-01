@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import toast, { Toaster } from 'react-hot-toast';
 import { useCart } from '../context/CartContext';
-
+import { useContentProtection } from '../hooks/useContentProtection';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 const ITEMS_PER_PAGE = 9;
 
@@ -21,7 +21,7 @@ export default function WishlistPage() {
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
     const { addToCart } = useCart();
-
+useContentProtection();
     // Fetch full product details on component load for accurate stock status
     useEffect(() => {
         const fetchWishlistDetails = async () => {
@@ -159,7 +159,7 @@ export default function WishlistPage() {
     }
     
     return (
-        <div className="bg-black text-white min-h-screen font-sans">
+        <div className="bg-black text-white min-h-screen font-sans font-redhead select-none touch-action-manipulation">
             <Toaster position="top-center" />
             <div className="container mx-auto max-w-[1200px] py-10 px-4">
                 <div className="text-center mb-10">

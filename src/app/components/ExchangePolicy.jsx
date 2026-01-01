@@ -1,10 +1,11 @@
 'use client'
 import Link from 'next/link';
 import React from 'react';
-
+import { useContentProtection } from '../hooks/useContentProtection';
 const ExchangePolicy = () => {
+  useContentProtection();
   return (
-    <div className="bg-black text-[#EFAF00] pt-10  font-redhead">
+    <div className="bg-black text-[#EFAF00] pt-10  font-redhead select-none touch-action-manipulation">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         {/* Breadcrumbs */}
         <nav className="text-lg mb-8">

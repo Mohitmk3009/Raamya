@@ -125,8 +125,9 @@
 
 'use client';
 import React, { useState, useEffect, useRef } from 'react';
-
+import { useContentProtection } from '../hooks/useContentProtection';
 export default function LoadingScreen() {
+  useContentProtection();
   const [position1, setPosition1] = useState({ top: '0%', left: '0%' });
   const [position2, setPosition2] = useState({ top: '100%', left: '100%' });
   const [slideUp, setSlideUp] = useState(false);
@@ -197,7 +198,7 @@ export default function LoadingScreen() {
       `}</style>
 
       <main
-        className={`fixed inset-0 z-50 flex flex-col items-center justify-center w-full h-[100vh] overflow-hidden bg-black font-redhead transform transition-transform duration-1000 ${
+        className={`fixed inset-0 z-50 flex flex-col items-center justify-center select-none touch-action-manipulation w-full h-[100vh] overflow-hidden bg-black font-redhead transform transition-transform duration-1000 ${
           slideUp ? "-translate-y-full" : "translate-y-0"
         }`}
       >

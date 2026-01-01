@@ -6,6 +6,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 import Lottie from 'lottie-react';
 import Loader from '../../../public/lottie/Loading.json';
 import Image from 'next/image';
+import { useContentProtection } from '../hooks/useContentProtection';
 // --- ICONS ---
 const SearchIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
@@ -251,7 +252,7 @@ function ProductsContent() {
     const [isSearching, setIsSearching] = useState(false);
     const [searchResults, setSearchResults] = useState([]);
     const [showSearchPopup, setShowSearchPopup] = useState(false);
-
+useContentProtection(); 
     // Ref to detect clicks outside the search area
     const searchRef = useRef(null);
 
@@ -444,7 +445,7 @@ function ProductsContent() {
     };
 
     return (
-        <div className="bg-black text-gray-400 lg:min-h-screen font-redhead px-5 py-10 md:p-10 pb-0">
+        <div className="bg-black text-gray-400 lg:min-h-screen font-redhead px-5 py-10 md:p-10 pb-0 select-none touch-action-manipulation">
             <div className="container mx-auto">
                 <div className="flex flex-col lg:flex-row">
                     <div className="hidden lg:block lg:w-1/4 lg:pr-8">

@@ -449,6 +449,7 @@ import bag from '../../assets/icons/bag.png';
 import Lottie from 'lottie-react';
 import Loader from '../../../public/lottie/Loading.json';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+import { useContentProtection } from '../hooks/useContentProtection';
 // --- SVG ICONS ---
 const ChevronDownIcon = (props) => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}><polyline points="6 9 12 15 18 9"></polyline></svg>
@@ -512,7 +513,7 @@ export default function Header() {
     const { isAuthenticated } = useAuth();
     const { cartItems } = useCart();
     const router = useRouter();
-
+useContentProtection(); 
     const [searchQuery, setSearchQuery] = useState('');
     const [isDesktopSearchOpen, setIsDesktopSearchOpen] = useState(false);
     const [wishlistItemCount, setWishlistItemCount] = useState(0);
@@ -621,7 +622,7 @@ export default function Header() {
                 .font-black-no7-style { font-family: 'Black No.7'; }
             `}</style>
 
-            <header className="bg-black text-[#EFAF00] shadow-md w-full font-redhead sticky top-0 z-50">
+            <header className="bg-black text-[#EFAF00] shadow-md w-full font-redhead sticky top-0 z-50 select-none touch-action-manipulation">
                 <div className="mx-auto flex items-center justify-between md:p-4 p-2">
                     {/* Left side: Logo */}
                     <div className="flex-shrink-0 text-3xl md:text-5xl font-bold tracking-wider bg-gradient-to-b text-transparent bg-clip-text from-[#EFAF00] to-yellow-800">

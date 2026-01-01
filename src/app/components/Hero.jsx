@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
 import { useMediaQuery } from '../hooks/useMediaQuery'; // Adjust the import path if needed
-
+import { useContentProtection } from '../hooks/useContentProtection';
 // --- DESKTOP IMAGES ---
 import ITGIRL from '../../assets/IT girl2.jpg';
 import DESIDIVA from '../../assets/desi_diva.png';
@@ -51,6 +51,7 @@ const ImageCard = ({ src, mobileSrc, title, containerClassName }) => {
 
 // The main grid component
 export default function Hero() {
+  useContentProtection();
   // The categories array now includes a `mobileSrc` for each item.
   const categories = [
     {
@@ -92,7 +93,7 @@ export default function Hero() {
 
   return (
     <section className="w-full bg-black flex items-center justify-center">
-      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 w-full lg:h-[92vh] h-[85vh]">
+      <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2 w-full lg:h-[92vh] h-[85vh] select-none touch-action-manipulation">
         {categories.map((cat) => (
           <Link
             key={cat.title}

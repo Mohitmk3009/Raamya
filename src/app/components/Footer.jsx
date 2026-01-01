@@ -1,7 +1,9 @@
+'use client';
+
 import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
-
+import { useContentProtection } from '../hooks/useContentProtection';
 // --- SVG Icon Components ---
 // These are kept separate for readability.
 
@@ -43,8 +45,9 @@ const InstagramIcon = () => (
 
 
 const Footer = () => {
+    useContentProtection();
     return (
-        <footer className="bg-black text-gray-400 font-redhead">
+        <footer className="bg-black text-gray-400 font-redhead select-none touch-action-manipulation">
             <div className="w-full  py-0  ">
                 {/* Top section with columns */}
                 <div className=' bg-[#FFBB00] h-0.5 w-full  '></div>

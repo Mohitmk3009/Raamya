@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link';
 import React, { useState } from 'react';
-
+import { useContentProtection } from '../hooks/useContentProtection';
 // Data for the FAQ section
 const faqData = [
   {
@@ -46,6 +46,7 @@ const faqData = [
 
 // Individual FAQ Item Component
 const FaqItem = ({ item, isOpen, onClick }) => {
+  
   return (
     <div className="border-b border-gray-800 py-6">
       <div
@@ -75,7 +76,7 @@ const FaqItem = ({ item, isOpen, onClick }) => {
 export default function FAQ() {
   // State to track which FAQ items are open. Defaulting 0 and 5 to open as in the screenshot.
   const [openIndexes, setOpenIndexes] = useState([0]);
-
+useContentProtection();
   const handleItemClick = (index) => {
     setOpenIndexes(prevIndexes =>
       prevIndexes.includes(index)
@@ -85,7 +86,7 @@ export default function FAQ() {
   };
 
   return (
-    <div className="bg-black text-[#EFAF00]  pt-10 px-5 lg:px-0 text-justify font-redhead ">
+    <div className="bg-black text-[#EFAF00]  pt-10 px-5 lg:px-0 text-justify font-redhead select-none touch-action-manipulation">
       <div className="max-w-7xl mx-auto">
         {/* Breadcrumbs */}
         <nav className="text-lg mb-8">

@@ -7,6 +7,12 @@
   font-family: 'Real Head Web W01 Bold', sans-serif;
 }
 
+/* Prevent pinch zoom & double-tap zoom */
+html, body {
+  touch-action: pan-x pan-y; /* allow scrolling only */
+  -ms-touch-action: pan-x pan-y; /* old IE */
+}
+
 /* --- UPDATED CLASS --- */
 /* .raamya-font {
   /* Changed "Black No.7" to the "Real Head" font family 

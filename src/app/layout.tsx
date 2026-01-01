@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from './context/AuthContext';
 import { CartProvider } from "./context/CartContext";
-import ConditionalHeader from "./components/ConditionalHeader"; // 1. Import the new component
+import ConditionalHeader from "./components/ConditionalHeader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,30 +15,34 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+// Metadata (for SEO + title)
 export const metadata: Metadata = {
   title: "RAAMYA",
   description: "Your e-commerce clothing store",
-  viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no',
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
+      <head>
+        {/* 🔒 Block zooming on mobile devices */}
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+        />
+      </head>
       <body
-      suppressHydrationWarning={true}
+        suppressHydrationWarning={true}
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-black`}
       >
         <AuthProvider>
           <CartProvider>
-          {/* 2. Use the ConditionalHeader instead of the regular Header */}
-          <ConditionalHeader /> 
-          
-          {/* It's good practice to wrap your page content in a <main> tag */}
-          <main>{children}</main>
+            <ConditionalHeader />
+            <main>{children}</main>
           </CartProvider>
         </AuthProvider>
       </body>

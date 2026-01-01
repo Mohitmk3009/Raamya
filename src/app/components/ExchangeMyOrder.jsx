@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 // Removed next/link and next/image imports for a standalone component
 // Using standard a and img tags instead for broader compatibility
-
+import { useContentProtection } from '../hooks/useContentProtection';
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 // A simple icon component for the list items
@@ -15,6 +15,7 @@ const BulletIcon = () => (
 );
 
 const ExchangeOrderForm = () => {
+  useContentProtection();
   const [formData, setFormData] = useState({
     orderNumber: '',
     email: '',
@@ -101,7 +102,7 @@ const ExchangeOrderForm = () => {
   };
 
   return (
-    <div className="bg-black text-[#EFAF00] font-sans pt-12 font-redhead">
+    <div className="bg-black text-[#EFAF00] font-sans pt-12 font-redhead select-none touch-action-manipulation">
       <Toaster position="top-center" />
       <div className="max-w-7xl mx-auto p-4">
         <nav className="text-lg mb-8">
